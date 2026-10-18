@@ -1,0 +1,4565 @@
+{
+  "artifacts": {
+    "directory": "results/ch3/figures",
+    "files": [
+      "results/ch3/figures/chapter-3-01-spx-vs-mappo.csv",
+      "results/ch3/figures/chapter-3-02-spx-vs-mappo-scatter.png",
+      "results/ch3/figures/chapter-3-03-spx-minus-mappo-forest.png",
+      "results/ch3/figures/chapter-3-04-learning-curve-tank.png"
+    ],
+    "removed_stale": []
+  },
+  "cases": [
+    {
+      "achievement": {
+        "max": 0.8878189927869031,
+        "mean": 0.86263385872972,
+        "metric": "MAPPO worst-target PD divided by SPX worst-target PD",
+        "min": 0.8234539118646059,
+        "reading": "SPX \uc778\uc99d\uc774 \uc5f4\ub9b0 \uaca9\uc790\uc5d0\uc11c\ub294 \uc774 \ube44\uc728\uc774 1 \uc744 \ub118\uc5b4\ub3c4 MAPPO \uac00 \ucd5c\uc801\uc774\ub77c\ub294 \ub73b\uc774 \uc544\ub2c8\ub2e4 \u2014 \uadf8 \uaca9\uc790\uc5d0\uc11c\ub294 SPX \uac12 \uc790\uccb4\uac00 \ucd5c\uc801\ud574\uac00 \uc544\ub2c8\ub2e4.",
+        "seed_count": 3,
+        "spx_certified_seeds": [
+          20260201
+        ],
+        "spx_worst_relative_gap": 0.018421515679353084
+      },
+      "certified_ratio_lower_bound": {
+        "max": 0.8826335050520188,
+        "mean": 0.8588312476899427,
+        "metric": "MAPPO worst-target PD divided by (1 - dual bound on non-detection): a guaranteed lower bound on the ratio to the true optimum",
+        "min": 0.8198547787149734,
+        "reading": "\uc778\uc99d\uc774 \uc5f4\ub9b0 \uaca9\uc790\uc5d0\uc11c\ub3c4 \ub73b\uc774 \ud750\ub824\uc9c0\uc9c0 \uc54a\ub294\ub2e4. \uc9c4\uc9dc \ucd5c\uc801\ud574\uac00 \uc0c1\ud55c\ubcf4\ub2e4 \ub192\uc744 \uc218 \uc5c6\uc73c\ubbc0\ub85c \uc774 \ube44\ub294 \ucd5c\uc801 \ub300\ube44 \ub3c4\ub2ec\ub960\uc758 \ud558\ud55c\uc774\ub2e4.",
+        "seed_count": 3
+      },
+      "declared_case": {
+        "behaviors": [
+          "RELOCATION_HEAVY",
+          "CONTINUOUS_MOVE",
+          "STOP_HEAVY"
+        ],
+        "search_radius_m": 9950.0,
+        "signature_profile": "TEL-nominal"
+      },
+      "grid_width": 10,
+      "learning_effect": {
+        "max": 0.673140115699186,
+        "mean": 0.6241826909859506,
+        "metric": "trained minus untrained worst-target PD",
+        "min": 0.5831904519834742
+      },
+      "mappo": [
+        {
+          "achievement_ratio": 0.876628671537651,
+          "action_candidate_coverage": 1.0,
+          "assignments": [
+            [
+              56,
+              55,
+              45,
+              44,
+              34,
+              33,
+              34,
+              33,
+              34,
+              33,
+              34,
+              33
+            ],
+            [
+              66,
+              56,
+              55,
+              56,
+              57,
+              56,
+              57,
+              56,
+              57,
+              56,
+              57,
+              56
+            ],
+            [
+              64,
+              54,
+              44,
+              34,
+              33,
+              34,
+              33,
+              34,
+              33,
+              34,
+              33,
+              34
+            ],
+            [
+              53,
+              53,
+              54,
+              54,
+              44,
+              44,
+              45,
+              44,
+              44,
+              44,
+              44,
+              44
+            ],
+            [
+              34,
+              44,
+              34,
+              33,
+              23,
+              23,
+              23,
+              23,
+              23,
+              23,
+              23,
+              23
+            ],
+            [
+              46,
+              45,
+              46,
+              46,
+              56,
+              57,
+              56,
+              57,
+              56,
+              57,
+              56,
+              57
+            ]
+          ],
+          "certified_ratio_lower_bound": 0.8740054593028359,
+          "common_input_fingerprint": "18fd6ce7cacd1541e7ae57ff3e5975df23e2016a4b12cbdb8a1357bb3e834376",
+          "learning_effect": 0.5831904519834742,
+          "occupancy_violations": 0,
+          "repaired_moves": 5635,
+          "runtime_s": 6.145829249871895,
+          "seed": 20260201,
+          "separation_violations": 0,
+          "untrained_worst_target_detection_probability": 0.0550401787110969,
+          "worst_target_detection_probability": 0.6382306306945711
+        },
+        {
+          "achievement_ratio": 0.8878189927869031,
+          "action_candidate_coverage": 1.0,
+          "assignments": [
+            [
+              56,
+              55,
+              45,
+              55,
+              45,
+              55,
+              45,
+              35,
+              25,
+              35,
+              25,
+              35
+            ],
+            [
+              65,
+              64,
+              74,
+              64,
+              74,
+              64,
+              74,
+              64,
+              74,
+              64,
+              74,
+              64
+            ],
+            [
+              64,
+              74,
+              64,
+              74,
+              64,
+              74,
+              64,
+              74,
+              64,
+              74,
+              64,
+              74
+            ],
+            [
+              53,
+              54,
+              54,
+              54,
+              54,
+              54,
+              54,
+              54,
+              54,
+              54,
+              54,
+              54
+            ],
+            [
+              34,
+              35,
+              25,
+              35,
+              25,
+              35,
+              25,
+              25,
+              35,
+              25,
+              35,
+              25
+            ],
+            [
+              35,
+              25,
+              35,
+              25,
+              35,
+              25,
+              35,
+              45,
+              45,
+              45,
+              45,
+              45
+            ]
+          ],
+          "certified_ratio_lower_bound": 0.8826335050520188,
+          "common_input_fingerprint": "de230d7051c17ba732ecdc781580383bbaa51ebbb4f61a3bb2965bec58de6e2f",
+          "learning_effect": 0.673140115699186,
+          "occupancy_violations": 0,
+          "repaired_moves": 4351,
+          "runtime_s": 6.294245458906516,
+          "seed": 20260202,
+          "separation_violations": 0,
+          "untrained_worst_target_detection_probability": 0.0,
+          "worst_target_detection_probability": 0.673140115699186
+        },
+        {
+          "achievement_ratio": 0.8234539118646059,
+          "action_candidate_coverage": 1.0,
+          "assignments": [
+            [
+              56,
+              57,
+              56,
+              57,
+              56,
+              57,
+              56,
+              57,
+              56,
+              57,
+              56,
+              57
+            ],
+            [
+              66,
+              56,
+              57,
+              56,
+              57,
+              56,
+              57,
+              56,
+              57,
+              56,
+              57,
+              56
+            ],
+            [
+              64,
+              74,
+              64,
+              74,
+              64,
+              74,
+              64,
+              74,
+              64,
+              74,
+              64,
+              54
+            ],
+            [
+              42,
+              32,
+              33,
+              34,
+              24,
+              34,
+              24,
+              34,
+              44,
+              54,
+              44,
+              44
+            ],
+            [
+              34,
+              24,
+              34,
+              24,
+              34,
+              24,
+              34,
+              24,
+              34,
+              24,
+              34,
+              34
+            ],
+            [
+              46,
+              45,
+              44,
+              54,
+              44,
+              54,
+              44,
+              54,
+              54,
+              64,
+              74,
+              64
+            ]
+          ],
+          "certified_ratio_lower_bound": 0.8198547787149734,
+          "common_input_fingerprint": "3def7f8a1e51d49e6f1418871138c724754c08948cbf391ee9372173beca1f18",
+          "learning_effect": 0.6162175052751916,
+          "occupancy_violations": 0,
+          "repaired_moves": 3084,
+          "runtime_s": 6.328966791974381,
+          "seed": 20260203,
+          "separation_violations": 0,
+          "untrained_worst_target_detection_probability": 5.0088650607627017e-05,
+          "worst_target_detection_probability": 0.6162675939257992
+        }
+      ],
+      "name": "TEL",
+      "paired_spx_minus_mappo": {
+        "ci_method": "paired planning-seed cluster percentile bootstrap",
+        "confidence": 0.95,
+        "confidence_interval": [
+          0.08505510333546129,
+          0.13212595311600206
+        ],
+        "inference_valid": false,
+        "mean_difference": 0.10233390355283138,
+        "mean_difference_is": "Stone SPX cutting plane minus MAPPO learned policy",
+        "paired_seeds": [
+          20260201,
+          20260202,
+          20260203
+        ],
+        "seed_count": 3,
+        "significant": false,
+        "status": "insufficient-seeds"
+      },
+      "per_seed_comparison": [
+        {
+          "interpretation": "\uac19\uc740 StoneGridInstance \uc704\uc758 \uc2e4\ud589\uac00\ub2a5\ud574 \ube44\uad50\ub2e4. SPX \uc778\uc99d\ud3ed\uc774 \uc5f4\ub824 \uc788\uc73c\uba74 \ub450 \uac12 \ubaa8\ub450 \uc9c4\uc9dc \ucd5c\uc801\ud574\ubcf4\ub2e4 \ub0ae\uc744 \uc218 \uc788\ub2e4.",
+          "mappo_certified": false,
+          "mappo_runtime_s": 6.145829249871895,
+          "mappo_worst_target_pd": 0.6382306306945711,
+          "same_instance": true,
+          "seed": 20260201,
+          "spx_certified": true,
+          "spx_minus_mappo": 0.08982065420703078,
+          "spx_relative_optimality_gap": 0.008035154750405997,
+          "spx_runtime_s": 1727.9502125829458,
+          "spx_worst_target_pd": 0.7280512849016019
+        },
+        {
+          "interpretation": "\uac19\uc740 StoneGridInstance \uc704\uc758 \uc2e4\ud589\uac00\ub2a5\ud574 \ube44\uad50\ub2e4. SPX \uc778\uc99d\ud3ed\uc774 \uc5f4\ub824 \uc788\uc73c\uba74 \ub450 \uac12 \ubaa8\ub450 \uc9c4\uc9dc \ucd5c\uc801\ud574\ubcf4\ub2e4 \ub0ae\uc744 \uc218 \uc788\ub2e4.",
+          "mappo_certified": false,
+          "mappo_runtime_s": 6.294245458906516,
+          "mappo_worst_target_pd": 0.673140115699186,
+          "same_instance": true,
+          "seed": 20260202,
+          "spx_certified": false,
+          "spx_minus_mappo": 0.08505510333546129,
+          "spx_relative_optimality_gap": 0.018421515679353084,
+          "spx_runtime_s": 5875.621147583006,
+          "spx_worst_target_pd": 0.7581952190346473
+        },
+        {
+          "interpretation": "\uac19\uc740 StoneGridInstance \uc704\uc758 \uc2e4\ud589\uac00\ub2a5\ud574 \ube44\uad50\ub2e4. SPX \uc778\uc99d\ud3ed\uc774 \uc5f4\ub824 \uc788\uc73c\uba74 \ub450 \uac12 \ubaa8\ub450 \uc9c4\uc9dc \ucd5c\uc801\ud574\ubcf4\ub2e4 \ub0ae\uc744 \uc218 \uc788\ub2e4.",
+          "mappo_certified": false,
+          "mappo_runtime_s": 6.328966791974381,
+          "mappo_worst_target_pd": 0.6162675939257992,
+          "same_instance": true,
+          "seed": 20260203,
+          "spx_certified": false,
+          "spx_minus_mappo": 0.13212595311600206,
+          "spx_relative_optimality_gap": 0.013057776779432182,
+          "spx_runtime_s": 4937.52678604098,
+          "spx_worst_target_pd": 0.7483935470418013
+        }
+      ],
+      "runtime": {
+        "mappo_mean_s": 6.256347166917597,
+        "spx_mean_s": 4180.366048735644
+      },
+      "spx": [
+        {
+          "achievable_detection_probability_upper_bound": 0.7302364349115916,
+          "certified_within_tolerance": true,
+          "common_input_fingerprint": "18fd6ce7cacd1541e7ae57ff3e5975df23e2016a4b12cbdb8a1357bb3e834376",
+          "relative_optimality_gap": 0.008035154750405997,
+          "runtime_s": 1727.9502125829458,
+          "seed": 20260201,
+          "worst_target_detection_probability": 0.7280512849016019
+        },
+        {
+          "achievable_detection_probability_upper_bound": 0.7626496295985431,
+          "certified_within_tolerance": false,
+          "common_input_fingerprint": "de230d7051c17ba732ecdc781580383bbaa51ebbb4f61a3bb2965bec58de6e2f",
+          "relative_optimality_gap": 0.018421515679353084,
+          "runtime_s": 5875.621147583006,
+          "seed": 20260202,
+          "worst_target_detection_probability": 0.7581952190346473
+        },
+        {
+          "achievable_detection_probability_upper_bound": 0.751678967940794,
+          "certified_within_tolerance": false,
+          "common_input_fingerprint": "3def7f8a1e51d49e6f1418871138c724754c08948cbf391ee9372173beca1f18",
+          "relative_optimality_gap": 0.013057776779432182,
+          "runtime_s": 4937.52678604098,
+          "seed": 20260203,
+          "worst_target_detection_probability": 0.7483935470418013
+        }
+      ]
+    },
+    {
+      "achievement": {
+        "max": 0.9068146408382902,
+        "mean": 0.8077451378214703,
+        "metric": "MAPPO worst-target PD divided by SPX worst-target PD",
+        "min": 0.6604398488913636,
+        "reading": "SPX \uc778\uc99d\uc774 \uc5f4\ub9b0 \uaca9\uc790\uc5d0\uc11c\ub294 \uc774 \ube44\uc728\uc774 1 \uc744 \ub118\uc5b4\ub3c4 MAPPO \uac00 \ucd5c\uc801\uc774\ub77c\ub294 \ub73b\uc774 \uc544\ub2c8\ub2e4 \u2014 \uadf8 \uaca9\uc790\uc5d0\uc11c\ub294 SPX \uac12 \uc790\uccb4\uac00 \ucd5c\uc801\ud574\uac00 \uc544\ub2c8\ub2e4.",
+        "seed_count": 3,
+        "spx_certified_seeds": [
+          20260201,
+          20260202,
+          20260203
+        ],
+        "spx_worst_relative_gap": 0.008101397915794758
+      },
+      "certified_ratio_lower_bound": {
+        "max": 0.9062739902789043,
+        "mean": 0.8064512969406167,
+        "metric": "MAPPO worst-target PD divided by (1 - dual bound on non-detection): a guaranteed lower bound on the ratio to the true optimum",
+        "min": 0.6586365088110184,
+        "reading": "\uc778\uc99d\uc774 \uc5f4\ub9b0 \uaca9\uc790\uc5d0\uc11c\ub3c4 \ub73b\uc774 \ud750\ub824\uc9c0\uc9c0 \uc54a\ub294\ub2e4. \uc9c4\uc9dc \ucd5c\uc801\ud574\uac00 \uc0c1\ud55c\ubcf4\ub2e4 \ub192\uc744 \uc218 \uc5c6\uc73c\ubbc0\ub85c \uc774 \ube44\ub294 \ucd5c\uc801 \ub300\ube44 \ub3c4\ub2ec\ub960\uc758 \ud558\ud55c\uc774\ub2e4.",
+        "seed_count": 3
+      },
+      "declared_case": {
+        "behaviors": [
+          "MANEUVER_HEAVY",
+          "STOP_HEAVY",
+          "CONTINUOUS_MOVE"
+        ],
+        "search_radius_m": 8884.0,
+        "signature_profile": "Tank-nominal"
+      },
+      "grid_width": 8,
+      "learning_effect": {
+        "max": 0.6554983421151184,
+        "mean": 0.5180408177493656,
+        "metric": "trained minus untrained worst-target PD",
+        "min": 0.44264648022850595
+      },
+      "mappo": [
+        {
+          "achievement_ratio": 0.6604398488913636,
+          "action_candidate_coverage": 1.0,
+          "assignments": [
+            [
+              45,
+              37,
+              37,
+              37,
+              37,
+              37,
+              37,
+              37,
+              37,
+              37,
+              37
+            ],
+            [
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36
+            ],
+            [
+              42,
+              50,
+              58,
+              59,
+              58,
+              59,
+              58,
+              59,
+              58,
+              59,
+              58
+            ],
+            [
+              34,
+              42,
+              50,
+              50,
+              50,
+              50,
+              51,
+              43,
+              35,
+              27,
+              28
+            ],
+            [
+              27,
+              27,
+              27,
+              27,
+              28,
+              27,
+              28,
+              27,
+              28,
+              28,
+              27
+            ],
+            [
+              28,
+              20,
+              28,
+              28,
+              27,
+              28,
+              27,
+              28,
+              27,
+              19,
+              19
+            ]
+          ],
+          "certified_ratio_lower_bound": 0.6586365088110184,
+          "common_input_fingerprint": "66c1fe77d1f3ea18f71ab725902f5072b4d9bb903f38ba8a1cc19a9e9ea67a86",
+          "learning_curve": [
+            {
+              "actor_objective": 0.003427296738975131,
+              "approximate_kl": 0.00036011306061872793,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.6528929578283953,
+              "iteration": 1,
+              "repaired_moves": 13,
+              "target_detection_probabilities": [
+                0.6810854539181863,
+                0.7447266525993741,
+                0.4936151494567822
+              ],
+              "worst_target_detection_probability": 0.4936151494567822
+            },
+            {
+              "actor_objective": 0.00235033380150905,
+              "approximate_kl": 0.0011844714434865182,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.3425646402023395,
+              "iteration": 2,
+              "repaired_moves": 25,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.005633375419251189,
+              "approximate_kl": -0.00046731445998528785,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.1244803320466765,
+              "iteration": 3,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.005508077081364222,
+              "approximate_kl": -6.342335667466282e-05,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.740294527832845,
+              "iteration": 4,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0017231629528425359,
+              "approximate_kl": 0.0009525205907836316,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.9749120309061245,
+              "iteration": 5,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0029128700408558644,
+              "approximate_kl": -0.0009282920861327403,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 9.188716326200568,
+              "iteration": 6,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.003950636527389338,
+              "approximate_kl": 0.001276536200370541,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.4387956896767005,
+              "iteration": 7,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.005373369612531064,
+              "approximate_kl": 0.0011410099413252123,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.427277678709392,
+              "iteration": 8,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0003323078965455698,
+              "approximate_kl": -0.0010177520469240333,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 10.527067741853257,
+              "iteration": 9,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0034623265985875232,
+              "approximate_kl": 0.00175454291571256,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 10.585696320600169,
+              "iteration": 10,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0029075240851733058,
+              "approximate_kl": 0.0015002339825187323,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 13.174550904068436,
+              "iteration": 11,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00399333715457907,
+              "approximate_kl": -0.0005208043902407507,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 13.76489342042304,
+              "iteration": 12,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0029621616769645704,
+              "approximate_kl": 0.0014283390994387934,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 12.1794792360534,
+              "iteration": 13,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0016972760802932687,
+              "approximate_kl": 0.0018812653359591425,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 15.398687284811658,
+              "iteration": 14,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.000745610403490487,
+              "approximate_kl": -0.00022353299765631382,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 15.06172783467016,
+              "iteration": 15,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0004275245695187712,
+              "approximate_kl": -0.000645617072161272,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 14.097719767219997,
+              "iteration": 16,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": -9.717932144464643e-05,
+              "approximate_kl": -0.0003642115323013532,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 12.897444798405871,
+              "iteration": 17,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00016806270526917888,
+              "approximate_kl": 8.79018392831471e-05,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 12.337799336605624,
+              "iteration": 18,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": -8.505939235782649e-05,
+              "approximate_kl": -0.00015805739799154068,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 9.989198502001004,
+              "iteration": 19,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00037613057239895627,
+              "approximate_kl": 0.00023941049776360113,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 11.782766368353794,
+              "iteration": 20,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0002779859455439907,
+              "approximate_kl": -6.122677993321283e-05,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 10.705639741752673,
+              "iteration": 21,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0011981899873512675,
+              "approximate_kl": 0.0008495514480086033,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 9.283717667696596,
+              "iteration": 22,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00017713086860520806,
+              "approximate_kl": 0.0010207891294006367,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.197806659003783,
+              "iteration": 23,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 4.1842202911984195e-05,
+              "approximate_kl": -0.00040505051197611375,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.849296641581785,
+              "iteration": 24,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0007962031023228698,
+              "approximate_kl": -0.00014004711909968028,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.924448890053775,
+              "iteration": 25,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0007629492144172207,
+              "approximate_kl": -0.00014498878172622718,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.946898768522647,
+              "iteration": 26,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0005075789751694706,
+              "approximate_kl": -0.0005893597642026043,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.970780011315026,
+              "iteration": 27,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0017400582508166978,
+              "approximate_kl": 0.0006333170140643047,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.576726175262868,
+              "iteration": 28,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0010498179354594271,
+              "approximate_kl": -2.424193361348722e-05,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.446087609647145,
+              "iteration": 29,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0006483150012625578,
+              "approximate_kl": -0.001581748214110103,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.135545601079525,
+              "iteration": 30,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.002357523421218332,
+              "approximate_kl": 0.0014130744428349524,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.5182113366699515,
+              "iteration": 31,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.001509359833996922,
+              "approximate_kl": 0.002167653638792374,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0004734848484848485,
+              "critic_loss": 6.620646850639455,
+              "iteration": 32,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": -0.0011630470173140707,
+              "approximate_kl": 0.00028698810221849323,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.116748679044395,
+              "iteration": 33,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0012563164743352728,
+              "approximate_kl": 0.00044333137451733174,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.9368640038414515,
+              "iteration": 34,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": -0.00011601712692074183,
+              "approximate_kl": 5.8397094614879764e-05,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.7101845421841295,
+              "iteration": 35,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0006344029844521547,
+              "approximate_kl": 4.9154356168904303e-05,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.60122488870416,
+              "iteration": 36,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0004155631337729213,
+              "approximate_kl": -0.0006175264511745663,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.471062217803499,
+              "iteration": 37,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0002453990524563327,
+              "approximate_kl": -0.00022888683839480473,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.513282454158614,
+              "iteration": 38,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 1.4130785641978464e-06,
+              "approximate_kl": 0.00012746050387744967,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.709943958972151,
+              "iteration": 39,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00015151108273009698,
+              "approximate_kl": 0.00025640541856036467,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.4121066487354845,
+              "iteration": 40,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00031612421905073516,
+              "approximate_kl": 0.00022944740775307507,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.087579408051783,
+              "iteration": 41,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": -1.4675278985825372e-05,
+              "approximate_kl": -0.00036597440432746195,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.906385392664838,
+              "iteration": 42,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00018990532220386995,
+              "approximate_kl": 4.766570345645589e-06,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.224109965343337,
+              "iteration": 43,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 6.396541898850803e-05,
+              "approximate_kl": 0.0002863707395491478,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.840795121332652,
+              "iteration": 44,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00032213268294842864,
+              "approximate_kl": -0.00014129616825562066,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.945757908243186,
+              "iteration": 45,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00024965806922966853,
+              "approximate_kl": -9.873762499662699e-05,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.998145173491455,
+              "iteration": 46,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.001053945278204921,
+              "approximate_kl": 0.0007394293706001001,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.410098307518767,
+              "iteration": 47,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0008499287192199612,
+              "approximate_kl": 0.0011447674071653727,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.361139232169461,
+              "iteration": 48,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0011961470768433423,
+              "approximate_kl": 0.0014456836823921854,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.045955678461451,
+              "iteration": 49,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0008849148943017952,
+              "approximate_kl": 9.213687604653143e-05,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.09530355210157,
+              "iteration": 50,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 7.322372330046602e-05,
+              "approximate_kl": -0.0011665019335445586,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.225016390943553,
+              "iteration": 51,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": -0.00030250785548451725,
+              "approximate_kl": -1.9900033584672904e-06,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.5845609928715056,
+              "iteration": 52,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0019817587823917986,
+              "approximate_kl": 0.00035493906255350206,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.0393016840721394,
+              "iteration": 53,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0010594387468247082,
+              "approximate_kl": 0.002583011904981881,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.933301625230926,
+              "iteration": 54,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": -0.0002777364158650644,
+              "approximate_kl": -0.0015047887998866096,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.9665464085587683,
+              "iteration": 55,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00036913720405098993,
+              "approximate_kl": -1.7841775572617889e-06,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.408637345220915,
+              "iteration": 56,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0005357064183895748,
+              "approximate_kl": 0.0004859127803751129,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.371821076431857,
+              "iteration": 57,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0007749685457592043,
+              "approximate_kl": -0.00028758419571353334,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.2207980804536778,
+              "iteration": 58,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": -0.00039483557917261976,
+              "approximate_kl": -0.0002864615645289324,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.7297536924712158,
+              "iteration": 59,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0008545248509532809,
+              "approximate_kl": 0.0004074103211084676,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.477550620427251,
+              "iteration": 60,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00019875364103835475,
+              "approximate_kl": 0.00011167678204116276,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.213227621091998,
+              "iteration": 61,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0017342431316833078,
+              "approximate_kl": 0.0005182145260417658,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.6872754926714693,
+              "iteration": 62,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0006842731300853175,
+              "approximate_kl": -0.00019044324056615542,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.0036363813715554,
+              "iteration": 63,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0016110187195453529,
+              "approximate_kl": 0.0013098906179319757,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.8191596444805969,
+              "iteration": 64,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00029291390112262336,
+              "approximate_kl": -8.438465626225985e-05,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.8093138478863109,
+              "iteration": 65,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": -0.0003626435214116336,
+              "approximate_kl": 0.0005643207153057752,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.7848703922359583,
+              "iteration": 66,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00045176269122356355,
+              "approximate_kl": 0.000990933029364349,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.4922889459892237,
+              "iteration": 67,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00020444946981521415,
+              "approximate_kl": -0.00017366375201527043,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.8335316016570515,
+              "iteration": 68,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0004942975400522744,
+              "approximate_kl": -0.0003869076567975784,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.7492244531128036,
+              "iteration": 69,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.001924192762018043,
+              "approximate_kl": 0.00016577656807521796,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.298236238124899,
+              "iteration": 70,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0015219743364304644,
+              "approximate_kl": 0.0005560233588215407,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.4623186216442687,
+              "iteration": 71,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0008885475702890672,
+              "approximate_kl": 0.0028883834099265307,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.3839458418166903,
+              "iteration": 72,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0006725074443039965,
+              "approximate_kl": -7.19317527500678e-05,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.3070108476822577,
+              "iteration": 73,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.00034028153875757176,
+              "approximate_kl": 0.0005397999725336106,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.2044131888007583,
+              "iteration": 74,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.001677523184763042,
+              "approximate_kl": -0.0007986433662520416,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.4999155052872697,
+              "iteration": 75,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": -0.0005980778974713067,
+              "approximate_kl": 0.00014737724608784896,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.125740230443232,
+              "iteration": 76,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0011601661096567093,
+              "approximate_kl": 0.0005868785808291488,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.4087746949620352,
+              "iteration": 77,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": -0.0004128199723995668,
+              "approximate_kl": -0.0009196102000086117,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.2001565392137417,
+              "iteration": 78,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0005397794953630245,
+              "approximate_kl": -0.0001392726257170846,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.6121078130115167,
+              "iteration": 79,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            },
+            {
+              "actor_objective": 0.0004721489138571588,
+              "approximate_kl": 0.00034906601437783105,
+              "best_worst_target_detection_probability": 0.4936151494567822,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.1789135486987312,
+              "iteration": 80,
+              "repaired_moves": 21,
+              "target_detection_probabilities": [
+                0.6826001476310437,
+                0.7532922195529409,
+                0.4893815366633826
+              ],
+              "worst_target_detection_probability": 0.4893815366633826
+            }
+          ],
+          "learning_effect": 0.44264648022850595,
+          "occupancy_violations": 0,
+          "repaired_moves": 8015,
+          "runtime_s": 5.12620341591537,
+          "seed": 20260201,
+          "separation_violations": 0,
+          "untrained_worst_target_detection_probability": 0.05096866922827625,
+          "worst_target_detection_probability": 0.4936151494567822
+        },
+        {
+          "achievement_ratio": 0.8559809237347568,
+          "action_candidate_coverage": 1.0,
+          "assignments": [
+            [
+              36,
+              28,
+              20,
+              28,
+              20,
+              28,
+              20,
+              28,
+              20,
+              28,
+              20
+            ],
+            [
+              43,
+              35,
+              43,
+              35,
+              43,
+              35,
+              43,
+              35,
+              43,
+              35,
+              43
+            ],
+            [
+              35,
+              43,
+              35,
+              43,
+              35,
+              43,
+              35,
+              43,
+              35,
+              43,
+              35
+            ],
+            [
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34
+            ],
+            [
+              20,
+              20,
+              28,
+              20,
+              28,
+              20,
+              28,
+              20,
+              28,
+              20,
+              28
+            ],
+            [
+              28,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36
+            ]
+          ],
+          "certified_ratio_lower_bound": 0.8544433917319274,
+          "common_input_fingerprint": "6bcd57333b552015c5df92b3f00a160051d2bb915d55d9162bad8ba7152e8f3f",
+          "learning_curve": [
+            {
+              "actor_objective": 0.0038306779090128106,
+              "approximate_kl": 0.0020543163044271727,
+              "best_worst_target_detection_probability": 0.005792326784452073,
+              "clip_fraction": 0.0,
+              "critic_loss": 0.5912188880674433,
+              "iteration": 1,
+              "repaired_moves": 6,
+              "target_detection_probabilities": [
+                0.01591464935225284,
+                0.005792326784452073,
+                0.038562953216771945
+              ],
+              "worst_target_detection_probability": 0.005792326784452073
+            },
+            {
+              "actor_objective": 0.0030685958123681193,
+              "approximate_kl": -0.00352123121730136,
+              "best_worst_target_detection_probability": 0.005792326784452073,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.5020232705866934,
+              "iteration": 2,
+              "repaired_moves": 6,
+              "target_detection_probabilities": [
+                0.01591464935225284,
+                0.005792326784452073,
+                0.038562953216771945
+              ],
+              "worst_target_detection_probability": 0.005792326784452073
+            },
+            {
+              "actor_objective": 0.0023343621815256673,
+              "approximate_kl": 0.002633961200421929,
+              "best_worst_target_detection_probability": 0.005792326784452073,
+              "clip_fraction": 0.0,
+              "critic_loss": 0.9273755093972184,
+              "iteration": 3,
+              "repaired_moves": 6,
+              "target_detection_probabilities": [
+                0.01591464935225284,
+                0.005792326784452073,
+                0.038562953216771945
+              ],
+              "worst_target_detection_probability": 0.005792326784452073
+            },
+            {
+              "actor_objective": 0.003420862756168166,
+              "approximate_kl": 0.00252415731785027,
+              "best_worst_target_detection_probability": 0.11265870337563466,
+              "clip_fraction": 0.0,
+              "critic_loss": 0.586132834942646,
+              "iteration": 4,
+              "repaired_moves": 9,
+              "target_detection_probabilities": [
+                0.1286555410818977,
+                0.11265870337563466,
+                0.1353088427253446
+              ],
+              "worst_target_detection_probability": 0.11265870337563466
+            },
+            {
+              "actor_objective": 0.003400592592974481,
+              "approximate_kl": 0.00047307113392999376,
+              "best_worst_target_detection_probability": 0.5571206773100542,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.7085491612684667,
+              "iteration": 5,
+              "repaired_moves": 12,
+              "target_detection_probabilities": [
+                0.583189137975733,
+                0.5571206773100542,
+                0.5727432805870443
+              ],
+              "worst_target_detection_probability": 0.5571206773100542
+            },
+            {
+              "actor_objective": 0.0026934191856775053,
+              "approximate_kl": 0.0022965891508211957,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 1.2814814326273085,
+              "iteration": 6,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.005654109342218452,
+              "approximate_kl": 0.00047085148800809915,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.581221131643085,
+              "iteration": 7,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0075949600215738326,
+              "approximate_kl": 0.00145253141161452,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.882583731853275,
+              "iteration": 8,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.007471499206633807,
+              "approximate_kl": 0.0013436684698368271,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.697768865780422,
+              "iteration": 9,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.005418478691413011,
+              "approximate_kl": 0.0015732757247897062,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 12.501615082379612,
+              "iteration": 10,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.005211341644703611,
+              "approximate_kl": 0.004202751868207242,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 16.170535602772834,
+              "iteration": 11,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0015356300496145313,
+              "approximate_kl": 0.0028699677805625046,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 17.953595010371167,
+              "iteration": 12,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.00046374841302803044,
+              "approximate_kl": 0.000689855536731554,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 20.19389804730576,
+              "iteration": 13,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.004293640518191717,
+              "approximate_kl": 0.0002772847790829026,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 21.159337865379335,
+              "iteration": 14,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0009269585765053767,
+              "approximate_kl": -0.0017786144814857267,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 21.700050672831303,
+              "iteration": 15,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0031121376616830634,
+              "approximate_kl": -0.0006657858400751527,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 19.17789026288461,
+              "iteration": 16,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.001096647337022687,
+              "approximate_kl": 0.0011844739941749265,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 20.80288588509469,
+              "iteration": 17,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.00037130877266627557,
+              "approximate_kl": 0.0006402094156971726,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 18.1840252789668,
+              "iteration": 18,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0006944107651780595,
+              "approximate_kl": 0.0005007324893144027,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 18.578542639488273,
+              "iteration": 19,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0005825154447235734,
+              "approximate_kl": 0.0010680944650339993,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 18.67522663079327,
+              "iteration": 20,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": -2.2102413400869363e-05,
+              "approximate_kl": 0.000290953649500879,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 14.480649272008693,
+              "iteration": 21,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0002091985930641732,
+              "approximate_kl": 3.6087461648252227e-06,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 13.405091783277255,
+              "iteration": 22,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": -7.987815980953553e-05,
+              "approximate_kl": -9.04252905664996e-05,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 13.028687658597658,
+              "iteration": 23,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0013182565721995318,
+              "approximate_kl": -0.0001960822928951478,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 13.270805433608963,
+              "iteration": 24,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": -0.0008244220474257238,
+              "approximate_kl": 0.0002938355243319019,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 10.386288821134361,
+              "iteration": 25,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0001429196879130571,
+              "approximate_kl": -3.743393682842141e-05,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 10.41515527451941,
+              "iteration": 26,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.000288660281794984,
+              "approximate_kl": -4.5435735684304743e-05,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 9.911376159053823,
+              "iteration": 27,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 4.635742714046549e-05,
+              "approximate_kl": 7.984211563247487e-05,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 9.194585064844054,
+              "iteration": 28,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0003878053600262886,
+              "approximate_kl": -0.0003661322876683079,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.794053105625219,
+              "iteration": 29,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": -3.021144476295258e-05,
+              "approximate_kl": -0.00019685292045879563,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 9.304977828988456,
+              "iteration": 30,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0007969689458604424,
+              "approximate_kl": 0.00020111408370994955,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.935426430413951,
+              "iteration": 31,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": -0.00023526671768134906,
+              "approximate_kl": 0.0003611990970668165,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.700670927702518,
+              "iteration": 32,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.001012382248580297,
+              "approximate_kl": -0.0005428411005043634,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.814862721726676,
+              "iteration": 33,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0005145678083936074,
+              "approximate_kl": -0.00010213425628336524,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.363635420762673,
+              "iteration": 34,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0005600478298624519,
+              "approximate_kl": 0.0009556687530681123,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.23388855009798,
+              "iteration": 35,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0003714308970345721,
+              "approximate_kl": -0.0002832406197702513,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.7569714651635175,
+              "iteration": 36,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0007487904152232119,
+              "approximate_kl": 0.0006141796619059305,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.778454467370857,
+              "iteration": 37,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.00033905802628837614,
+              "approximate_kl": 3.66370577462853e-05,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.706425082811749,
+              "iteration": 38,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0020681270588335664,
+              "approximate_kl": -0.0004730892128357047,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.094254662680529,
+              "iteration": 39,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0009267490624877635,
+              "approximate_kl": 9.912862911310725e-05,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.563107034118033,
+              "iteration": 40,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0014773439173103114,
+              "approximate_kl": -0.00012933790835851835,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.0811274994197815,
+              "iteration": 41,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": -0.0004379570311260703,
+              "approximate_kl": 0.001032281001978638,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.73066433046566,
+              "iteration": 42,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.00019318536530953364,
+              "approximate_kl": 0.0005574971550090575,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.23550510291295,
+              "iteration": 43,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0006995016654576205,
+              "approximate_kl": 0.00039638096916087037,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.546429312168783,
+              "iteration": 44,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.001286860752677444,
+              "approximate_kl": -0.0009585529898125914,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.756698567269656,
+              "iteration": 45,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0006196976034004288,
+              "approximate_kl": -0.0012180551021801788,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.633449448133161,
+              "iteration": 46,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0012071944310021896,
+              "approximate_kl": -3.252239447961453e-05,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.634883877607935,
+              "iteration": 47,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0006109141519817466,
+              "approximate_kl": -0.0003714356731368007,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.856216253634257,
+              "iteration": 48,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0011330121032426719,
+              "approximate_kl": 0.0008902048296795832,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.412031898488816,
+              "iteration": 49,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0032365735718586732,
+              "approximate_kl": 0.0004017491133313107,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.628308748240794,
+              "iteration": 50,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0023517307955564404,
+              "approximate_kl": -0.0019170055230852915,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.776040219809916,
+              "iteration": 51,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0003085513152651729,
+              "approximate_kl": -0.00024284566796977468,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.9092291475426055,
+              "iteration": 52,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0003986364699243097,
+              "approximate_kl": 0.0003066070911952953,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.1346285878137055,
+              "iteration": 53,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0017427443186342822,
+              "approximate_kl": -0.0009106361664822662,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.852576456336646,
+              "iteration": 54,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.001404532350539344,
+              "approximate_kl": 0.00034280232389687456,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.262913280669911,
+              "iteration": 55,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0015092267381677012,
+              "approximate_kl": -0.0011065907578546102,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.962230309650645,
+              "iteration": 56,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0001493146230805717,
+              "approximate_kl": -0.0007321159298612058,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.221690010935643,
+              "iteration": 57,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0009542224550193555,
+              "approximate_kl": 0.0009066522980846909,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.746276682345639,
+              "iteration": 58,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0023493491609958353,
+              "approximate_kl": 0.0010525870727430098,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.3127648700229235,
+              "iteration": 59,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": -0.0004492267810202463,
+              "approximate_kl": 0.0001012546953506133,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.845050602640931,
+              "iteration": 60,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.00026992947174414247,
+              "approximate_kl": 0.0006676201633561043,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.812268874306629,
+              "iteration": 61,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.00043252440514055554,
+              "approximate_kl": -0.00022858828015401362,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.978076493598319,
+              "iteration": 62,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 9.376752421778078e-05,
+              "approximate_kl": -0.0013159906427660886,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.974902057177572,
+              "iteration": 63,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.00017586291281642105,
+              "approximate_kl": -1.74281123261361e-05,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.241623178068698,
+              "iteration": 64,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0009292108452153617,
+              "approximate_kl": 0.0006508103723687662,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.868450321452218,
+              "iteration": 65,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": -0.00029987557747924537,
+              "approximate_kl": -0.00048380945545662725,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.278685589215868,
+              "iteration": 66,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0024948891656185685,
+              "approximate_kl": -0.00041075511200728155,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.7393613463508615,
+              "iteration": 67,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0015912605032155384,
+              "approximate_kl": 0.0006113605118498416,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.113429897865932,
+              "iteration": 68,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": -0.00011641074902302656,
+              "approximate_kl": 0.0008071963134115632,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.097599224289901,
+              "iteration": 69,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": -6.766842300373988e-05,
+              "approximate_kl": -0.00011064164960959764,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.5920238476620767,
+              "iteration": 70,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 2.3823636767485795e-05,
+              "approximate_kl": 6.999446819050521e-05,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.190109991307769,
+              "iteration": 71,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.00027232171010796154,
+              "approximate_kl": 0.0009430721138856126,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.8951920917814378,
+              "iteration": 72,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0004952701898323056,
+              "approximate_kl": -7.212331930773517e-05,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.2648370946167473,
+              "iteration": 73,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0005212258005663865,
+              "approximate_kl": -0.0001336245007524535,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.8752399671187647,
+              "iteration": 74,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0006940511008526181,
+              "approximate_kl": 0.0001411962193496856,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.5820371982369434,
+              "iteration": 75,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0021135940873440425,
+              "approximate_kl": 0.00039353146601371505,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.1893969333471794,
+              "iteration": 76,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": -0.0009931316607943357,
+              "approximate_kl": -0.0005650716414067604,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.8801547571404917,
+              "iteration": 77,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0011073901292503905,
+              "approximate_kl": 0.0009402152968392041,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.723002322129936,
+              "iteration": 78,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.004479238726353078,
+              "approximate_kl": 0.000846299929793091,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.4358076045671266,
+              "iteration": 79,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            },
+            {
+              "actor_objective": 0.0003450144049239164,
+              "approximate_kl": 0.0018164499636329988,
+              "best_worst_target_detection_probability": 0.6612906688995704,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.140849137040246,
+              "iteration": 80,
+              "repaired_moves": 22,
+              "target_detection_probabilities": [
+                0.7530913826779257,
+                0.7556855753254141,
+                0.6612906688995704
+              ],
+              "worst_target_detection_probability": 0.6612906688995704
+            }
+          ],
+          "learning_effect": 0.6554983421151184,
+          "occupancy_violations": 0,
+          "repaired_moves": 7087,
+          "runtime_s": 5.121778333093971,
+          "seed": 20260202,
+          "separation_violations": 0,
+          "untrained_worst_target_detection_probability": 0.005792326784452073,
+          "worst_target_detection_probability": 0.6612906688995704
+        },
+        {
+          "achievement_ratio": 0.9068146408382902,
+          "action_candidate_coverage": 1.0,
+          "assignments": [
+            [
+              36,
+              35,
+              43,
+              35,
+              43,
+              35,
+              35,
+              35,
+              35,
+              35,
+              35
+            ],
+            [
+              43,
+              43,
+              35,
+              43,
+              35,
+              43,
+              43,
+              43,
+              43,
+              43,
+              43
+            ],
+            [
+              35,
+              27,
+              19,
+              27,
+              19,
+              27,
+              27,
+              27,
+              27,
+              27,
+              27
+            ],
+            [
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34
+            ],
+            [
+              27,
+              19,
+              27,
+              19,
+              27,
+              19,
+              19,
+              19,
+              19,
+              19,
+              19
+            ],
+            [
+              19,
+              11,
+              11,
+              11,
+              11,
+              11,
+              11,
+              11,
+              11,
+              11,
+              11
+            ]
+          ],
+          "certified_ratio_lower_bound": 0.9062739902789043,
+          "common_input_fingerprint": "6c730d6b9316b69ad9a7b1f99f99fe2259aee2ae2e93b375106cafceffa420f6",
+          "learning_curve": [
+            {
+              "actor_objective": 0.007595401687240492,
+              "approximate_kl": 0.0017515127072630838,
+              "best_worst_target_detection_probability": 0.31250602563187246,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.2575070396307977,
+              "iteration": 1,
+              "repaired_moves": 2,
+              "target_detection_probabilities": [
+                0.45399152336805026,
+                0.5469431413830006,
+                0.31250602563187246
+              ],
+              "worst_target_detection_probability": 0.31250602563187246
+            },
+            {
+              "actor_objective": 0.004221435712789791,
+              "approximate_kl": 0.005912075513238346,
+              "best_worst_target_detection_probability": 0.6429468761530568,
+              "clip_fraction": 0.0,
+              "critic_loss": 0.641147449040746,
+              "iteration": 2,
+              "repaired_moves": 11,
+              "target_detection_probabilities": [
+                0.7143146323946749,
+                0.7115045828160813,
+                0.6429468761530568
+              ],
+              "worst_target_detection_probability": 0.6429468761530568
+            },
+            {
+              "actor_objective": 0.00570184032880159,
+              "approximate_kl": 0.002408201789602153,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.72338045115774,
+              "iteration": 3,
+              "repaired_moves": 13,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0037513843068815054,
+              "approximate_kl": 0.004373027917869702,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.822573411463361,
+              "iteration": 4,
+              "repaired_moves": 17,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.002191011111598867,
+              "approximate_kl": -1.53177928643766e-05,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 17.213474145776956,
+              "iteration": 5,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.003001717264171651,
+              "approximate_kl": 0.0031255068211105573,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 10.122981411181083,
+              "iteration": 6,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0038527804610214095,
+              "approximate_kl": 0.0009207348406965577,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 13.069425278978017,
+              "iteration": 7,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0074849394061077094,
+              "approximate_kl": 0.004651451322115951,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 11.150644212865355,
+              "iteration": 8,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0032937208259909844,
+              "approximate_kl": 0.0006982482116568228,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 19.693324246691823,
+              "iteration": 9,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0033437698057910315,
+              "approximate_kl": -0.0005223127440966809,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 25.390930704003345,
+              "iteration": 10,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0038532032062488387,
+              "approximate_kl": 0.0008160192690178163,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 23.67014316306687,
+              "iteration": 11,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.001589058092105394,
+              "approximate_kl": 0.0010447809062318172,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 26.352123106162423,
+              "iteration": 12,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.000732604889977708,
+              "approximate_kl": -0.001251909279461498,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 29.49568160326894,
+              "iteration": 13,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.003370004349071775,
+              "approximate_kl": 0.002146614001012433,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 26.826425994653103,
+              "iteration": 14,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.00030846906202029603,
+              "approximate_kl": 0.0009202357787663555,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 25.75167245621967,
+              "iteration": 15,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.000929000612973251,
+              "approximate_kl": 0.000890866726868781,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 24.482470978398297,
+              "iteration": 16,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": -2.2052268229739436e-05,
+              "approximate_kl": -1.4949995186647861e-05,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 19.77781956539537,
+              "iteration": 17,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.000678932787051218,
+              "approximate_kl": 0.0004863347785969516,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 21.06480393212052,
+              "iteration": 18,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": -0.0003020331126374778,
+              "approximate_kl": -0.000196588901243955,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 20.583869019167608,
+              "iteration": 19,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0004836922882922186,
+              "approximate_kl": -7.418376865440127e-05,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 19.31559986879638,
+              "iteration": 20,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.00024577381535806353,
+              "approximate_kl": -1.2920530837271478e-05,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 17.094153466957117,
+              "iteration": 21,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0007508547782709906,
+              "approximate_kl": -0.000365893751254037,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 15.300773102231668,
+              "iteration": 22,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": -2.658776673101501e-05,
+              "approximate_kl": 0.00023247109653424652,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 14.503276451081806,
+              "iteration": 23,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0007280395864817553,
+              "approximate_kl": -0.00013795412897899255,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 13.587392206755634,
+              "iteration": 24,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0005333894403157674,
+              "approximate_kl": -0.00032420457650670547,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 14.893864752723868,
+              "iteration": 25,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0003461803877045711,
+              "approximate_kl": 0.00139413659620216,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 12.073405501025842,
+              "iteration": 26,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0005532953379130418,
+              "approximate_kl": -0.00016161752577802997,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 11.56952304300099,
+              "iteration": 27,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0007357924454221005,
+              "approximate_kl": 0.0003800673443801461,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 12.026736292326639,
+              "iteration": 28,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.00040219977137578606,
+              "approximate_kl": 0.00037919477184347066,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 9.882229515074926,
+              "iteration": 29,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.001135436154839456,
+              "approximate_kl": -0.0003183815145489175,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 10.46962255974526,
+              "iteration": 30,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0001060405362111302,
+              "approximate_kl": -0.000282993080298137,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 9.751611933084494,
+              "iteration": 31,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0012008029608425882,
+              "approximate_kl": -0.0004203263536282399,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 10.281811017148433,
+              "iteration": 32,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0008439843774638797,
+              "approximate_kl": 0.00026900203809594975,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.728623571713946,
+              "iteration": 33,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": -0.00037965832818368086,
+              "approximate_kl": -0.00029788350980968213,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 9.395622310215472,
+              "iteration": 34,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0005085545094066199,
+              "approximate_kl": -0.000240019947605716,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.653590718943832,
+              "iteration": 35,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.00011300502828882601,
+              "approximate_kl": -0.00051790184029819,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.894747485350493,
+              "iteration": 36,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.000476730788514171,
+              "approximate_kl": -0.00045693464692117157,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.801311542263765,
+              "iteration": 37,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": -6.962785508396546e-05,
+              "approximate_kl": -0.0003926555862256294,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.72696961606861,
+              "iteration": 38,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.000306191606503437,
+              "approximate_kl": -0.00011167067100529738,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.994440123507266,
+              "iteration": 39,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0007067308394315265,
+              "approximate_kl": 0.0002919182050589417,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.864872109527639,
+              "iteration": 40,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 2.619116700533329e-05,
+              "approximate_kl": 0.0006668045969121962,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.419222813340102,
+              "iteration": 41,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0015841015909152712,
+              "approximate_kl": 0.0007813490669259156,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 9.032041596978782,
+              "iteration": 42,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": -0.00018417258304575151,
+              "approximate_kl": 0.0013682380622481586,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.146994095453415,
+              "iteration": 43,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.00047115016122639014,
+              "approximate_kl": 0.0007424355374128749,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.190655467088162,
+              "iteration": 44,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": -6.277917959120142e-06,
+              "approximate_kl": 0.0001177984983726397,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.6819176009277115,
+              "iteration": 45,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0013471902991663244,
+              "approximate_kl": 0.0015270904174298013,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.532358176445467,
+              "iteration": 46,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0021317467774532874,
+              "approximate_kl": 0.0019154971629300125,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.805875733845632,
+              "iteration": 47,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 6.468787856479765e-05,
+              "approximate_kl": -0.0018232932804316394,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.014754791826254,
+              "iteration": 48,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0011989121119887723,
+              "approximate_kl": -0.00020740037167441252,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 8.292403404834765,
+              "iteration": 49,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": -0.000469075350363393,
+              "approximate_kl": 0.0007849579969607123,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.833767336890368,
+              "iteration": 50,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.00032581810917685404,
+              "approximate_kl": -2.8934602549736978e-05,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.675235300825653,
+              "iteration": 51,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0007883382434043535,
+              "approximate_kl": -2.4499507433770083e-05,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.940123648623653,
+              "iteration": 52,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": -0.00027089874340178045,
+              "approximate_kl": -0.00019859749784928102,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.192886639404768,
+              "iteration": 53,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0018892017316640276,
+              "approximate_kl": 0.0014269936131011821,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.524221347582441,
+              "iteration": 54,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": -0.0006258503918745301,
+              "approximate_kl": 0.000810459359269372,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.928224581839586,
+              "iteration": 55,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0007372005018463231,
+              "approximate_kl": -0.00047453126573226837,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.44475863308595,
+              "iteration": 56,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 5.124158985204918e-06,
+              "approximate_kl": -0.0002827962975400557,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.818174193582036,
+              "iteration": 57,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.00020572182907149035,
+              "approximate_kl": 0.00017554508750648528,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 7.126575884857765,
+              "iteration": 58,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": -0.00013160486725654922,
+              "approximate_kl": 1.1279202244994652e-06,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.945587935985351,
+              "iteration": 59,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0011894260644943798,
+              "approximate_kl": -6.46972877614362e-05,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.515014332872245,
+              "iteration": 60,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0001978280958777309,
+              "approximate_kl": 0.0011436169274382443,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.587417227647641,
+              "iteration": 61,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.00036798497862645116,
+              "approximate_kl": 0.0004793899123366244,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.671517752079854,
+              "iteration": 62,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.001075029001303678,
+              "approximate_kl": 0.000774468938227395,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.01121335141874,
+              "iteration": 63,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0003609115493343549,
+              "approximate_kl": -0.00065234530736551,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 6.09602165674713,
+              "iteration": 64,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0005795587789034129,
+              "approximate_kl": 0.0004033598141509199,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.86390006060571,
+              "iteration": 65,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": -0.0005899451720930901,
+              "approximate_kl": 0.0004891602561139689,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.403556113029758,
+              "iteration": 66,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.00017234466259434994,
+              "approximate_kl": 6.0204113460972464e-05,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.917278087661968,
+              "iteration": 67,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0003982803925287637,
+              "approximate_kl": -6.700057481244573e-05,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.717430593095701,
+              "iteration": 68,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.001953990656000232,
+              "approximate_kl": 0.0006145343705861975,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 5.074307846172934,
+              "iteration": 69,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": -0.0004625693690137819,
+              "approximate_kl": 0.0016745981273918384,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.620457959278095,
+              "iteration": 70,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 6.83982437943448e-05,
+              "approximate_kl": 0.0004616991330084054,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.961674150629044,
+              "iteration": 71,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0006237779268573506,
+              "approximate_kl": 6.371947425802404e-05,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.706323932141721,
+              "iteration": 72,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0011129102502154113,
+              "approximate_kl": 0.0010585515496127833,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.390699909399455,
+              "iteration": 73,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0007409878118079299,
+              "approximate_kl": -0.00033968477472510154,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 4.005653771161963,
+              "iteration": 74,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.000807226918149173,
+              "approximate_kl": 0.0012307544647678532,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.270885695509122,
+              "iteration": 75,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.00045301487656771854,
+              "approximate_kl": -0.0002985539102892825,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.0850345380748196,
+              "iteration": 76,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0008037881410607193,
+              "approximate_kl": 5.852399486794973e-05,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 3.3214673358677462,
+              "iteration": 77,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": -0.0001305400000375429,
+              "approximate_kl": 0.0009030587300005543,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.938115149336315,
+              "iteration": 78,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0010473611783011281,
+              "approximate_kl": 0.0005081004114113351,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.993940867117497,
+              "iteration": 79,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            },
+            {
+              "actor_objective": 0.0004559442245541642,
+              "approximate_kl": -0.0007051153314459966,
+              "best_worst_target_detection_probability": 0.6929843842349146,
+              "clip_fraction": 0.0,
+              "critic_loss": 2.877518367116643,
+              "iteration": 80,
+              "repaired_moves": 23,
+              "target_detection_probabilities": [
+                0.7198442448996996,
+                0.714812875729413,
+                0.6929843842349146
+              ],
+              "worst_target_detection_probability": 0.6929843842349146
+            }
+          ],
+          "learning_effect": 0.45597763090447263,
+          "occupancy_violations": 0,
+          "repaired_moves": 8281,
+          "runtime_s": 5.14826108305715,
+          "seed": 20260203,
+          "separation_violations": 0,
+          "untrained_worst_target_detection_probability": 0.23700675333044197,
+          "worst_target_detection_probability": 0.6929843842349146
+        }
+      ],
+      "name": "Tank",
+      "paired_spx_minus_mappo": {
+        "ci_method": "paired planning-seed cluster percentile bootstrap",
+        "confidence": 0.95,
+        "confidence_interval": [
+          0.07121190575252578,
+          0.25378849416856997
+        ],
+        "inference_valid": false,
+        "mean_difference": 0.1454209252651062,
+        "mean_difference_is": "Stone SPX cutting plane minus MAPPO learned policy",
+        "paired_seeds": [
+          20260201,
+          20260202,
+          20260203
+        ],
+        "seed_count": 3,
+        "significant": false,
+        "status": "insufficient-seeds"
+      },
+      "per_seed_comparison": [
+        {
+          "interpretation": "\uac19\uc740 StoneGridInstance \uc704\uc758 \uc2e4\ud589\uac00\ub2a5\ud574 \ube44\uad50\ub2e4. SPX \uc778\uc99d\ud3ed\uc774 \uc5f4\ub824 \uc788\uc73c\uba74 \ub450 \uac12 \ubaa8\ub450 \uc9c4\uc9dc \ucd5c\uc801\ud574\ubcf4\ub2e4 \ub0ae\uc744 \uc218 \uc788\ub2e4.",
+          "mappo_certified": false,
+          "mappo_runtime_s": 5.12620341591537,
+          "mappo_worst_target_pd": 0.4936151494567822,
+          "same_instance": true,
+          "seed": 20260201,
+          "spx_certified": true,
+          "spx_minus_mappo": 0.25378849416856997,
+          "spx_relative_optimality_gap": 0.008101397915794758,
+          "spx_runtime_s": 837.6629522088915,
+          "spx_worst_target_pd": 0.7474036436253522
+        },
+        {
+          "interpretation": "\uac19\uc740 StoneGridInstance \uc704\uc758 \uc2e4\ud589\uac00\ub2a5\ud574 \ube44\uad50\ub2e4. SPX \uc778\uc99d\ud3ed\uc774 \uc5f4\ub824 \uc788\uc73c\uba74 \ub450 \uac12 \ubaa8\ub450 \uc9c4\uc9dc \ucd5c\uc801\ud574\ubcf4\ub2e4 \ub0ae\uc744 \uc218 \uc788\ub2e4.",
+          "mappo_certified": false,
+          "mappo_runtime_s": 5.121778333093971,
+          "mappo_worst_target_pd": 0.6612906688995704,
+          "same_instance": true,
+          "seed": 20260202,
+          "spx_certified": true,
+          "spx_minus_mappo": 0.11126237587422283,
+          "spx_relative_optimality_gap": 0.006112080280142541,
+          "spx_runtime_s": 3037.0399405839853,
+          "spx_worst_target_pd": 0.7725530447737933
+        },
+        {
+          "interpretation": "\uac19\uc740 StoneGridInstance \uc704\uc758 \uc2e4\ud589\uac00\ub2a5\ud574 \ube44\uad50\ub2e4. SPX \uc778\uc99d\ud3ed\uc774 \uc5f4\ub824 \uc788\uc73c\uba74 \ub450 \uac12 \ubaa8\ub450 \uc9c4\uc9dc \ucd5c\uc801\ud574\ubcf4\ub2e4 \ub0ae\uc744 \uc218 \uc788\ub2e4.",
+          "mappo_certified": false,
+          "mappo_runtime_s": 5.14826108305715,
+          "mappo_worst_target_pd": 0.6929843842349146,
+          "same_instance": true,
+          "seed": 20260203,
+          "spx_certified": true,
+          "spx_minus_mappo": 0.07121190575252578,
+          "spx_relative_optimality_gap": 0.0019333542247365087,
+          "spx_runtime_s": 1092.3716884169262,
+          "spx_worst_target_pd": 0.7641962899874404
+        }
+      ],
+      "runtime": {
+        "mappo_mean_s": 5.132080944022164,
+        "spx_mean_s": 1655.6915270699344
+      },
+      "spx": [
+        {
+          "achievable_detection_probability_upper_bound": 0.7494500272204231,
+          "certified_within_tolerance": true,
+          "common_input_fingerprint": "66c1fe77d1f3ea18f71ab725902f5072b4d9bb903f38ba8a1cc19a9e9ea67a86",
+          "relative_optimality_gap": 0.008101397915794758,
+          "runtime_s": 837.6629522088915,
+          "seed": 20260201,
+          "worst_target_detection_probability": 0.7474036436253522
+        },
+        {
+          "achievable_detection_probability_upper_bound": 0.7739432188236098,
+          "certified_within_tolerance": true,
+          "common_input_fingerprint": "6bcd57333b552015c5df92b3f00a160051d2bb915d55d9162bad8ba7152e8f3f",
+          "relative_optimality_gap": 0.006112080280142541,
+          "runtime_s": 3037.0399405839853,
+          "seed": 20260202,
+          "worst_target_detection_probability": 0.7725530447737933
+        },
+        {
+          "achievable_detection_probability_upper_bound": 0.7646521820864017,
+          "certified_within_tolerance": true,
+          "common_input_fingerprint": "6c730d6b9316b69ad9a7b1f99f99fe2259aee2ae2e93b375106cafceffa420f6",
+          "relative_optimality_gap": 0.0019333542247365087,
+          "runtime_s": 1092.3716884169262,
+          "seed": 20260203,
+          "worst_target_detection_probability": 0.7641962899874404
+        }
+      ]
+    }
+  ],
+  "chapter": "3",
+  "condition": {
+    "cases": [
+      {
+        "grid_width": 10,
+        "name": "TEL",
+        "targets": [
+          {
+            "behavior": "TEL-nominal/RELOCATION_HEAVY",
+            "hazard_multiplier": 0.8673671003902786
+          },
+          {
+            "behavior": "TEL-nominal/CONTINUOUS_MOVE",
+            "hazard_multiplier": 0.8673671003902786
+          },
+          {
+            "behavior": "TEL-nominal/STOP_HEAVY",
+            "hazard_multiplier": 0.8673671003902786
+          }
+        ]
+      },
+      {
+        "grid_width": 8,
+        "name": "Tank",
+        "targets": [
+          {
+            "behavior": "Tank-nominal/MANEUVER_HEAVY",
+            "hazard_multiplier": 0.8739841300012635
+          },
+          {
+            "behavior": "Tank-nominal/STOP_HEAVY",
+            "hazard_multiplier": 0.8739841300012635
+          },
+          {
+            "behavior": "Tank-nominal/CONTINUOUS_MOVE",
+            "hazard_multiplier": 0.8739841300012635
+          }
+        ]
+      }
+    ],
+    "mappo_environment": {
+      "action_count": 9,
+      "feasible_set": "subset of the SPX feasible set: adjacent-cell actions, environment-side occupancy and separation repair, fixed-K candidate pruning",
+      "repair_penalty": 0.05,
+      "slice_weight": 20.0,
+      "terminal_weight": 10.0,
+      "worst_target_temperature": 0.05
+    },
+    "mappo_settings": {
+      "actor_learning_rate": 0.0005,
+      "clip_ratio": 0.2,
+      "critic_learning_rate": 0.001,
+      "entropy_coefficient": 0.01,
+      "epochs": 4,
+      "gae_lambda": 0.95,
+      "gamma": 0.99,
+      "hidden_size": 64,
+      "iterations": 80,
+      "rollouts_per_iteration": 8
+    },
+    "planning_seeds": [
+      20260201,
+      20260202,
+      20260203
+    ],
+    "searcher_classes": [
+      {
+        "count": 6,
+        "hazard_scale": 1.0,
+        "name": "eo-ir-nominal"
+      }
+    ],
+    "shared_instance_builder": "ch2_studies.published_instance",
+    "shared_objective": "both planners minimise the worst behaviour's non-detection probability on the same StoneGridInstance",
+    "shared_scoring_function": "StoneGridInstance.score_paths",
+    "terrain_weighting": true
+  },
+  "policy_capacity": {
+    "architecture": "shared linear-softmax actor with one tanh hidden layer",
+    "claim_limit": "absolute performance is not comparable to a deep MAPPO implementation; only learning_effect and the same-instance SPX comparison are claimed",
+    "does_not_reproduce": "deep MAPPO network capacity",
+    "reproduces": "MAPPO learning rule (GAE, centralized critic, PPO clipping)"
+  },
+  "provenance": {
+    "chapter": "3",
+    "code_fingerprint": "de407b3c07e932e3",
+    "config_files": [
+      "chapter3_mappo_stone.json"
+    ],
+    "package_version": "source",
+    "result_schema_version": 2,
+    "schema_version": 2
+  }
+}
