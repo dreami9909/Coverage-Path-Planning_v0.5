@@ -1,0 +1,19 @@
+# 실행 산출물 — 재생성 가능
+results/
+output/
+
+# 파이썬
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# 편집기 · OS
+.DS_Store
+.idea/
+.vscode/
+
+# 논문 빌드 산출물 (원고와 스크립트는 추적)
+paper/*.docx
+paper/fig/*.png
