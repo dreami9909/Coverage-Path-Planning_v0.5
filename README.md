@@ -1,4 +1,4 @@
-# Cooperative Target Search — Stone SPX + MAPPO (v0.4)
+# Cooperative Target Search — Stone SPX + MAPPO (v0.5)
 
 Tank/TEL 표적을 6대의 무인기로 찾는 문제에서, **경로제약 다중에이전트 탐색
 최적화**를 두 방법으로 풀고 같은 자로 재는 연구 코드다.
@@ -6,8 +6,9 @@ Tank/TEL 표적을 6대의 무인기로 찾는 문제에서, **경로제약 다�
     Stone, Royset & Washburn (2016) 4장 SPX     최적성 인증 O, 확장 X
     MAPPO 학습 정책                              최적성 인증 X, 확장 O
 
-이 두 줄이 v0.4의 전부다. v0.3의 챕터 0-8 중 이 주장에 필요한 것만 남겼고,
-v0.3은 `Coverage-Path-Planning_v0.3-main/`에 **그대로 보존되어 있다**.
+이 두 줄이 v0.4의 전부였고, v0.5는 그 최종본을 **코드 변경 없이** 이어받아
+출발한다. v0.3의 챕터 0-8 중 이 주장에 필요한 것만 남긴 구성도 그대로다.
+이전 버전은 로컬 폴더 대신 [git 이력](https://github.com/dreami9909/Coverage-Path-Planning_v0.5)으로 보존된다.
 
 ## 연구 구성
 
@@ -65,7 +66,7 @@ v0.3은 `Coverage-Path-Planning_v0.3-main/`에 **그대로 보존되어 있다**
   하나(tanh)라, 재현하는 것은 MAPPO의 **학습 규칙**(GAE, 중앙화 비평자, PPO
   클리핑)이고 원 논문의 **신경망 용량**이 아니다. `policy_capacity` 블록이 이
   사실을 결과에 같이 적는다.
-- 실제 지형에서의 성능. v0.4는 합성지형만 쓴다.
+- 실제 지형에서의 성능. 이 코드는 합성지형만 쓴다.
 - **Chapter 2의 최적성 인증이 실비행 성능의 인증이라는 것.** 인증은 계획모형
   안에서의 인증이다. 실측된 `model_minus_flown`은 약 **−0.03 ~ −0.05**로,
   계획모형이 실제보다 **낮게** 잡는다 (셀 방문 하나를 hazard 하나로 세는
