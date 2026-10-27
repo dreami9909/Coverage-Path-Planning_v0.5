@@ -47,7 +47,7 @@ from math import ceil, floor
 from statistics import mean
 from typing import Sequence
 
-from cpp_search.core.models import MissionConfig, PathSegment, Point2D, Route, SensorSpec
+from cpp_search.models.models import MissionConfig, PathSegment, Point2D, Route, SensorSpec
 
 
 @dataclass(frozen=True, slots=True)

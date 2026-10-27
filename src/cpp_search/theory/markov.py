@@ -36,7 +36,7 @@ FAB는 상태공간과 전이행렬을 요구하는데, 우리 belief는 입자 
 
 의존
 ----
-* 위: ``cpp_search.core.models``, ``cpp_search.core.probability``, numpy.
+* 위: ``cpp_search.models.models``, ``cpp_search.models.probability``, numpy.
 * 아래: ``planning/team_planner``, ``chapters/chapter2``.
 """
 
@@ -47,8 +47,8 @@ from math import atan2, sqrt, tau
 
 import numpy as np
 
-from cpp_search.core.models import MissionConfig, Point2D
-from cpp_search.core.probability import PolarProbabilityMap
+from cpp_search.models.models import MissionConfig, Point2D
+from cpp_search.models.probability import PolarProbabilityMap
 
 
 def polar_cell_index(

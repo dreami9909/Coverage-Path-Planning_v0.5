@@ -40,9 +40,9 @@ from typing import Literal, Protocol
 import numpy as np
 from scipy import sparse
 
-from cpp_search.core.models import MissionConfig, PathSegment, Point2D, Route, SensorSpec
-from cpp_search.core.probability import PolarProbabilityMap, TargetPrior
-from cpp_search.core.profiles import TargetOperationalProfile
+from cpp_search.models.models import MissionConfig, PathSegment, Point2D, Route, SensorSpec
+from cpp_search.models.probability import PolarProbabilityMap, TargetPrior
+from cpp_search.models.profiles import TargetOperationalProfile
 from cpp_search.theory.markov import SpaceTimeMarkovModel, cell_adjacency, polar_cell_index
 from cpp_search.theory.path_constrained import (
     InfeasiblePathError,

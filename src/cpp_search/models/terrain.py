@@ -48,7 +48,7 @@ from random import Random
 
 import numpy as np
 
-from cpp_search.core.models import Point2D
+from cpp_search.models.models import Point2D
 
 
 @dataclass(frozen=True, slots=True)

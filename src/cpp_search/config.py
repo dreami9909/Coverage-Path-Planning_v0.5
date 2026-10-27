@@ -17,7 +17,7 @@ CLI 인자의 argparse 기본값이 모두 ``None``이라, 플래그를 생략�
 
 의존
 ----
-* 위: ``cpp_search.core.models``(MissionConfig / SensorSpec 생성).
+* 위: ``cpp_search.models.models``(MissionConfig / SensorSpec 생성).
 * 아래: ``runner``와 모든 ``chapters/chapter*.py``.
 """
 
@@ -32,14 +32,14 @@ from pathlib import Path
 from typing import Any, Iterable
 from warnings import catch_warnings, simplefilter
 
-from cpp_search.core.models import MissionConfig, Point2D, SensorChannelSpec, SensorSpec
-from cpp_search.core.motion import GROUND_MOTION_MODE_NAMES, TargetBehaviorProfile
-from cpp_search.core.profiles import (
+from cpp_search.models.models import MissionConfig, Point2D, SensorChannelSpec, SensorSpec
+from cpp_search.models.motion import GROUND_MOTION_MODE_NAMES, TargetBehaviorProfile
+from cpp_search.models.profiles import (
     NOMINAL_TARGET_PROFILES,
     TargetOperationalProfile,
 )
-from cpp_search.core.search_envelope import CompositeSearchEnvelope
-from cpp_search.core.sensor_observation import TANK_NOMINAL, TEL_NOMINAL
+from cpp_search.models.search_envelope import CompositeSearchEnvelope
+from cpp_search.models.sensor_observation import TANK_NOMINAL, TEL_NOMINAL
 
 
 CHAPTER_CONFIG_FILES: dict[str, tuple[str, ...]] = {

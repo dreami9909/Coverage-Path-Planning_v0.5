@@ -129,7 +129,7 @@ class ChapterOutputTests(unittest.TestCase):
         # 증거 계약은 선언값이 아니라 **구현을 돌려서** 나온 값이어야 한다.
         contract = result["detection_contract"]
         self.assertEqual(
-            contract["source"], "cpp_search.core.belief.LogOddsEvidenceGrid.update"
+            contract["source"], "cpp_search.models.belief.LogOddsEvidenceGrid.update"
         )
         pd = contract["detection_probability"]
         pf = contract["false_alarm_probability"]

@@ -25,7 +25,7 @@ from matplotlib.patches import Rectangle
 from cpp_search.config import load_chapter_config
 from cpp_search.chapters.ch2_stone_spx import case_specs, case_mission
 from cpp_search.chapters.ch2_studies import published_instance
-from cpp_search.core.searcher_track import build_windows
+from cpp_search.models.searcher_track import build_windows
 from cpp_search.planning.continuous_mc import SUPPORT_HALF_M
 
 from run_continuous_mc import CONDITIONS as BASE            # noqa: E402

@@ -29,9 +29,9 @@
 의존
 ----
 * config: ``config/chapter1_evaluation_contract.json`` + ``config/common_experiment.json``
-* 수식: ``cpp_search.core.search_envelope``(W 적분),
-  ``cpp_search.core.sensor_observation``(표적·채널별 중심선 PD),
-  ``cpp_search.core.profiles``(Tank/TEL + IMM5)
+* 수식: ``cpp_search.models.search_envelope``(W 적분),
+  ``cpp_search.models.sensor_observation``(표적·채널별 중심선 PD),
+  ``cpp_search.models.profiles``(Tank/TEL + IMM5)
 * 이 챕터의 출력(W, P_D/P_F, KPI 정의)은 Chapter 2-4 의 공통 전제다.
 """
 
@@ -41,16 +41,16 @@ from math import exp, log
 
 import numpy as np
 
-from cpp_search.core.belief import LogOddsEvidenceGrid
-from cpp_search.core.models import MissionConfig, Point2D, SensorSpec
-from cpp_search.core.sensor_observation import (
+from cpp_search.models.belief import LogOddsEvidenceGrid
+from cpp_search.models.models import MissionConfig, Point2D, SensorSpec
+from cpp_search.models.sensor_observation import (
     SENSOR_PERFORMANCE_SR_Z50,
     SpatialDetectionModel,
 )
 from cpp_search.aoi import containment_radius_m, halt_boost_sweep, step_sensitivity
 from cpp_search.config import ChapterConfig
 from cpp_search.options import RunOptions
-from cpp_search.core.profiles import NOMINAL_TARGET_PROFILES
+from cpp_search.models.profiles import NOMINAL_TARGET_PROFILES
 
 
 KPI_DEFINITIONS: dict[str, str] = {
@@ -153,7 +153,7 @@ def evidence_contract(detection_probability: float, false_alarm: float) -> dict:
     """선언된 P_D / P_F 가 함의하는 로그오즈 증분.
 
     값을 여기서 다시 계산하지 않고 **구현을 직접 돌려서** 뽑는다
-    (``cpp_search.core.belief.LogOddsEvidenceGrid``). 같은 식을 두 곳에 적으면
+    (``cpp_search.models.belief.LogOddsEvidenceGrid``). 같은 식을 두 곳에 적으면
     계약과 구현이 조용히 갈라진다 — 이 챕터가 하는 일은 계약을 선언하는
     것이므로, 선언값이 구현에서 나오지 않으면 선언의 의미가 없다.
     """
@@ -184,7 +184,7 @@ def evidence_contract(detection_probability: float, false_alarm: float) -> dict:
         "false_alarm_probability": false_alarm,
         "positive_report_log_odds_increment": increments["positive"],
         "negative_report_log_odds_increment": increments["negative"],
-        "source": "cpp_search.core.belief.LogOddsEvidenceGrid.update",
+        "source": "cpp_search.models.belief.LogOddsEvidenceGrid.update",
         "formula": "l += ln(PD/PF) on detection, ln((1-PD)/(1-PF)) otherwise",
     }
 

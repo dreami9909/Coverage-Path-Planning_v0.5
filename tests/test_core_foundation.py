@@ -2,11 +2,11 @@ import unittest
 
 import numpy as np
 
-from cpp_search.core.models import MissionConfig, PathSegment, Point2D, Route, SensorSpec
-from cpp_search.core.belief import LogOddsEvidenceGrid, SearchProbabilityMetrics
-from cpp_search.core.profiles import NOMINAL_TARGET_PROFILES
-from cpp_search.core.search_envelope import CompositeSearchEnvelope
-from cpp_search.core.evaluation import evaluate_routes, probability_mass_coverage
+from cpp_search.models.models import MissionConfig, PathSegment, Point2D, Route, SensorSpec
+from cpp_search.models.belief import LogOddsEvidenceGrid, SearchProbabilityMetrics
+from cpp_search.models.profiles import NOMINAL_TARGET_PROFILES
+from cpp_search.models.search_envelope import CompositeSearchEnvelope
+from cpp_search.models.evaluation import evaluate_routes, probability_mass_coverage
 
 
 class ResearchFoundationTests(unittest.TestCase):

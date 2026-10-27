@@ -13,7 +13,7 @@ import unittest
 
 import numpy as np
 
-from cpp_search.core.probability import TargetPrior
+from cpp_search.models.probability import TargetPrior
 from cpp_search.planning.continuous_mc import SUPPORT_HALF_M, evaluate
 from cpp_search.planning.terrain_belief import BELIEF_TERRAIN_FULL
 from tests.fixtures import small_instance, small_mission, small_targets

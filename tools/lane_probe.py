@@ -9,7 +9,7 @@ import pathlib, sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 import numpy as np
-from cpp_search.core.searcher_track import cell_cover_polyline, _cum, _advance
+from cpp_search.models.searcher_track import cell_cover_polyline, _cum, _advance
 from cpp_search.planning.continuous_mc import accumulate_window, SUPPORT_HALF_M
 
 SIDE, V, SLICE, STEPS = 2221.0, 44.4444, 54.5455, 11       # Tank 8x8 실측 조건

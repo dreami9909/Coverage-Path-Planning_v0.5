@@ -43,7 +43,7 @@ hazard 가 아니라 belief 의 대칭성이다.
 의존
 ----
 * config: ``config/chapter2_stone_spx_terrain.json`` + ``config/common_experiment.json``
-* 위: ``planning/stone_spx``, ``theory/stone_path``, ``cpp_search.core.terrain``
+* 위: ``planning/stone_spx``, ``theory/stone_path``, ``cpp_search.models.terrain``
 * 아래: Chapter 3 이 이 챕터가 만든 인스턴스와 같은 조건을 다시 쓴다.
 """
 
@@ -55,14 +55,14 @@ import numpy as np
 
 from dataclasses import replace
 
-from cpp_search.core.models import MissionConfig, Point2D, SensorSpec
-from cpp_search.core.motion import (
+from cpp_search.models.models import MissionConfig, Point2D, SensorSpec
+from cpp_search.models.motion import (
     CONTINUOUS_MOVE_PROFILE,
     MANEUVER_HEAVY_PROFILE,
     RELOCATION_HEAVY_PROFILE,
     STOP_HEAVY_PROFILE,
 )
-from cpp_search.core.terrain import build_synthetic_terrain
+from cpp_search.models.terrain import build_synthetic_terrain
 from cpp_search.config import ChapterConfig
 from cpp_search.options import RunOptions
 from cpp_search.planning.stone_spx import (

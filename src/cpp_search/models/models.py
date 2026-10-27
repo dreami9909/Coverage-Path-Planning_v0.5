@@ -42,7 +42,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from math import atan2, degrees, hypot, pi, radians, tan
 
-from cpp_search.core.search_envelope import CompositeSearchEnvelope
+from cpp_search.models.search_envelope import CompositeSearchEnvelope
 
 
 @dataclass(frozen=True, slots=True)

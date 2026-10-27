@@ -19,7 +19,7 @@ Stone SPX 와 MAPPO 를 같은 척도로 비교하려면 둘이 같은 표적 be
 
 **SPX 인스턴스에는 앞의 두 지점만 실제로 작용한다.** 인스턴스 구축은 belief 를
 ``predict`` 만 하고 음성 관측을 넣지 않으므로 ``observability`` 는 읽히지
-않는다. 그리고 합성지형(``cpp_search.core.terrain.TerrainField``)의
+않는다. 그리고 합성지형(``cpp_search.models.terrain.TerrainField``)의
 ``observability_weight`` 는 **선언된 모델 범위상 항상 1.0** 이다 — 지형은
 탐색자의 센서에 작용하지 않고 표적 belief 에만 작용한다. 따라서 v0.4 에서
 "지형 가중"이란 **사전질량 + 전이커널** 두 가지이고, 셀별 hazard 는 지형과
@@ -42,10 +42,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from cpp_search.core.models import MissionConfig, Route, SensorSpec
-from cpp_search.core.particle_filter import ParticleFilterConfig, TargetParticleFilter
-from cpp_search.core.probability import PolarProbabilityMap, TargetPrior
-from cpp_search.core.profiles import TargetOperationalProfile
+from cpp_search.models.models import MissionConfig, Route, SensorSpec
+from cpp_search.models.particle_filter import ParticleFilterConfig, TargetParticleFilter
+from cpp_search.models.probability import PolarProbabilityMap, TargetPrior
+from cpp_search.models.profiles import TargetOperationalProfile
 
 
 @dataclass(frozen=True, slots=True)

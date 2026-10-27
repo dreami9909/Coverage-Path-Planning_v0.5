@@ -6,9 +6,9 @@
 
 from __future__ import annotations
 
-from cpp_search.core.models import MissionConfig, Point2D, SensorSpec
-from cpp_search.core.probability import TargetPrior
-from cpp_search.core.profiles import NOMINAL_TARGET_PROFILES
+from cpp_search.models.models import MissionConfig, Point2D, SensorSpec
+from cpp_search.models.probability import TargetPrior
+from cpp_search.models.profiles import NOMINAL_TARGET_PROFILES
 from cpp_search.planning.stone_spx import (
     StoneGridInstance,
     StoneSPXRouteConfig,
@@ -16,7 +16,7 @@ from cpp_search.planning.stone_spx import (
     StoneSPXTargetSpec,
     build_stone_grid_instance,
 )
-from cpp_search.core.terrain import build_synthetic_terrain
+from cpp_search.models.terrain import build_synthetic_terrain
 
 
 def small_mission(uav_count: int = 3) -> MissionConfig:

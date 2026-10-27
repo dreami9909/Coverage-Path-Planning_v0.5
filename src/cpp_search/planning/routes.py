@@ -24,7 +24,7 @@ KPI 차이가 경로기하 차이가 아니라 셀 선택 차이로 귀속된다
 
 의존
 ----
-* 위: ``cpp_search.core.models``.
+* 위: ``cpp_search.models.models``.
 * 아래: ``planning/stone_spx``, ``learning/spx_policy``.
 """
 
@@ -32,7 +32,7 @@ from __future__ import annotations
 
 from math import cos, sin, sqrt
 
-from cpp_search.core.models import MissionConfig, PathSegment, Point2D, SensorSpec
+from cpp_search.models.models import MissionConfig, PathSegment, Point2D, SensorSpec
 
 
 def local_sweep(

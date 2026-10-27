@@ -14,7 +14,7 @@ import unittest
 
 import numpy as np
 
-from cpp_search.core.probability import TargetPrior
+from cpp_search.models.probability import TargetPrior
 from cpp_search.learning.continuous_env import (
     ContinuousRewardConfig,
     ContinuousSPXEnvironment,

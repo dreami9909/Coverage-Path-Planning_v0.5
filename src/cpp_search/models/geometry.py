@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from math import cos, pi, radians, sin
 
-from cpp_search.core.models import MissionConfig, Point2D
+from cpp_search.models.models import MissionConfig, Point2D
 
 
 def sector_center_angle(mission: MissionConfig, vehicle_id: int) -> float:

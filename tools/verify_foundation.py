@@ -33,7 +33,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 import numpy as np
 
-from cpp_search.core.searcher_track import build_windows, cell_cover_polyline, _cum, _advance
+from cpp_search.models.searcher_track import build_windows, cell_cover_polyline, _cum, _advance
 from cpp_search.planning.continuous_mc import (
     SUPPORT_HALF_M, accumulate_window, lateral_detection, particle_trace, _cell_index)
 

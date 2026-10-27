@@ -55,7 +55,7 @@
 
 의존
 ----
-* 위: ``research.truth``(궤적 생성), ``cpp_search.core.terrain``, ``cpp_search.core.simulation``.
+* 위: ``research.truth``(궤적 생성), ``cpp_search.models.terrain``, ``cpp_search.models.simulation``.
 * 아래: ``tools/size_aoi.py``(CLI), ``tests/test_aoi.py``.
 """
 
@@ -65,9 +65,9 @@ from dataclasses import replace
 from statistics import mean, median
 from typing import Any, Sequence
 
-from cpp_search.core.models import MissionConfig
-from cpp_search.core.simulation import EvaluationConfig
-from cpp_search.core.terrain import build_synthetic_terrain
+from cpp_search.models.models import MissionConfig
+from cpp_search.models.simulation import EvaluationConfig
+from cpp_search.models.terrain import build_synthetic_terrain
 from cpp_search.config import ChapterConfig
 from cpp_search.truth import (
     REFERENCE_CUE_RADIUS_M,

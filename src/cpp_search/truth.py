@@ -25,8 +25,8 @@
 
 의존
 ----
-* 위: ``cpp_search.core.simulation``(궤적 생성), ``cpp_search.core.motion``,
-  ``cpp_search.core.profiles``, ``research.config``.
+* 위: ``cpp_search.models.simulation``(궤적 생성), ``cpp_search.models.motion``,
+  ``cpp_search.models.profiles``, ``research.config``.
 * 아래: ``chapters/chapter4,3,5a,5b2,6,7``, ``research/aoi``.
 """
 
@@ -34,15 +34,15 @@ from __future__ import annotations
 
 from dataclasses import dataclass, replace
 
-from cpp_search.core.models import MissionConfig
-from cpp_search.core.motion import TargetBehaviorProfile, TargetMotionSpec
-from cpp_search.core.probability import TargetPrior
-from cpp_search.core.profiles import (
+from cpp_search.models.models import MissionConfig
+from cpp_search.models.motion import TargetBehaviorProfile, TargetMotionSpec
+from cpp_search.models.probability import TargetPrior
+from cpp_search.models.profiles import (
     TANK_OPERATIONAL_PROFILE,
     TEL_OPERATIONAL_PROFILE,
     TargetOperationalProfile,
 )
-from cpp_search.core.simulation import EvaluationConfig, TargetTrajectory, generate_moving_targets
+from cpp_search.models.simulation import EvaluationConfig, TargetTrajectory, generate_moving_targets
 from cpp_search.config import ChapterConfig
 
 

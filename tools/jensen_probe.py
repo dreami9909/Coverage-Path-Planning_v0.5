@@ -17,7 +17,7 @@ import numpy as np
 
 from cpp_search.config import load_chapter_config
 from cpp_search.chapters.ch2_stone_spx import auto_time_slice_count, case_specs, case_mission
-from cpp_search.core.searcher_track import cell_cover_polyline, _cum, _advance
+from cpp_search.models.searcher_track import cell_cover_polyline, _cum, _advance
 from cpp_search.planning.continuous_mc import accumulate_window, SUPPORT_HALF_M
 
 GRID_POINTS = 700          # 셀 안 표본 격자 한 변

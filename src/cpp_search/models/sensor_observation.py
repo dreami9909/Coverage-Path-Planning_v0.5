@@ -60,7 +60,7 @@ from dataclasses import dataclass
 from math import atan2, ceil, cos, exp, hypot, log1p, pi, radians, sin, sqrt, tan
 from typing import Literal
 
-from cpp_search.core.models import PathSegment, Point2D, SensorSpec
+from cpp_search.models.models import PathSegment, Point2D, SensorSpec
 
 
 ObservationCondition = Literal[

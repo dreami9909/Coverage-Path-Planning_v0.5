@@ -26,7 +26,7 @@ from math import pi
 
 import numpy as np
 
-from cpp_search.core.searcher_track import build_windows
+from cpp_search.models.searcher_track import build_windows
 from cpp_search.theory.path_constrained import joint_survival
 
 #: 횡방향 지지반폭 [m]. 탐지폭 W 는 이 값과 같다 (raised cosine 의 평균이 1/2).

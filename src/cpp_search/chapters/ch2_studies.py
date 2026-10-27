@@ -24,7 +24,7 @@ from typing import Any, Iterable, Sequence
 
 import numpy as np
 
-from cpp_search.core.models import MissionConfig, SensorSpec
+from cpp_search.models.models import MissionConfig, SensorSpec
 from cpp_search.config import ChapterConfig
 from cpp_search.options import RunOptions
 from cpp_search.planning.stone_spx import StoneGridInstance, solve_stone_grid_paths

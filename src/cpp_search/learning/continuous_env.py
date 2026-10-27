@@ -37,7 +37,7 @@ import os
 
 import numpy as np
 
-from cpp_search.core.searcher_track import build_windows
+from cpp_search.models.searcher_track import build_windows
 from cpp_search.learning.spx_env import SPXEnvironmentConfig, StoneSPXEnvironment
 from cpp_search.planning.continuous_mc import SUPPORT_HALF_M, lateral_detection
 

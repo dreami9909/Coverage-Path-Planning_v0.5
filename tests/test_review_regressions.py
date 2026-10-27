@@ -22,7 +22,7 @@ import numpy as np
 from scipy import sparse
 from dataclasses import replace
 
-from cpp_search.core.models import MissionConfig, Point2D
+from cpp_search.models.models import MissionConfig, Point2D
 from cpp_search.learning.mappo import MAPPORollout, NumpyMAPPO, _softmax
 from cpp_search.planning.stone_spx import _SquareGrid
 from cpp_search.theory import transitions as transition_ops

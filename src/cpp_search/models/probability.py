@@ -43,8 +43,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from math import ceil, exp, pi, tau
 
-from cpp_search.core.geometry import polar_to_world
-from cpp_search.core.models import MissionConfig, Point2D
+from cpp_search.models.geometry import polar_to_world
+from cpp_search.models.models import MissionConfig, Point2D
 
 
 @dataclass(frozen=True, slots=True)

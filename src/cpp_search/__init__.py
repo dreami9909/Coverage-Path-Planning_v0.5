@@ -24,15 +24,15 @@ cpp_search/
 ``research``를 절대 import 하지 않는다. ``tests/test_architecture.py``가 강제한다.
 """
 
-from cpp_search.core.models import MissionConfig, Point2D, Route, SensorChannelSpec, SensorSpec
-from cpp_search.core.profiles import (
+from cpp_search.models.models import MissionConfig, Point2D, Route, SensorChannelSpec, SensorSpec
+from cpp_search.models.profiles import (
     NOMINAL_TARGET_PROFILES,
     TANK_OPERATIONAL_PROFILE,
     TEL_OPERATIONAL_PROFILE,
     TargetOperationalProfile,
 )
-from cpp_search.core.search_envelope import CompositeSearchEnvelope
-from cpp_search.core.sensor_observation import (
+from cpp_search.models.search_envelope import CompositeSearchEnvelope
+from cpp_search.models.sensor_observation import (
     SENSOR_PERFORMANCE_SR_Z50,
     SpatialDetectionModel,
     TANK_NOMINAL,

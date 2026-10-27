@@ -33,8 +33,8 @@
 
 의존
 ----
-* 위: ``cpp_search.core.simulation.PerformanceMetrics``,
-  ``cpp_search.core.evaluation.GeometricMetrics``.
+* 위: ``cpp_search.models.simulation.PerformanceMetrics``,
+  ``cpp_search.models.evaluation.GeometricMetrics``.
 * 아래: 모든 ``chapters/chapter*.py``와 ``runner``의 요약표.
 """
 
@@ -44,8 +44,8 @@ from dataclasses import replace
 from math import isfinite
 from typing import Any, Mapping, Sequence
 
-from cpp_search.core.evaluation import GeometricMetrics
-from cpp_search.core.simulation import PerformanceMetrics, detection_time_statistics
+from cpp_search.models.evaluation import GeometricMetrics
+from cpp_search.models.simulation import PerformanceMetrics, detection_time_statistics
 from cpp_search.reliability import (
     ReliabilityCriteria,
     bootstrap_weighted_mean_ci,

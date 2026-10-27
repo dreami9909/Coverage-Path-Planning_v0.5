@@ -45,7 +45,7 @@ from dataclasses import dataclass
 from math import atan2, cos, radians, sin, sqrt, tau
 from random import Random
 
-from cpp_search.core.models import MissionConfig, Point2D
+from cpp_search.models.models import MissionConfig, Point2D
 
 
 @dataclass(frozen=True, slots=True)

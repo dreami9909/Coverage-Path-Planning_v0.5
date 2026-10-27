@@ -46,7 +46,7 @@ model PD 와 flown PD 는 왜 다른가
 * config: ``config/chapter4_synthetic_terrain.json`` + ``config/common_experiment.json``
 * 위: ``planning/stone_spx``, ``learning/spx_policy``,
   ``chapters/ch2_stone_spx``(인스턴스 구축 공유), ``research/truth``,
-  ``cpp_search.core.simulation``
+  ``cpp_search.models.simulation``
 * 아래: 없음. 이 챕터가 v0.4 의 최종 결과표다.
 """
 
@@ -56,11 +56,11 @@ from dataclasses import asdict, replace
 
 import numpy as np
 
-from cpp_search.core.evaluation import evaluate_routes
-from cpp_search.core.models import MissionConfig
-from cpp_search.core.sensor_observation import SENSOR_PERFORMANCE_SR_Z50, SpatialDetectionModel
-from cpp_search.core.simulation import EvaluationConfig, evaluate_monte_carlo
-from cpp_search.core.terrain import build_control_terrain, build_synthetic_terrain
+from cpp_search.models.evaluation import evaluate_routes
+from cpp_search.models.models import MissionConfig
+from cpp_search.models.sensor_observation import SENSOR_PERFORMANCE_SR_Z50, SpatialDetectionModel
+from cpp_search.models.simulation import EvaluationConfig, evaluate_monte_carlo
+from cpp_search.models.terrain import build_control_terrain, build_synthetic_terrain
 from cpp_search.config import ChapterConfig
 from cpp_search.kpi import mission_kpi, summarise_kpi
 from cpp_search.learning.spx_policy import mappo_path_solution, train_stone_mappo

@@ -19,13 +19,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from cpp_search.core.motion import (
+from cpp_search.models.motion import (
     MANEUVER_HEAVY_PROFILE,
     RELOCATION_HEAVY_PROFILE,
     TargetBehaviorProfile,
     TargetMotionSpec,
 )
-from cpp_search.core.sensor_observation import TANK_NOMINAL, TEL_NOMINAL, TargetSignatureSpec
+from cpp_search.models.sensor_observation import TANK_NOMINAL, TEL_NOMINAL, TargetSignatureSpec
 
 
 @dataclass(frozen=True, slots=True)

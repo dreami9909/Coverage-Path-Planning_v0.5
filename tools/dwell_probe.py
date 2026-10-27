@@ -30,7 +30,7 @@ from cpp_search.config import load_chapter_config
 from cpp_search.chapters.ch2_stone_spx import (
     case_specs, case_target_specs, case_mission, cue_prior)
 from cpp_search.chapters.ch2_studies import published_instance
-from cpp_search.core.searcher_track import cell_cover_polyline, _cum, _advance
+from cpp_search.models.searcher_track import cell_cover_polyline, _cum, _advance
 from cpp_search.planning.continuous_mc import SUPPORT_HALF_M, evaluate
 from cpp_search.planning.terrain_belief import BELIEF_TERRAIN_FULL
 

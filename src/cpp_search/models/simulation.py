@@ -56,8 +56,8 @@ from math import atan2, cos, hypot, inf, log, sin, sqrt, tau
 from random import Random
 from statistics import mean
 
-from cpp_search.core.evaluation import evaluate_routes
-from cpp_search.core.motion import (
+from cpp_search.models.evaluation import evaluate_routes
+from cpp_search.models.motion import (
     KinematicState,
     RANDOM_MANEUVER_MODE,
     TargetMotionSpec,
@@ -66,8 +66,8 @@ from cpp_search.core.motion import (
     propagate_kinematics,
     sample_initial_kinematics,
 )
-from cpp_search.core.models import MissionConfig, PathSegment, Point2D, Route, SensorSpec
-from cpp_search.core.probability import TargetPrior
+from cpp_search.models.models import MissionConfig, PathSegment, Point2D, Route, SensorSpec
+from cpp_search.models.probability import TargetPrior
 
 
 @dataclass(frozen=True, slots=True)

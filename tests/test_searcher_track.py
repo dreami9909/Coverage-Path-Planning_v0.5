@@ -19,7 +19,7 @@ from types import SimpleNamespace
 
 import numpy as np
 
-from cpp_search.core.searcher_track import (
+from cpp_search.models.searcher_track import (
     build_windows,
     cell_cover_polyline,
     nearest_entry,

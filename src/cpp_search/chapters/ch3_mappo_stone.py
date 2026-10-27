@@ -65,7 +65,7 @@ from math import isfinite
 
 import numpy as np
 
-from cpp_search.core.models import MissionConfig
+from cpp_search.models.models import MissionConfig
 from cpp_search.config import ChapterConfig
 from cpp_search.learning.spx_env import SPXEnvironmentConfig
 from cpp_search.learning.spx_policy import (

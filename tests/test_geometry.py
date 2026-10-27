@@ -2,7 +2,7 @@ from dataclasses import replace
 import math
 import unittest
 
-from cpp_search.core.models import MissionConfig, SensorSpec
+from cpp_search.models.models import MissionConfig, SensorSpec
 
 
 class SensorGeometryTests(unittest.TestCase):
