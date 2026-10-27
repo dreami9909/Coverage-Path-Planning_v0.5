@@ -38,8 +38,8 @@ import os
 import numpy as np
 
 from cpp_search.models.searcher_track import build_windows
-from cpp_search.learning.spx_env import SPXEnvironmentConfig, StoneSPXEnvironment
-from cpp_search.planning.continuous_mc import SUPPORT_HALF_M, lateral_detection
+from cpp_search.solvers.mappo.spx_env import SPXEnvironmentConfig, StoneSPXEnvironment
+from cpp_search.solvers.milp.continuous_mc import SUPPORT_HALF_M, lateral_detection
 
 
 @dataclass(frozen=True, slots=True)
@@ -191,7 +191,7 @@ def build_particle_traces(instance, targets, *, mission, prior, terrain_coupling
     (2026-10-08 수정, ``tools/target_step_probe.py``).
     """
 
-    from cpp_search.planning.continuous_mc import particle_trace
+    from cpp_search.solvers.milp.continuous_mc import particle_trace
 
     slice_s = float(instance.slice_s)
     dt = slice_s / reward.sub_slices

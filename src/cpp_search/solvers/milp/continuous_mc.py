@@ -169,7 +169,7 @@ def particle_trace(instance, target, index, *, mission, prior, terrain_coupling,
         raise ValueError("stepping 은 'fine' | 'model' 이다")
     if slice_s is None:
         slice_s = float(instance.slice_s)
-    from cpp_search.planning.terrain_belief import TerrainParticleBelief
+    from cpp_search.solvers.milp.terrain_belief import TerrainParticleBelief
 
     path = None
     if cache_dir:

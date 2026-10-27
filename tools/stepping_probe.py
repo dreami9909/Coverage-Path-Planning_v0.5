@@ -14,8 +14,8 @@ from cpp_search.config import load_chapter_config
 from cpp_search.options import RunOptions
 from cpp_search.chapters.ch2_stone_spx import (
     build_instance, case_mission, case_specs, case_target_specs, cue_prior)
-from cpp_search.planning.terrain_belief import TerrainParticleBelief, BELIEF_TERRAIN_FULL
-from cpp_search.planning.stone_spx import _target_path_detection_probabilities
+from cpp_search.solvers.milp.terrain_belief import TerrainParticleBelief, BELIEF_TERRAIN_FULL
+from cpp_search.solvers.milp.stone_spx import _target_path_detection_probabilities
 from cpp_search.theory.stone_path import StoneTargetModel
 
 CASE, N, SEED, H, SUB = "Tank", 8, 20260201, 600.0, 11

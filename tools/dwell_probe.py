@@ -31,8 +31,8 @@ from cpp_search.chapters.ch2_stone_spx import (
     case_specs, case_target_specs, case_mission, cue_prior)
 from cpp_search.chapters.ch2_studies import published_instance
 from cpp_search.models.searcher_track import cell_cover_polyline, _cum, _advance
-from cpp_search.planning.continuous_mc import SUPPORT_HALF_M, evaluate
-from cpp_search.planning.terrain_belief import BELIEF_TERRAIN_FULL
+from cpp_search.solvers.milp.continuous_mc import SUPPORT_HALF_M, evaluate
+from cpp_search.solvers.milp.terrain_belief import BELIEF_TERRAIN_FULL
 
 from mappo2_rescore import load_plans                      # noqa: E402
 from conditions import stage2_results                       # noqa: E402

@@ -34,7 +34,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 import numpy as np
 
 from cpp_search.models.searcher_track import build_windows, cell_cover_polyline, _cum, _advance
-from cpp_search.planning.continuous_mc import (
+from cpp_search.solvers.milp.continuous_mc import (
     SUPPORT_HALF_M, accumulate_window, lateral_detection, particle_trace, _cell_index)
 
 ST = ROOT / "results/studies"
@@ -119,7 +119,7 @@ def per_condition(case: str, n: int, plan_file: str) -> list[dict]:
     from cpp_search.chapters.ch2_stone_spx import (
         case_specs, case_target_specs, case_mission, cue_prior)
     from cpp_search.chapters.ch2_studies import published_instance
-    from cpp_search.planning.terrain_belief import BELIEF_TERRAIN_FULL
+    from cpp_search.solvers.milp.terrain_belief import BELIEF_TERRAIN_FULL
     from cpp_search.theory import transitions as transition_ops
     from run_mappo_stage1 import audit_paths
 

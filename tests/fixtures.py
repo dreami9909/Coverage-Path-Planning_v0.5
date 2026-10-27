@@ -9,7 +9,7 @@ from __future__ import annotations
 from cpp_search.models.models import MissionConfig, Point2D, SensorSpec
 from cpp_search.models.probability import TargetPrior
 from cpp_search.models.profiles import NOMINAL_TARGET_PROFILES
-from cpp_search.planning.stone_spx import (
+from cpp_search.solvers.milp.stone_spx import (
     StoneGridInstance,
     StoneSPXRouteConfig,
     StoneSPXSearcherClass,

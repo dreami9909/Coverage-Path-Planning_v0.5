@@ -138,47 +138,47 @@
 
 | 수식 / 개념 | 구현 위치 |
 |---|---|
-| 지형 3성분 주입 지점 | `src/cpp_search/planning/terrain_belief.py:134` |
+| 지형 3성분 주입 지점 | `src/cpp_search/solvers/milp/terrain_belief.py:134` |
 
 ## Ch2 인스턴스
 
 | 수식 / 개념 | 구현 위치 |
 |---|---|
-| 입자 -> 축약 다중표적 Markov 투영 | `src/cpp_search/planning/stone_spx.py:352` |
-| 공통 입력 지문 (두 계획법 동일성 증거) | `src/cpp_search/planning/stone_spx.py:627` |
-| hazard = W v dt / A_cell x scale x observability | `src/cpp_search/planning/stone_spx.py:885` |
+| 입자 -> 축약 다중표적 Markov 투영 | `src/cpp_search/solvers/milp/stone_spx.py:352` |
+| 공통 입력 지문 (두 계획법 동일성 증거) | `src/cpp_search/solvers/milp/stone_spx.py:627` |
+| hazard = W v dt / A_cell x scale x observability | `src/cpp_search/solvers/milp/stone_spx.py:885` |
 
 ## Ch2 경로변환
 
 | 수식 / 개념 | 구현 위치 |
 |---|---|
-| n_track = round(sqrt(L/s)) 정사각 블록 | `src/cpp_search/planning/routes.py:52` |
-| 시간예산 회계 (실제 소요시간으로 축소) | `src/cpp_search/planning/routes.py:112` |
+| n_track = round(sqrt(L/s)) 정사각 블록 | `src/cpp_search/solvers/milp/routes.py:52` |
+| 시간예산 회계 (실제 소요시간으로 축소) | `src/cpp_search/solvers/milp/routes.py:112` |
 
 ## Ch3 SPX 환경
 
 | 수식 / 개념 | 구현 위치 |
 |---|---|
-| 행동 후보 = belief 점수 상위 K 인접셀 | `src/cpp_search/learning/spx_env.py:194` |
-| 점유·분리 복구 (실행가능집합 유지) | `src/cpp_search/learning/spx_env.py:350` |
-| 온라인 미탐지 재귀 (= nondetection_trace) | `src/cpp_search/learning/spx_env.py:417` |
-| minimax 성형 w_i ∝ exp(-PD_i/tau) | `src/cpp_search/learning/spx_env.py:447` |
-| 종단 보상 = min_i PD_i | `src/cpp_search/learning/spx_env.py:341` |
+| 행동 후보 = belief 점수 상위 K 인접셀 | `src/cpp_search/solvers/mappo/spx_env.py:194` |
+| 점유·분리 복구 (실행가능집합 유지) | `src/cpp_search/solvers/mappo/spx_env.py:350` |
+| 온라인 미탐지 재귀 (= nondetection_trace) | `src/cpp_search/solvers/mappo/spx_env.py:417` |
+| minimax 성형 w_i ∝ exp(-PD_i/tau) | `src/cpp_search/solvers/mappo/spx_env.py:447` |
+| 종단 보상 = min_i PD_i | `src/cpp_search/solvers/mappo/spx_env.py:341` |
 
 ## Ch3 MAPPO
 
 | 수식 / 개념 | 구현 위치 |
 |---|---|
-| TD 오차 delta_t | `src/cpp_search/learning/mappo.py:925` |
-| GAE 역방향 누적 A_t = delta_t + gamma lambda A_{t+1} | `src/cpp_search/learning/mappo.py:930` |
-| PPO clipped surrogate | `src/cpp_search/learning/mappo.py:858` |
+| TD 오차 delta_t | `src/cpp_search/solvers/mappo/mappo.py:925` |
+| GAE 역방향 누적 A_t = delta_t + gamma lambda A_{t+1} | `src/cpp_search/solvers/mappo/mappo.py:930` |
+| PPO clipped surrogate | `src/cpp_search/solvers/mappo/mappo.py:858` |
 
 ## Ch3 비교
 
 | 수식 / 개념 | 구현 위치 |
 |---|---|
-| 학습효과 = 학습 - 미학습 (결정론적 평가) | `src/cpp_search/learning/spx_policy.py:202` |
-| SPX - MAPPO (같은 인스턴스) | `src/cpp_search/learning/spx_policy.py:250` |
+| 학습효과 = 학습 - 미학습 (결정론적 평가) | `src/cpp_search/solvers/mappo/spx_policy.py:202` |
+| SPX - MAPPO (같은 인스턴스) | `src/cpp_search/solvers/mappo/spx_policy.py:250` |
 
 ## Ch4 실비행 평가
 
@@ -218,44 +218,45 @@ import하는 모듈이다. 패키지 `__init__.py`의 재수출은 제외하지 
 | `aoi` | `config`, `models.models`, `models.simulation`, `models.terrain`, `truth` | `chapters.ch1_evaluation` |
 | `chapters` | `chapters` | `chapters`, `chapters.ch2_stone_spx`, `runner` |
 | `chapters.ch1_evaluation` | `aoi`, `config`, `models.belief`, `models.models`, `models.profiles`, `models.sensor_observation`, `options` | `chapters.ch2_stone_spx` |
-| `chapters.ch2_stone_spx` | `chapters`, `chapters.ch1_evaluation`, `config`, `models.models`, `models.motion`, `models.terrain`, `options`, `planning.stone_spx`, `reliability`, `truth` | `chapters.ch2_studies`, `chapters.ch3_mappo_stone`, `chapters.ch4_synthetic_terrain` |
-| `chapters.ch2_studies` | `chapters.ch2_stone_spx`, `config`, `models.models`, `options`, `planning.stone_spx`, `theory.stone_path` | `chapters.ch3_mappo_stone` |
-| `chapters.ch3_mappo_stone` | `chapters.ch2_stone_spx`, `chapters.ch2_studies`, `config`, `learning.spx_env`, `learning.spx_policy`, `models.models`, `options`, `planning.stone_spx`, `reliability` | `chapters.ch4_synthetic_terrain` |
-| `chapters.ch4_synthetic_terrain` | `chapters.ch2_stone_spx`, `chapters.ch3_mappo_stone`, `config`, `kpi`, `learning.spx_policy`, `models.evaluation`, `models.models`, `models.sensor_observation`, `models.simulation`, `models.terrain`, `options`, `planning.stone_spx`, `reliability`, `truth` | — |
+| `chapters.ch2_stone_spx` | `chapters`, `chapters.ch1_evaluation`, `config`, `models.models`, `models.motion`, `models.terrain`, `options`, `reliability`, `solvers.milp.stone_spx`, `truth` | `chapters.ch2_studies`, `chapters.ch3_mappo_stone`, `chapters.ch4_synthetic_terrain` |
+| `chapters.ch2_studies` | `chapters.ch2_stone_spx`, `config`, `models.models`, `options`, `solvers.milp.stone_spx`, `theory.stone_path` | `chapters.ch3_mappo_stone` |
+| `chapters.ch3_mappo_stone` | `chapters.ch2_stone_spx`, `chapters.ch2_studies`, `config`, `models.models`, `options`, `reliability`, `solvers.mappo.spx_env`, `solvers.mappo.spx_policy`, `solvers.milp.stone_spx` | `chapters.ch4_synthetic_terrain` |
+| `chapters.ch4_synthetic_terrain` | `chapters.ch2_stone_spx`, `chapters.ch3_mappo_stone`, `config`, `kpi`, `models.evaluation`, `models.models`, `models.sensor_observation`, `models.simulation`, `models.terrain`, `options`, `reliability`, `solvers.mappo.spx_policy`, `solvers.milp.stone_spx`, `truth` | — |
 | `config` | `models.models`, `models.motion`, `models.profiles`, `models.search_envelope`, `models.sensor_observation` | `aoi`, `chapters.ch1_evaluation`, `chapters.ch2_stone_spx`, `chapters.ch2_studies`, `chapters.ch3_mappo_stone`, `chapters.ch4_synthetic_terrain`, `reliability`, `runner`, `truth` |
 | `figures` | `kpi` | `runner` |
 | `kpi` | `models.evaluation`, `models.simulation`, `reliability` | `chapters.ch4_synthetic_terrain`, `figures`, `runner` |
-| `learning` | `learning.mappo`, `learning.spx_env`, `learning.spx_policy` | — |
-| `learning.continuous_env` | `learning.spx_env`, `models.searcher_track`, `planning.continuous_mc` | — |
-| `learning.mappo` | `learning.nets` | `learning`, `learning.spx_policy` |
-| `learning.nets` | — | `learning.mappo` |
-| `learning.spx_env` | `planning.stone_spx`, `theory` | `chapters.ch3_mappo_stone`, `learning`, `learning.continuous_env`, `learning.spx_policy` |
-| `learning.spx_policy` | `learning.mappo`, `learning.spx_env`, `planning.stone_spx` | `chapters.ch3_mappo_stone`, `chapters.ch4_synthetic_terrain`, `learning` |
 | `models` | — | — |
 | `models.belief` | — | `chapters.ch1_evaluation` |
 | `models.evaluation` | `models.models` | `chapters.ch4_synthetic_terrain`, `kpi`, `models.simulation` |
 | `models.geometry` | `models.models` | `models.probability` |
-| `models.models` | `models.search_envelope` | `cpp_search`, `aoi`, `chapters.ch1_evaluation`, `chapters.ch2_stone_spx`, `chapters.ch2_studies`, `chapters.ch3_mappo_stone`, `chapters.ch4_synthetic_terrain`, `config`, `models.evaluation`, `models.geometry`, `models.motion`, `models.particle_filter`, `models.probability`, `models.sensor_observation`, `models.simulation`, `models.terrain`, `planning.routes`, `planning.stone_spx`, `planning.terrain_belief`, `theory.markov`, `truth` |
+| `models.models` | `models.search_envelope` | `cpp_search`, `aoi`, `chapters.ch1_evaluation`, `chapters.ch2_stone_spx`, `chapters.ch2_studies`, `chapters.ch3_mappo_stone`, `chapters.ch4_synthetic_terrain`, `config`, `models.evaluation`, `models.geometry`, `models.motion`, `models.particle_filter`, `models.probability`, `models.sensor_observation`, `models.simulation`, `models.terrain`, `solvers.milp.routes`, `solvers.milp.stone_spx`, `solvers.milp.terrain_belief`, `theory.markov`, `truth` |
 | `models.motion` | `models.models` | `chapters.ch2_stone_spx`, `config`, `models.particle_filter`, `models.profiles`, `models.simulation`, `truth` |
-| `models.particle_filter` | `models.models`, `models.motion`, `models.probability` | `planning.terrain_belief` |
-| `models.probability` | `models.geometry`, `models.models` | `models.particle_filter`, `models.simulation`, `planning.stone_spx`, `planning.terrain_belief`, `theory.markov`, `truth` |
-| `models.profiles` | `models.motion`, `models.sensor_observation` | `cpp_search`, `chapters.ch1_evaluation`, `config`, `planning.stone_spx`, `planning.terrain_belief`, `truth` |
+| `models.particle_filter` | `models.models`, `models.motion`, `models.probability` | `solvers.milp.terrain_belief` |
+| `models.probability` | `models.geometry`, `models.models` | `models.particle_filter`, `models.simulation`, `solvers.milp.stone_spx`, `solvers.milp.terrain_belief`, `theory.markov`, `truth` |
+| `models.profiles` | `models.motion`, `models.sensor_observation` | `cpp_search`, `chapters.ch1_evaluation`, `config`, `solvers.milp.stone_spx`, `solvers.milp.terrain_belief`, `truth` |
 | `models.search_envelope` | — | `cpp_search`, `config`, `models.models` |
-| `models.searcher_track` | — | `learning.continuous_env`, `planning.continuous_mc` |
+| `models.searcher_track` | — | `solvers.mappo.continuous_env`, `solvers.milp.continuous_mc` |
 | `models.sensor_observation` | `models.models` | `cpp_search`, `chapters.ch1_evaluation`, `chapters.ch4_synthetic_terrain`, `config`, `models.profiles` |
 | `models.simulation` | `models.evaluation`, `models.models`, `models.motion`, `models.probability` | `aoi`, `chapters.ch4_synthetic_terrain`, `kpi`, `truth` |
 | `models.terrain` | `models.models` | `aoi`, `chapters.ch2_stone_spx`, `chapters.ch4_synthetic_terrain` |
 | `options` | — | `chapters.ch1_evaluation`, `chapters.ch2_stone_spx`, `chapters.ch2_studies`, `chapters.ch3_mappo_stone`, `chapters.ch4_synthetic_terrain`, `runner` |
-| `planning` | `planning.routes`, `planning.stone_spx`, `planning.terrain_belief` | — |
-| `planning.continuous_mc` | `models.searcher_track`, `planning.terrain_belief`, `theory.path_constrained` | `learning.continuous_env` |
-| `planning.routes` | `models.models` | `planning`, `planning.stone_spx` |
-| `planning.stone_spx` | `models.models`, `models.probability`, `models.profiles`, `planning.routes`, `planning.terrain_belief`, `theory`, `theory.markov`, `theory.path_constrained`, `theory.stone_path` | `chapters.ch2_stone_spx`, `chapters.ch2_studies`, `chapters.ch3_mappo_stone`, `chapters.ch4_synthetic_terrain`, `learning.spx_env`, `learning.spx_policy`, `planning` |
-| `planning.terrain_belief` | `models.models`, `models.particle_filter`, `models.probability`, `models.profiles` | `planning`, `planning.continuous_mc`, `planning.stone_spx` |
 | `reliability` | `config` | `chapters.ch2_stone_spx`, `chapters.ch3_mappo_stone`, `chapters.ch4_synthetic_terrain`, `kpi` |
 | `runner` | `chapters`, `config`, `figures`, `kpi`, `options` | `__main__` |
-| `theory` | `theory.markov`, `theory.path_constrained`, `theory.stone_path` | `learning.spx_env`, `planning.stone_spx`, `theory.path_constrained`, `theory.stone_path` |
-| `theory.markov` | `models.models`, `models.probability` | `planning.stone_spx`, `theory` |
-| `theory.path_constrained` | `theory` | `planning.continuous_mc`, `planning.stone_spx`, `theory`, `theory.stone_path` |
-| `theory.stone_path` | `theory`, `theory.path_constrained` | `chapters.ch2_studies`, `planning.stone_spx`, `theory` |
+| `solvers` | — | — |
+| `solvers.mappo` | `solvers.mappo.mappo`, `solvers.mappo.spx_env`, `solvers.mappo.spx_policy` | — |
+| `solvers.mappo.continuous_env` | `models.searcher_track`, `solvers.mappo.spx_env`, `solvers.milp.continuous_mc` | — |
+| `solvers.mappo.mappo` | `solvers.mappo.nets` | `solvers.mappo`, `solvers.mappo.spx_policy` |
+| `solvers.mappo.nets` | — | `solvers.mappo.mappo` |
+| `solvers.mappo.spx_env` | `solvers.milp.stone_spx`, `theory` | `chapters.ch3_mappo_stone`, `solvers.mappo`, `solvers.mappo.continuous_env`, `solvers.mappo.spx_policy` |
+| `solvers.mappo.spx_policy` | `solvers.mappo.mappo`, `solvers.mappo.spx_env`, `solvers.milp.stone_spx` | `chapters.ch3_mappo_stone`, `chapters.ch4_synthetic_terrain`, `solvers.mappo` |
+| `solvers.milp` | `solvers.milp.routes`, `solvers.milp.stone_spx`, `solvers.milp.terrain_belief` | — |
+| `solvers.milp.continuous_mc` | `models.searcher_track`, `solvers.milp.terrain_belief`, `theory.path_constrained` | `solvers.mappo.continuous_env` |
+| `solvers.milp.routes` | `models.models` | `solvers.milp`, `solvers.milp.stone_spx` |
+| `solvers.milp.stone_spx` | `models.models`, `models.probability`, `models.profiles`, `solvers.milp.routes`, `solvers.milp.terrain_belief`, `theory`, `theory.markov`, `theory.path_constrained`, `theory.stone_path` | `chapters.ch2_stone_spx`, `chapters.ch2_studies`, `chapters.ch3_mappo_stone`, `chapters.ch4_synthetic_terrain`, `solvers.mappo.spx_env`, `solvers.mappo.spx_policy`, `solvers.milp` |
+| `solvers.milp.terrain_belief` | `models.models`, `models.particle_filter`, `models.probability`, `models.profiles` | `solvers.milp`, `solvers.milp.continuous_mc`, `solvers.milp.stone_spx` |
+| `theory` | `theory.markov`, `theory.path_constrained`, `theory.stone_path` | `solvers.mappo.spx_env`, `solvers.milp.stone_spx`, `theory.path_constrained`, `theory.stone_path` |
+| `theory.markov` | `models.models`, `models.probability` | `solvers.milp.stone_spx`, `theory` |
+| `theory.path_constrained` | `theory` | `solvers.milp.continuous_mc`, `solvers.milp.stone_spx`, `theory`, `theory.stone_path` |
+| `theory.stone_path` | `theory`, `theory.path_constrained` | `chapters.ch2_studies`, `solvers.milp.stone_spx`, `theory` |
 | `theory.transitions` | — | — |
 | `truth` | `config`, `models.models`, `models.motion`, `models.probability`, `models.profiles`, `models.simulation` | `aoi`, `chapters.ch2_stone_spx`, `chapters.ch4_synthetic_terrain` |

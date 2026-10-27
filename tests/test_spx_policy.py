@@ -5,14 +5,14 @@ from __future__ import annotations
 import math
 import unittest
 
-from cpp_search.learning.spx_env import SPXEnvironmentConfig
-from cpp_search.learning.spx_policy import (
+from cpp_search.solvers.mappo.spx_env import SPXEnvironmentConfig
+from cpp_search.solvers.mappo.spx_policy import (
     StoneMAPPOSettings,
     compare_with_spx,
     mappo_path_solution,
     train_stone_mappo,
 )
-from cpp_search.planning.stone_spx import solve_stone_grid_paths
+from cpp_search.solvers.milp.stone_spx import solve_stone_grid_paths
 from tests.fixtures import small_instance
 
 

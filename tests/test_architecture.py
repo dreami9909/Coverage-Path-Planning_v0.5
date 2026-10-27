@@ -1,16 +1,17 @@
 """계층 규칙을 코드로 강제한다. 문서만으로는 지켜지지 않는다.
 
-v0.4 의 의존 방향은 하나다.
+v0.5 의 의존 방향은 하나다.
 
-    chapters -> learning -> planning -> theory -> models(도메인)
+    chapters -> solvers.mappo -> solvers.milp -> theory -> models(도메인)
 
-``learning`` 이 ``planning`` 을 읽는 것은 **의도된** 것이다 — MAPPO 가 해석하는
-대상이 ``planning`` 이 만든 Stone 인스턴스다. 반대 방향은 금지다. ``planning``
-이 ``learning`` 을 읽기 시작하면 "계획법이 학습을 안다"가 되어, 두 계획법을
+``solvers.mappo`` 가 ``solvers.milp`` 를 읽는 것은 **의도된** 것이다 — MAPPO 가
+해석하는 대상이 milp 가 만든 Stone 인스턴스다. 반대 방향은 금지다. milp 가
+mappo 를 읽기 시작하면 "계획법이 학습을 안다"가 되어, 두 계획법을
 같은 인스턴스로 비교한다는 주장이 무너진다.
 
-2026-09-16 구조 개편: ``research/`` 한 단을 없애고 도메인 모형을 ``models/`` 로
-모았다. 계층 규칙 자체는 그대로다.
+2026-09-16 구조 개편: ``research/`` 한 단을 없애고 도메인 모형을 모았다.
+2026-10-28 구조 개편: core→models, planning→solvers/milp, learning→solvers/mappo.
+계층 규칙 자체는 그대로다 (내부 계층명 planning/learning 은 유지).
 """
 
 from __future__ import annotations
@@ -40,10 +41,18 @@ SUPPORT_MODULES = {
 
 
 def _layer(module: str) -> str:
-    head = module.split(".")[0]
+    parts = module.split(".")
+    head = parts[0]
     if head == "models":
         return "domain"
-    if head in {"theory", "planning", "learning", "chapters"}:
+    if head == "solvers":
+        sub = parts[1] if len(parts) > 1 else ""
+        if sub == "milp":
+            return "planning"
+        if sub == "mappo":
+            return "learning"
+        return "support"  # solvers/__init__
+    if head in {"theory", "chapters"}:
         return head
     if head in SUPPORT_MODULES:
         return "support"
@@ -142,12 +151,12 @@ class LayerRuleTests(unittest.TestCase):
         """
 
         self.assertIn(
-            "planning.stone_spx",
-            self.graph["learning.spx_env"],
+            "solvers.milp.stone_spx",
+            self.graph["solvers.mappo.spx_env"],
         )
         self.assertIn(
-            "planning.stone_spx",
-            self.graph["learning.spx_policy"],
+            "solvers.milp.stone_spx",
+            self.graph["solvers.mappo.spx_policy"],
         )
 
     def test_support_modules_do_not_depend_on_chapters(self) -> None:

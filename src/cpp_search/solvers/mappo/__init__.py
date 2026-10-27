@@ -12,13 +12,13 @@
 
 from __future__ import annotations
 
-from cpp_search.learning.mappo import MAPPORollout, MAPPOUpdateStats, NumpyMAPPO, collect_mappo_rollout
-from cpp_search.learning.spx_env import (
+from cpp_search.solvers.mappo.mappo import MAPPORollout, MAPPOUpdateStats, NumpyMAPPO, collect_mappo_rollout
+from cpp_search.solvers.mappo.spx_env import (
     SPXEnvironmentConfig,
     SPXSearchMetrics,
     StoneSPXEnvironment,
 )
-from cpp_search.learning.spx_policy import (
+from cpp_search.solvers.mappo.spx_policy import (
     StoneMAPPOResult,
     StoneMAPPOSettings,
     compare_with_spx,

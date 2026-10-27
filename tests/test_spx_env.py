@@ -15,7 +15,7 @@ import unittest
 
 import numpy as np
 
-from cpp_search.learning.spx_env import (
+from cpp_search.solvers.mappo.spx_env import (
     SPXEnvironmentConfig,
     StoneSPXEnvironment,
 )

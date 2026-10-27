@@ -68,7 +68,7 @@ import numpy as np
 
 from cpp_search.theory import transitions as transition_ops
 
-from cpp_search.planning.stone_spx import StoneGridInstance
+from cpp_search.solvers.milp.stone_spx import StoneGridInstance
 
 
 #: 후보 셀 하나를 설명하는 관측 채널 수.

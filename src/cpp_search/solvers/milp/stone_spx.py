@@ -54,8 +54,8 @@ from cpp_search.theory.path_constrained import (
 )
 from cpp_search.theory import transitions as transition_ops
 from cpp_search.theory.stone_path import StoneTargetModel, stone_spx_cutting_plane
-from cpp_search.planning.routes import local_sweep
-from cpp_search.planning.terrain_belief import (
+from cpp_search.solvers.milp.routes import local_sweep
+from cpp_search.solvers.milp.terrain_belief import (
     BELIEF_TERRAIN_FULL,
     BELIEF_TERRAIN_OFF,
     TerrainParticleBelief,

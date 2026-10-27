@@ -21,8 +21,8 @@ from cpp_search.config import load_chapter_config
 from cpp_search.options import RunOptions
 from cpp_search.chapters.ch2_stone_spx import (
     build_instance, case_mission, case_specs, case_target_specs, cue_prior)
-from cpp_search.planning.terrain_belief import BELIEF_TERRAIN_FULL
-from cpp_search.planning.continuous_mc import evaluate, selftest, SUPPORT_HALF_M
+from cpp_search.solvers.milp.terrain_belief import BELIEF_TERRAIN_FULL
+from cpp_search.solvers.milp.continuous_mc import evaluate, selftest, SUPPORT_HALF_M
 from tools.erasure_probe import CONDITIONS, SEED, H
 from tools.conditions import BASELINE
 

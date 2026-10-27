@@ -23,8 +23,8 @@ from scipy import sparse
 from dataclasses import replace
 
 from cpp_search.models.models import MissionConfig, Point2D
-from cpp_search.learning.mappo import MAPPORollout, NumpyMAPPO, _softmax
-from cpp_search.planning.stone_spx import _SquareGrid
+from cpp_search.solvers.mappo.mappo import MAPPORollout, NumpyMAPPO, _softmax
+from cpp_search.solvers.milp.stone_spx import _SquareGrid
 from cpp_search.theory import transitions as transition_ops
 from cpp_search.theory.path_constrained import (
     PathConstrainedProblem,
@@ -212,7 +212,7 @@ class WarmStartRecoveryTests(unittest.TestCase):
         warm start 는 가속 장치이지 필수가 아니다.
         """
 
-        from cpp_search.planning.stone_spx import solve_stone_grid_paths
+        from cpp_search.solvers.milp.stone_spx import solve_stone_grid_paths
         from cpp_search.config import load_chapter_config
         from cpp_search.options import RunOptions
         from cpp_search.chapters.ch2_stone_spx import (
@@ -526,7 +526,7 @@ class SparseTransitionTests(unittest.TestCase):
             case_specs,
             case_target_specs,
         )
-        from cpp_search.planning.stone_spx import solve_stone_grid_paths
+        from cpp_search.solvers.milp.stone_spx import solve_stone_grid_paths
 
         config = load_chapter_config("2")
         mission, sensor = config.mission(), config.sensor()
@@ -826,7 +826,7 @@ class FingerprintCoverageTests(unittest.TestCase):
         return problem, targets
 
     def _fingerprint(self, problem, targets):
-        from cpp_search.planning.stone_spx import _common_input_fingerprint
+        from cpp_search.solvers.milp.stone_spx import _common_input_fingerprint
 
         mission = MissionConfig(
             center=Point2D(0.0, 0.0), search_radius_m=5_000.0, uav_count=2
@@ -891,7 +891,7 @@ class SweepRateConventionTests(unittest.TestCase):
     """
 
     def _grid_and_speeds(self):
-        from cpp_search.planning.stone_spx import _SquareGrid
+        from cpp_search.solvers.milp.stone_spx import _SquareGrid
 
         mission = MissionConfig(
             center=Point2D(0.0, 0.0), search_radius_m=2_000.0, uav_count=2
@@ -899,7 +899,7 @@ class SweepRateConventionTests(unittest.TestCase):
         return _SquareGrid.circumscribed(mission, 4, 4), 44.0, 400.0
 
     def test_dwelling_in_place_credits_the_flown_distance(self) -> None:
-        from cpp_search.planning.stone_spx import _swept_hazard
+        from cpp_search.solvers.milp.stone_spx import _swept_hazard
 
         grid, speed, width = self._grid_and_speeds()
         slice_s = 60.0
@@ -918,7 +918,7 @@ class SweepRateConventionTests(unittest.TestCase):
         비행속도가 같고 시간이 같으므로 총량도 같다. 달라지는 것은 그 양이
         **어느 셀에 쌓이느냐** 뿐이다. 두 항의 규약이 어긋나면 여기서 갈린다.
         """
-        from cpp_search.planning.stone_spx import _swept_hazard, _adjacency
+        from cpp_search.solvers.milp.stone_spx import _swept_hazard, _adjacency
 
         grid, speed, width = self._grid_and_speeds()
         slice_s = 60.0
@@ -955,7 +955,7 @@ class CommonScoringTests(unittest.TestCase):
     """
 
     def test_the_scorer_reproduces_the_certified_upper_bound(self) -> None:
-        from cpp_search.planning.stone_spx import solve_stone_grid_paths
+        from cpp_search.solvers.milp.stone_spx import solve_stone_grid_paths
         from cpp_search.config import load_chapter_config
         from cpp_search.options import RunOptions
         from cpp_search.chapters.ch2_stone_spx import (
@@ -1003,7 +1003,7 @@ class CommonScoringTests(unittest.TestCase):
 
     def test_the_multiplier_reaches_the_swept_hazard(self) -> None:
         """배율을 바꾸면 채점값이 따라 움직여야 한다."""
-        from cpp_search.planning.stone_spx import _target_path_detection_probabilities
+        from cpp_search.solvers.milp.stone_spx import _target_path_detection_probabilities
 
         states, steps = 3, 2
         detection = np.full((steps, states), 0.5)

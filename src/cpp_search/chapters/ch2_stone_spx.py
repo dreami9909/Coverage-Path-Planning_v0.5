@@ -65,7 +65,7 @@ from cpp_search.models.motion import (
 from cpp_search.models.terrain import build_synthetic_terrain
 from cpp_search.config import ChapterConfig
 from cpp_search.options import RunOptions
-from cpp_search.planning.stone_spx import (
+from cpp_search.solvers.milp.stone_spx import (
     StoneGridInstance,
     StoneSPXRouteConfig,
     StoneSPXSearcherClass,

@@ -31,8 +31,8 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from cpp_search.config import load_chapter_config
 from cpp_search.chapters.ch2_studies import published_instance
-from cpp_search.learning.spx_env import SPXEnvironmentConfig
-from cpp_search.learning.spx_policy import StoneMAPPOSettings, train_stone_mappo
+from cpp_search.solvers.mappo.spx_env import SPXEnvironmentConfig
+from cpp_search.solvers.mappo.spx_policy import StoneMAPPOSettings, train_stone_mappo
 
 SEED = 20260201
 sys.path.insert(0, str(ROOT / "tools"))

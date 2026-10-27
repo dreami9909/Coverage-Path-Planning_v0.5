@@ -58,7 +58,7 @@ from typing import Sequence
 
 import numpy as np
 
-from cpp_search.learning.nets import ConvNet
+from cpp_search.solvers.mappo.nets import ConvNet
 
 
 GRID_ACTIONS = np.asarray(

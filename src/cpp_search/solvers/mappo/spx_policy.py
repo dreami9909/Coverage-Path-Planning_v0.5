@@ -32,9 +32,9 @@ from time import perf_counter
 
 import numpy as np
 
-from cpp_search.planning.stone_spx import StoneGridInstance, StoneGridPathSolution
-from cpp_search.learning.mappo import NumpyMAPPO, collect_mappo_rollout
-from cpp_search.learning.spx_env import SPXEnvironmentConfig, StoneSPXEnvironment
+from cpp_search.solvers.milp.stone_spx import StoneGridInstance, StoneGridPathSolution
+from cpp_search.solvers.mappo.mappo import NumpyMAPPO, collect_mappo_rollout
+from cpp_search.solvers.mappo.spx_env import SPXEnvironmentConfig, StoneSPXEnvironment
 
 
 @dataclass(frozen=True, slots=True)

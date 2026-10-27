@@ -26,8 +26,8 @@ from cpp_search.config import load_chapter_config
 from cpp_search.chapters.ch2_stone_spx import (
     case_specs, case_target_specs, case_mission, cue_prior)
 from cpp_search.chapters.ch2_studies import published_instance
-from cpp_search.planning.continuous_mc import SUPPORT_HALF_M, evaluate
-from cpp_search.planning.terrain_belief import BELIEF_TERRAIN_FULL
+from cpp_search.solvers.milp.continuous_mc import SUPPORT_HALF_M, evaluate
+from cpp_search.solvers.milp.terrain_belief import BELIEF_TERRAIN_FULL
 
 SEED, DT_S, CASE, WIDTH = 20260201, 5.0, "Tank", 10
 PARTICLES = int(os.environ.get("MC_PARTICLES", 120_000))

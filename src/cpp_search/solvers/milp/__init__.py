@@ -10,8 +10,8 @@
 
 from __future__ import annotations
 
-from cpp_search.planning.routes import local_sweep
-from cpp_search.planning.stone_spx import (
+from cpp_search.solvers.milp.routes import local_sweep
+from cpp_search.solvers.milp.stone_spx import (
     StoneGridInstance,
     StoneGridPathSolution,
     StoneSPXRouteConfig,
@@ -26,7 +26,7 @@ from cpp_search.planning.stone_spx import (
     route_plan_from_solution,
     solve_stone_grid_paths,
 )
-from cpp_search.planning.terrain_belief import (
+from cpp_search.solvers.milp.terrain_belief import (
     BELIEF_TERRAIN_FULL,
     BELIEF_TERRAIN_OFF,
     ParticleGridSnapshot,

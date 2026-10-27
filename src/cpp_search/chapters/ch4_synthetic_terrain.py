@@ -63,9 +63,9 @@ from cpp_search.models.simulation import EvaluationConfig, evaluate_monte_carlo
 from cpp_search.models.terrain import build_control_terrain, build_synthetic_terrain
 from cpp_search.config import ChapterConfig
 from cpp_search.kpi import mission_kpi, summarise_kpi
-from cpp_search.learning.spx_policy import mappo_path_solution, train_stone_mappo
+from cpp_search.solvers.mappo.spx_policy import mappo_path_solution, train_stone_mappo
 from cpp_search.options import RunOptions
-from cpp_search.planning.stone_spx import (
+from cpp_search.solvers.milp.stone_spx import (
     build_stone_grid_instance,
     route_plan_from_solution,
     solve_stone_grid_paths,

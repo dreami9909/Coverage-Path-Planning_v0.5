@@ -34,12 +34,12 @@ from cpp_search.config import load_chapter_config
 from cpp_search.chapters.ch2_stone_spx import (
     case_specs, case_target_specs, case_mission, cue_prior)
 from cpp_search.chapters.ch2_studies import published_instance
-from cpp_search.learning.continuous_env import (
+from cpp_search.solvers.mappo.continuous_env import (
     ContinuousRewardConfig, ContinuousSPXEnvironment)
-from cpp_search.learning.spx_env import SPXEnvironmentConfig
-from cpp_search.learning.spx_policy import StoneMAPPOSettings, train_stone_mappo
-from cpp_search.planning.continuous_mc import SUPPORT_HALF_M, evaluate, selftest
-from cpp_search.planning.terrain_belief import BELIEF_TERRAIN_FULL
+from cpp_search.solvers.mappo.spx_env import SPXEnvironmentConfig
+from cpp_search.solvers.mappo.spx_policy import StoneMAPPOSettings, train_stone_mappo
+from cpp_search.solvers.milp.continuous_mc import SUPPORT_HALF_M, evaluate, selftest
+from cpp_search.solvers.milp.terrain_belief import BELIEF_TERRAIN_FULL
 
 SEED, DT_S = 20260201, 5.0
 sys.path.insert(0, str(ROOT / "tools"))
