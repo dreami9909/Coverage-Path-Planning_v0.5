@@ -26,8 +26,8 @@ sys.path.insert(0, str(ROOT / "tools"))
 import numpy as np
 
 from cpp_search.config import load_chapter_config
-from cpp_search.chapters.ch2_stone_spx import case_specs, case_mission
-from cpp_search.chapters.ch2_studies import published_instance
+from cpp_search.experiments.ch2_stone_spx import case_specs, case_mission
+from cpp_search.experiments.ch2_studies import published_instance
 from cpp_search.models.searcher_track import build_windows
 from cpp_search.solvers.milp.continuous_mc import SUPPORT_HALF_M, _cell_mean_hazard
 from cpp_search.theory.path_constrained import joint_survival

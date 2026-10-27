@@ -28,7 +28,7 @@ import numpy as np
 
 from cpp_search.config import load_chapter_config
 from cpp_search.options import RunOptions
-from cpp_search.chapters.ch2_stone_spx import (
+from cpp_search.experiments.ch2_stone_spx import (
     build_instance, case_mission, case_specs, case_target_specs, cue_prior)
 from cpp_search.solvers.milp.terrain_belief import BELIEF_TERRAIN_FULL
 from cpp_search.models.searcher_track import cell_cover_polyline, _cum, _advance

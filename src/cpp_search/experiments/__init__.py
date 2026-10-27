@@ -15,7 +15,7 @@ Chapter 3·4 는 Chapter 2 의 인스턴스 구축 함수를 **그대로 import 
 
 from __future__ import annotations
 
-from cpp_search.chapters import (
+from cpp_search.experiments import (
     ch1_evaluation,
     ch2_stone_spx,
     ch3_mappo_stone,

@@ -72,7 +72,7 @@ from cpp_search.solvers.milp.stone_spx import (
 )
 from cpp_search.reliability import ReliabilityCriteria, paired_metric_report
 from cpp_search.truth import cue_prior, generate_truth, truth_provenance
-from cpp_search.chapters.ch2_stone_spx import (
+from cpp_search.experiments.ch2_stone_spx import (
     case_mission,
     case_specs,
     case_target_specs,
@@ -81,7 +81,7 @@ from cpp_search.chapters.ch2_stone_spx import (
     route_config,
     searcher_classes,
 )
-from cpp_search.chapters.ch3_mappo_stone import environment_settings, training_settings
+from cpp_search.experiments.ch3_mappo_stone import environment_settings, training_settings
 
 
 TERRAIN_BUILDERS = {

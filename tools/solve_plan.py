@@ -18,8 +18,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from cpp_search.config import load_chapter_config
-from cpp_search.chapters.ch2_stone_spx import case_specs
-from cpp_search.chapters.ch2_studies import published_instance
+from cpp_search.experiments.ch2_stone_spx import case_specs
+from cpp_search.experiments.ch2_studies import published_instance
 from cpp_search.solvers.milp.stone_spx import solve_stone_grid_paths
 
 SEED = int(os.environ.get("SOLVE_SEED", 20260201))

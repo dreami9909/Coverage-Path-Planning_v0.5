@@ -32,7 +32,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 import numpy as np
 
 from cpp_search.config import load_chapter_config
-from cpp_search.chapters.ch2_stone_spx import case_specs, signature_hazard_multipliers
+from cpp_search.experiments.ch2_stone_spx import case_specs, signature_hazard_multipliers
 from cpp_search.solvers.milp.continuous_mc import SUPPORT_HALF_M, lateral_detection
 
 from conditions import CONDITIONS, BASELINE, REFERENCE      # noqa: E402

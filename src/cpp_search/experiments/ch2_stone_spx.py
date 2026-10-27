@@ -107,7 +107,7 @@ def signature_hazard_multipliers(config: ChapterConfig) -> dict[str, float]:
     Stone 의 alpha_{l,c',c,t,k} 가 표적 k 에 의존하는 항이 정확히 이것이다.
     """
 
-    from cpp_search.chapters.ch1_evaluation import sweep_width_table
+    from cpp_search.experiments.ch1_evaluation import sweep_width_table
 
     sensor = config.sensor()
     geometric = sensor.effective_sweep_width_m

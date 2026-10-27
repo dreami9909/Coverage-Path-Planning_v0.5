@@ -16,7 +16,7 @@ sys.path.insert(0, str(ROOT / "src"))
 import numpy as np
 
 from cpp_search.config import load_chapter_config
-from cpp_search.chapters.ch2_stone_spx import auto_time_slice_count, case_specs, case_mission
+from cpp_search.experiments.ch2_stone_spx import auto_time_slice_count, case_specs, case_mission
 from cpp_search.models.searcher_track import cell_cover_polyline, _cum, _advance
 from cpp_search.solvers.milp.continuous_mc import accumulate_window, SUPPORT_HALF_M
 

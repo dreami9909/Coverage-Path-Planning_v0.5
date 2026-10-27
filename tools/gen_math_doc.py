@@ -26,7 +26,7 @@ ENTRIES = [
     ("Ch1 확률 계약", "l = ln(p/(1-p)), p = sigmoid(l)", "models/belief.py", "def _logit"),
     ("Ch1 확률 계약", "l += ln(PD/PF) / ln((1-PD)/(1-PF))", "models/belief.py", "increment = np.log(pd / pf)"),
     ("Ch1 확률 계약", "POC / POS / POD", "models/belief.py", "poc = float(normalized[searched].sum())"),
-    ("Ch1 자원 상한", "A_max = n v T W, ceiling = A_max/(pi R^2)", "chapters/ch1_evaluation.py", "def _coverage_feasibility"),
+    ("Ch1 자원 상한", "A_max = n v T W, ceiling = A_max/(pi R^2)", "experiments/ch1_evaluation.py", "def _coverage_feasibility"),
     ("Ch1 AOI 사이징", "포함률 기반 탐색반경", "aoi.py", "def containment_radius_m"),
 
     # --- 표적 운동 · 사전확률 · 입자필터 ---
@@ -97,8 +97,8 @@ ENTRIES = [
     ("Ch3 비교", "SPX - MAPPO (같은 인스턴스)", "solvers/mappo/spx_policy.py", "def compare_with_spx"),
 
     # --- Chapter 4: 합성지형 실비행 ---
-    ("Ch4 실비행 평가", "계획모형 - 실비행 차이 (부호는 측정 결과)", "chapters/ch4_synthetic_terrain.py", "model_minus_flown="),
-    ("Ch4 실비행 평가", "표적 계층 가중 합성", "chapters/ch4_synthetic_terrain.py", "def _combine_strata"),
+    ("Ch4 실비행 평가", "계획모형 - 실비행 차이 (부호는 측정 결과)", "experiments/ch4_synthetic_terrain.py", "model_minus_flown="),
+    ("Ch4 실비행 평가", "표적 계층 가중 합성", "experiments/ch4_synthetic_terrain.py", "def _combine_strata"),
     ("Ch4 통계", "짝지은 seed 군집 부트스트랩 백분위 구간", "reliability.py", "def bootstrap_weighted_mean_ci"),
     ("Ch4 통계", "짝지은 차이 + 부호 방향 명시", "reliability.py", "def paired_metric_report"),
     ("Ch4 통계", "Wilson 점수 구간", "reliability.py", "def wilson_score_interval"),

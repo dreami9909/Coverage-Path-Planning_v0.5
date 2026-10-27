@@ -24,8 +24,8 @@ sys.path.insert(0, str(ROOT / "tools"))
 import numpy as np
 
 from cpp_search.config import load_chapter_config
-from cpp_search.chapters.ch2_stone_spx import case_specs
-from cpp_search.chapters.ch2_studies import published_instance
+from cpp_search.experiments.ch2_stone_spx import case_specs
+from cpp_search.experiments.ch2_studies import published_instance
 from cpp_search.theory import transitions as transition_ops
 from cpp_search.theory.path_constrained import joint_survival
 

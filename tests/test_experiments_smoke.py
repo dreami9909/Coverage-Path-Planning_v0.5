@@ -15,7 +15,7 @@ import unittest
 from math import log
 
 from cpp_search.config import load_chapter_config
-from cpp_search.chapters import CHAPTER_MODULES
+from cpp_search.experiments import CHAPTER_MODULES
 from cpp_search.options import RunOptions
 
 

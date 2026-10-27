@@ -1,7 +1,7 @@
 """Chapter 1-4 연구 스택의 명령행 진입점.
 
 러너가 하는 일은 정확히 셋이다 — 명령행 해석, 챕터 config 로딩, 결과 저장.
-실험 논리는 전부 :mod:`cpp_search.chapters` 에 있다.
+실험 논리는 전부 :mod:`cpp_search.experiments` 에 있다.
 
 모든 값의 해석 순서는 ``명령행 > config 파일 > 코드 기본값`` 이다. CLI 인자의
 argparse 기본값이 모두 ``None`` 이라 플래그를 생략하면 config 가 반드시 이긴다.
@@ -19,7 +19,7 @@ from time import perf_counter
 import numpy as np
 
 from cpp_search.config import load_chapter_config
-from cpp_search.chapters import CHAPTER_MODULES
+from cpp_search.experiments import CHAPTER_MODULES
 from cpp_search.kpi import DIAGNOSTIC_KPI_KEYS, KPI_KEYS
 from cpp_search.options import RunOptions
 

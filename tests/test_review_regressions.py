@@ -215,7 +215,7 @@ class WarmStartRecoveryTests(unittest.TestCase):
         from cpp_search.solvers.milp.stone_spx import solve_stone_grid_paths
         from cpp_search.config import load_chapter_config
         from cpp_search.options import RunOptions
-        from cpp_search.chapters.ch2_stone_spx import (
+        from cpp_search.experiments.ch2_stone_spx import (
             build_instance, case_mission, case_specs, case_target_specs,
         )
 
@@ -520,7 +520,7 @@ class SparseTransitionTests(unittest.TestCase):
 
         from cpp_search.config import load_chapter_config
         from cpp_search.options import RunOptions
-        from cpp_search.chapters.ch2_stone_spx import (
+        from cpp_search.experiments.ch2_stone_spx import (
             build_instance,
             case_mission,
             case_specs,
@@ -958,7 +958,7 @@ class CommonScoringTests(unittest.TestCase):
         from cpp_search.solvers.milp.stone_spx import solve_stone_grid_paths
         from cpp_search.config import load_chapter_config
         from cpp_search.options import RunOptions
-        from cpp_search.chapters.ch2_stone_spx import (
+        from cpp_search.experiments.ch2_stone_spx import (
             build_instance, case_mission, case_specs, case_target_specs,
         )
 

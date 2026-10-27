@@ -13,7 +13,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from cpp_search.chapters import CHAPTER_MODULES
+from cpp_search.experiments import CHAPTER_MODULES
 from cpp_search.figures import write_chapter_artifacts
 from cpp_search.runner import _artifact_error, _json_safe
 from tests.test_experiments_smoke import _options, _reduced_config

@@ -31,9 +31,9 @@ sys.path.insert(0, str(ROOT / "src"))
 import numpy as np
 
 from cpp_search.config import load_chapter_config
-from cpp_search.chapters.ch2_stone_spx import (
+from cpp_search.experiments.ch2_stone_spx import (
     case_specs, case_target_specs, case_mission, cue_prior)
-from cpp_search.chapters.ch2_studies import published_instance
+from cpp_search.experiments.ch2_studies import published_instance
 from cpp_search.solvers.mappo.continuous_env import (
     ContinuousRewardConfig, ContinuousSPXEnvironment)
 from cpp_search.solvers.mappo.spx_env import SPXEnvironmentConfig

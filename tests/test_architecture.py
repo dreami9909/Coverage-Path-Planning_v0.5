@@ -2,7 +2,7 @@
 
 v0.5 의 의존 방향은 하나다.
 
-    chapters -> solvers.mappo -> solvers.milp -> theory -> models(도메인)
+    experiments -> solvers.mappo -> solvers.milp -> theory -> models(도메인)
 
 ``solvers.mappo`` 가 ``solvers.milp`` 를 읽는 것은 **의도된** 것이다 — MAPPO 가
 해석하는 대상이 milp 가 만든 Stone 인스턴스다. 반대 방향은 금지다. milp 가
@@ -10,7 +10,8 @@ mappo 를 읽기 시작하면 "계획법이 학습을 안다"가 되어, 두 계
 같은 인스턴스로 비교한다는 주장이 무너진다.
 
 2026-09-16 구조 개편: ``research/`` 한 단을 없애고 도메인 모형을 모았다.
-2026-10-28 구조 개편: core→models, planning→solvers/milp, learning→solvers/mappo.
+2026-10-28 구조 개편: core→models, planning→solvers/milp, learning→solvers/mappo,
+chapters→experiments.
 계층 규칙 자체는 그대로다 (내부 계층명 planning/learning 은 유지).
 """
 
@@ -52,8 +53,10 @@ def _layer(module: str) -> str:
         if sub == "mappo":
             return "learning"
         return "support"  # solvers/__init__
-    if head in {"theory", "chapters"}:
+    if head == "theory":
         return head
+    if head == "experiments":
+        return "chapters"  # 계층 라벨은 유지, 패키지명만 experiments
     if head in SUPPORT_MODULES:
         return "support"
     return "support"

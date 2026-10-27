@@ -17,7 +17,7 @@ from cpp_search.config import (
     find_config_root,
     load_chapter_config,
 )
-from cpp_search.chapters import CHAPTER_MODULES
+from cpp_search.experiments import CHAPTER_MODULES
 from cpp_search.runner import ALL_CHAPTERS, SEED_LIMIT_KEYS
 
 

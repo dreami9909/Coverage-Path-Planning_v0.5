@@ -116,9 +116,9 @@ def analytic() -> list[dict]:
 # ------------------------------------------------------------------ 격자별 검증
 def per_condition(case: str, n: int, plan_file: str) -> list[dict]:
     from cpp_search.config import load_chapter_config
-    from cpp_search.chapters.ch2_stone_spx import (
+    from cpp_search.experiments.ch2_stone_spx import (
         case_specs, case_target_specs, case_mission, cue_prior)
-    from cpp_search.chapters.ch2_studies import published_instance
+    from cpp_search.experiments.ch2_studies import published_instance
     from cpp_search.solvers.milp.terrain_belief import BELIEF_TERRAIN_FULL
     from cpp_search.theory import transitions as transition_ops
     from run_mappo_stage1 import audit_paths

@@ -29,7 +29,7 @@ from cpp_search.config import ChapterConfig
 from cpp_search.options import RunOptions
 from cpp_search.solvers.milp.stone_spx import StoneGridInstance, solve_stone_grid_paths
 from cpp_search.theory.stone_path import _nondetection_value_gradient, _target_path_hazard
-from cpp_search.chapters.ch2_stone_spx import (
+from cpp_search.experiments.ch2_stone_spx import (
     build_instance,
     case_mission,
     case_specs,

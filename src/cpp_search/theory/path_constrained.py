@@ -30,7 +30,7 @@ Chapter 6의 이론 계층. 이 모듈이 답하는 질문은 하나다.
 
 의존
 ----
-위: ``src/cpp_search/chapters/chapter6``
+위: ``src/cpp_search/experiments/chapter6``
 아래: numpy만. 도메인 계층을 import 하지 않는다(``theory`` 계층 규칙).
 
 참고문헌
