@@ -90,7 +90,7 @@ Tank/TEL 표적을 6대의 무인기로 찾는 문제에서, **경로제약 다�
    통과한다. `tests/test_spx_env.py`가 MAPPO 환경의 온라인 미탐지 재귀와 이
    함수의 값이 같은지(소수 12자리) 검사한다.
 
-경로변환(`planning/routes.local_sweep`)도 공통이라, Chapter 4의 KPI 차이가
+경로변환(`solvers/milp/routes.local_sweep`)도 공통이라, Chapter 4의 KPI 차이가
 소인 패턴 차이로 새지 않는다.
 
 MAPPO는 SPX의 실행가능집합을 **넘지 않는다**. 행동 후보가 인접 셀이고, 점유·
