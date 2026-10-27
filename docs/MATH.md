@@ -5,6 +5,25 @@
 이 표는 `python3 tools/gen_math_doc.py`로 다시 생성할 수 있다.
 
 
+## Ch1 센서·탐색범위
+
+| 수식 / 개념 | 구현 위치 |
+|---|---|
+| swath = 2 H tan(HFOV/2) | `src/cpp_search/models/models.py:190` |
+| s = W (1 - overlap) | `src/cpp_search/models/models.py:204` |
+| PD(x) = e + (1-e)(1+cos(pi u))/2 | `src/cpp_search/models/search_envelope.py:192` |
+| W = ∫ PD(x) dx  (Simpson) | `src/cpp_search/models/search_envelope.py:221` |
+| weave 호 길이 ∫ sqrt(1+(A k cos)^2) ds | `src/cpp_search/models/search_envelope.py:84` |
+| v_centerline = v_actual / (L(lambda)/lambda) | `src/cpp_search/models/search_envelope.py:99` |
+
+## Ch1 확률 계약
+
+| 수식 / 개념 | 구현 위치 |
+|---|---|
+| l = ln(p/(1-p)), p = sigmoid(l) | `src/cpp_search/models/belief.py:53` |
+| l += ln(PD/PF) / ln((1-PD)/(1-PF)) | `src/cpp_search/models/belief.py:121` |
+| POC / POS / POD | `src/cpp_search/models/belief.py:157` |
+
 ## Ch1 자원 상한
 
 | 수식 / 개념 | 구현 위치 |
@@ -16,6 +35,67 @@
 | 수식 / 개념 | 구현 위치 |
 |---|---|
 | 포함률 기반 탐색반경 | `src/cpp_search/aoi.py:185` |
+
+## 표적 운동
+
+| 수식 / 개념 | 구현 위치 |
+|---|---|
+| P = alpha I + (1-alpha) 1 pi^T | `src/cpp_search/models/motion.py:135` |
+| CTRV 전파 (v/omega)(sin psi' - sin psi) | `src/cpp_search/models/motion.py:548` |
+| 원 밖 흡수 처리 | `src/cpp_search/models/motion.py:435` |
+
+## 사전확률·지도
+
+| 수식 / 개념 | 구현 위치 |
+|---|---|
+| f(r) = exp(-(r-mu)^2 / 2 sigma^2) | `src/cpp_search/models/probability.py:86` |
+| A_cell = (r_out^2 - r_in^2) dtheta / 2 | `src/cpp_search/models/probability.py:149` |
+
+## 입자필터
+
+| 수식 / 개념 | 구현 위치 |
+|---|---|
+| ESS = 1 / sum w_i^2 | `src/cpp_search/models/particle_filter.py:765` |
+| systematic / stratified 재표본추출 | `src/cpp_search/models/particle_filter.py:827` |
+| roughening sigma = K E N^(-1/2) | `src/cpp_search/models/particle_filter.py:902` |
+| 음성관측 w <- w exp(-Lambda) | `src/cpp_search/models/particle_filter.py:583` |
+| 입자 -> 셀 질량 투영 | `src/cpp_search/models/particle_filter.py:748` |
+
+## EO/IR 탐지
+
+| 수식 / 개념 | 구현 위치 |
+|---|---|
+| GSD = 2R tan(HFOV/2)/W_px, n_px | `src/cpp_search/models/sensor_observation.py:657` |
+| SNR = SNR_ref (R_ref/R)^2 contrast | `src/cpp_search/models/sensor_observation.py:667` |
+| P_fused = 1 - (1-P_eo)(1-P_ir) | `src/cpp_search/models/sensor_observation.py:774` |
+| lambda = -ln(1-PD)/t_scan | `src/cpp_search/models/sensor_observation.py:882` |
+| P(노출 t) = 1 - exp(-lambda t) | `src/cpp_search/models/sensor_observation.py:884` |
+
+## 지형 가중
+
+| 수식 / 개념 | 구현 위치 |
+|---|---|
+| 통로 가중 exp(-d^2/2sigma^2) | `src/cpp_search/models/terrain.py:86` |
+| 이동 편향 v <- (1-b)v + b grad(mobility) | `src/cpp_search/models/terrain.py:366` |
+| 관측성 가중치 (셀 hazard 배율) | `src/cpp_search/models/terrain.py:386` |
+| 합성지형 생성 (회랑·장애물·은폐) | `src/cpp_search/models/terrain.py:696` |
+| 대조군 지형 (회랑 없음) | `src/cpp_search/models/terrain.py:751` |
+
+## 경로 KPI
+
+| 수식 / 개념 | 구현 위치 |
+|---|---|
+| 임무시간 클리핑 t = L_flown / v | `src/cpp_search/models/evaluation.py:207` |
+| 고유 면적률 / 중복률 | `src/cpp_search/models/evaluation.py:315` |
+| 확률질량 탐색률 | `src/cpp_search/models/evaluation.py:172` |
+
+## 탐지시간 평가
+
+| 수식 / 개념 | 구현 위치 |
+|---|---|
+| 상대운동 노출구간 (2차 방정식) | `src/cpp_search/models/simulation.py:984` |
+| 누적 위험률 역변환 표집 | `src/cpp_search/models/simulation.py:936` |
+| Lambda(t) = threshold 선형 보간 | `src/cpp_search/models/simulation.py:970` |
 
 ## Ch2 경로제약 기준식
 
