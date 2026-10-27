@@ -160,6 +160,10 @@ class ChapterConfig:
         ir_width, ir_height = sensor.get("ir_resolution", [1_280, 720])
         frame_rate_hz = float(sensor.get("frame_rate_hz", 30.0))
         search_hfov_deg = float(sensor.get("fused_search_hfov_deg", 18.0))
+        # 채널별 HFOV 선언이 있으면 그것을, 없으면 fused 값을 쓴다 (pipeline 이
+        # seeker.eo/ir.hfov_deg 를 여기로 보낸다).
+        eo_hfov_deg = float(sensor.get("eo_search_hfov_deg", search_hfov_deg))
+        ir_hfov_deg = float(sensor.get("ir_search_hfov_deg", search_hfov_deg))
         return SensorSpec(
             altitude_m=float(sensor.get("altitude_m", 600.0)),
             eo=SensorChannelSpec(
@@ -167,14 +171,14 @@ class ChapterConfig:
                 int(eo_width),
                 int(eo_height),
                 frame_rate_hz,
-                search_hfov_deg,
+                eo_hfov_deg,
             ),
             ir=SensorChannelSpec(
                 "IR",
                 int(ir_width),
                 int(ir_height),
                 frame_rate_hz,
-                search_hfov_deg,
+                ir_hfov_deg,
             ),
             max_gimbal_angle_deg=float(sensor.get("gimbal_max_angle_deg", 45.0)),
             gimbal_max_rate_dps=float(sensor.get("gimbal_max_rate_dps", 60.0)),

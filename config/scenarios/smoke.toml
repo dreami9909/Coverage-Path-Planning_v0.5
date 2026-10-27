@@ -1,0 +1,18 @@
+# 연기 시험용 초소형 시나리오 — 수십 초 안에 전체 파이프라인이 도는지 확인.
+# 수치는 연구 값이 아니다.
+
+name = "smoke"
+seed = 7
+
+[target]
+case = "Tank"
+
+[grid]
+n = 4
+
+[solver]
+time_limit_s = 60
+
+[evaluation]
+mc_samples = 40
+particles = 400

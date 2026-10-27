@@ -1,0 +1,58 @@
+# 기준 시나리오 — TEL 케이스, v0.4 인증 조건 그대로.
+# 파일 하나가 실험 하나다. 실행: python -m cpp_search.pipeline config/scenarios/baseline_tel.toml
+
+name = "baseline_tel"
+seed = 20260830
+
+[seeker]
+template = "SR-Z50"          # 프리셋이 기본값을 채우고, 아래 키가 우선한다
+altitude_m = 600.0
+detection_probability = 0.86
+false_alarm_probability = 0.05
+
+[seeker.eo]
+resolution = [1280, 720]
+hfov_deg = 18.0
+# vfov_deg = 10.1            # 선언만 기록 — 현행 탐지모델은 HFOV·고도 기반
+
+[seeker.ir]
+resolution = [1280, 720]
+hfov_deg = 18.0
+
+[seeker.gimbal]
+max_angle_deg = 45.0         # 김발 제어각
+slew_rate_dps = 60.0         # 김발 전환 속도
+scan_rate_dps = 30.0         # 탐색 스캔 속도
+
+[vehicle]
+count = 6
+search_speed_kph = 160.0
+transit_speed_kph = 160.0
+
+[mission]
+ingress_s = 480.0            # 이송 (표적 확산이 belief 에 반영됨)
+search_s = 600.0             # 탐색
+
+[target]
+case = "TEL"                 # Tank | TEL — 최악 거동 집합·AOI·인증 격자를 정함
+max_speed_kph = 40.0
+tp_error_sigma_m = 500.0     # 위치(제보) 오차 = 초기 belief 폭 (선언 가정)
+
+[terrain]
+weighting = true             # 지형 가중 (사전·전이) on/off
+bias_strength = 0.6          # 이동 편향 (지형 가중치)
+offroad_probability = 0.2
+halt_probability_boost = 0.35
+concealment_count = 3        # 은닉 지대 수 (은닉 가중치)
+
+[grid]
+kind = "square"              # N×N 외접 정사각 (기본) | operational-polar
+n = 10                       # TEL 인증 격자 10×10 — 셀 크기·슬라이스 자동 유도
+
+[solver]
+kind = "milp"                # mappo 는 v0.5 2단계에서 열림
+certificate_gap = 0.01       # 사전선언 인증 기준 1%
+
+[evaluation]
+mc_samples = 1000
+particles = 5000

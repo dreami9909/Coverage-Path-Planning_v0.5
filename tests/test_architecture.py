@@ -55,8 +55,8 @@ def _layer(module: str) -> str:
         return "support"  # solvers/__init__
     if head == "theory":
         return head
-    if head == "experiments":
-        return "chapters"  # 계층 라벨은 유지, 패키지명만 experiments
+    if head in {"experiments", "pipeline"}:
+        return "chapters"  # 계층 라벨은 유지 — 둘 다 최상단 실행 계층
     if head in SUPPORT_MODULES:
         return "support"
     return "support"
