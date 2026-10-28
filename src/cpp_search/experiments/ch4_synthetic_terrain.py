@@ -61,17 +61,17 @@ from cpp_search.models.models import MissionConfig
 from cpp_search.models.sensor_observation import SENSOR_PERFORMANCE_SR_Z50, SpatialDetectionModel
 from cpp_search.models.simulation import EvaluationConfig, evaluate_monte_carlo
 from cpp_search.models.terrain import build_control_terrain, build_synthetic_terrain
-from cpp_search.config import ChapterConfig
-from cpp_search.kpi import mission_kpi, summarise_kpi
+from cpp_search.common.config import ChapterConfig
+from cpp_search.reporting.kpi import mission_kpi, summarise_kpi
 from cpp_search.solvers.mappo.spx_policy import mappo_path_solution, train_stone_mappo
-from cpp_search.options import RunOptions
+from cpp_search.common.options import RunOptions
 from cpp_search.solvers.milp.stone_spx import (
     build_stone_grid_instance,
     route_plan_from_solution,
     solve_stone_grid_paths,
 )
-from cpp_search.reliability import ReliabilityCriteria, paired_metric_report
-from cpp_search.truth import cue_prior, generate_truth, truth_provenance
+from cpp_search.reporting.reliability import ReliabilityCriteria, paired_metric_report
+from cpp_search.models.truth import cue_prior, generate_truth, truth_provenance
 from cpp_search.experiments.ch2_stone_spx import (
     case_mission,
     case_specs,

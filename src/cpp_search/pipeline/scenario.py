@@ -15,8 +15,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from cpp_search.config import ChapterConfig, load_chapter_config
-from cpp_search.options import RunOptions
+from cpp_search.common.config import ChapterConfig, load_chapter_config
+from cpp_search.common.options import RunOptions
 
 
 #: 탐색기 프리셋. 새 센서는 여기 한 항목으로 등록한다.

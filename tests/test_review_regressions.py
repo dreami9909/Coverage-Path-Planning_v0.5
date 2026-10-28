@@ -213,8 +213,8 @@ class WarmStartRecoveryTests(unittest.TestCase):
         """
 
         from cpp_search.solvers.milp.stone_spx import solve_stone_grid_paths
-        from cpp_search.config import load_chapter_config
-        from cpp_search.options import RunOptions
+        from cpp_search.common.config import load_chapter_config
+        from cpp_search.common.options import RunOptions
         from cpp_search.experiments.ch2_stone_spx import (
             build_instance, case_mission, case_specs, case_target_specs,
         )
@@ -518,8 +518,8 @@ class SparseTransitionTests(unittest.TestCase):
         **한 번 통과시켜야** 같은 종류의 누락을 잡는다.
         """
 
-        from cpp_search.config import load_chapter_config
-        from cpp_search.options import RunOptions
+        from cpp_search.common.config import load_chapter_config
+        from cpp_search.common.options import RunOptions
         from cpp_search.experiments.ch2_stone_spx import (
             build_instance,
             case_mission,
@@ -956,8 +956,8 @@ class CommonScoringTests(unittest.TestCase):
 
     def test_the_scorer_reproduces_the_certified_upper_bound(self) -> None:
         from cpp_search.solvers.milp.stone_spx import solve_stone_grid_paths
-        from cpp_search.config import load_chapter_config
-        from cpp_search.options import RunOptions
+        from cpp_search.common.config import load_chapter_config
+        from cpp_search.common.options import RunOptions
         from cpp_search.experiments.ch2_stone_spx import (
             build_instance, case_mission, case_specs, case_target_specs,
         )

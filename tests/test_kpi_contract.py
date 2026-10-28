@@ -8,10 +8,10 @@ from __future__ import annotations
 
 import unittest
 
-from cpp_search.config import load_chapter_config
+from cpp_search.common.config import load_chapter_config
 from cpp_search.experiments import CHAPTER_MODULES
-from cpp_search.kpi import DIAGNOSTIC_KPI_KEYS, KPI_KEYS
-from cpp_search.options import RunOptions
+from cpp_search.reporting.kpi import DIAGNOSTIC_KPI_KEYS, KPI_KEYS
+from cpp_search.common.options import RunOptions
 from tests.test_experiments_smoke import _options, _reduced_config
 
 

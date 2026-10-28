@@ -23,9 +23,9 @@ for cand in ("Apple SD Gothic Neo", "AppleGothic", "NanumGothic", "Malgun Gothic
 # 10⁻¹ 의 빼기 기호가 두부 글자로 나왔다. mathtext 만 DejaVu 로 돌린다.
 plt.rcParams["mathtext.fontset"] = "dejavusans"
 
-from cpp_search.config import load_chapter_config
-from cpp_search.options import RunOptions
-from cpp_search.chapters.ch2_stone_spx import (
+from cpp_search.common.config import load_chapter_config
+from cpp_search.common.options import RunOptions
+from cpp_search.experiments.ch2_stone_spx import (
     build_instance, case_mission, case_specs, case_target_specs)
 from cpp_search.theory.path_constrained import search_free_marginals, PathConstrainedProblem
 from cpp_search.theory import transitions as top

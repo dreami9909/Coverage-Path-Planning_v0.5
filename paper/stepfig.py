@@ -26,9 +26,9 @@ T, J = len(paths[0]), len(paths)
 # 표적 존재확률을 옅게 깔아 배경으로 쓴다
 bel = None
 try:
-    from cpp_search.config import load_chapter_config
-    from cpp_search.options import RunOptions
-    from cpp_search.chapters.ch2_stone_spx import (
+    from cpp_search.common.config import load_chapter_config
+    from cpp_search.common.options import RunOptions
+    from cpp_search.experiments.ch2_stone_spx import (
         build_instance, case_mission, case_specs, case_target_specs)
     cfg = load_chapter_config("2"); m0, sensor = cfg.mission(), cfg.sensor()
     base = next(g for g in cfg.get("stone_spx.grid_conditions", []) if g.get("grid_kind") == "square")

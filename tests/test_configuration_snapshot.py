@@ -3,7 +3,7 @@ from hashlib import sha256
 from json import dumps, loads
 from pathlib import Path
 
-from cpp_search.config import ChapterConfig
+from cpp_search.common.config import ChapterConfig
 
 
 class ConfigurationSnapshotTests(unittest.TestCase):
@@ -110,8 +110,8 @@ class SeedLimitScopeTests(unittest.TestCase):
     """
 
     def test_declared_keys_match_what_each_chapter_reads(self) -> None:
-        from cpp_search.config import load_chapter_config
-        from cpp_search.runner import ALL_CHAPTERS, seed_limit_keys
+        from cpp_search.common.config import load_chapter_config
+        from cpp_search.experiments.runner import ALL_CHAPTERS, seed_limit_keys
 
         expected = {
             "1": (),
@@ -125,7 +125,7 @@ class SeedLimitScopeTests(unittest.TestCase):
                 self.assertEqual(seed_limit_keys(chapter, config), expected[chapter])
 
     def test_dotted_keys_reach_their_branch(self) -> None:
-        from cpp_search.runner import _apply_seed_limit
+        from cpp_search.experiments.runner import _apply_seed_limit
 
         config = ChapterConfig(
             "2", {"stone_spx": {"planning_seeds": [1, 2, 3]}}, {}, ()
@@ -136,7 +136,7 @@ class SeedLimitScopeTests(unittest.TestCase):
     def test_unread_keys_are_left_out_of_the_snapshot(self) -> None:
         """Chapter 2 는 evaluation 한도를 읽지 않는다 — 넣으면 지문만 흐린다."""
 
-        from cpp_search.runner import _apply_seed_limit
+        from cpp_search.experiments.runner import _apply_seed_limit
 
         config = ChapterConfig(
             "2", {"stone_spx": {"planning_seeds": [1, 2, 3]}}, {}, ()
@@ -148,7 +148,7 @@ class SeedLimitScopeTests(unittest.TestCase):
         self.assertNotIn("planning_seed_limit", config.data)
 
     def test_chapter_4_reads_the_evaluation_limit_not_the_planning_one(self) -> None:
-        from cpp_search.runner import _apply_seed_limit
+        from cpp_search.experiments.runner import _apply_seed_limit
 
         config = ChapterConfig(
             "4", {"stone_spx": {"planning_seeds": [1, 2, 3]}}, {}, ()
@@ -161,7 +161,7 @@ class SeedLimitScopeTests(unittest.TestCase):
     def test_a_chapter_without_a_limit_key_is_untouched(self) -> None:
         """Chapter 1 은 seed 를 쓰지 않는다. --seed-count 가 무엇도 바꾸면 안 된다."""
 
-        from cpp_search.runner import _apply_seed_limit
+        from cpp_search.experiments.runner import _apply_seed_limit
 
         config = ChapterConfig("1", {"motion_sensitivity": {}}, {}, ())
         _apply_seed_limit(config, "1", 2)
@@ -172,7 +172,7 @@ class RunLevelSummaryTests(unittest.TestCase):
     """한 번의 ``--chapter all`` 은 하나의 코드 상태를 가리켜야 한다."""
 
     def test_one_fingerprint_is_not_a_conflict(self) -> None:
-        from cpp_search.runner import _run_block
+        from cpp_search.experiments.runner import _run_block
 
         block = _run_block(
             {"1": {"code_fingerprint": "aaaa"}, "2": {"code_fingerprint": "aaaa"}},
@@ -183,7 +183,7 @@ class RunLevelSummaryTests(unittest.TestCase):
         self.assertEqual(block["code_fingerprint"], "aaaa")
 
     def test_split_fingerprints_are_reported_with_their_chapters(self) -> None:
-        from cpp_search.runner import _run_block
+        from cpp_search.experiments.runner import _run_block
 
         block = _run_block(
             {
@@ -199,7 +199,7 @@ class RunLevelSummaryTests(unittest.TestCase):
         self.assertEqual(block["fingerprints"], {"aaaa": ["1", "3"], "bbbb": ["2"]})
 
     def test_artifact_failures_are_recorded(self) -> None:
-        from cpp_search.runner import _artifact_error, _run_block
+        from cpp_search.experiments.runner import _artifact_error, _run_block
 
         self.assertIsNone(_artifact_error({"artifacts": {"files": ["a.png"]}}))
         self.assertEqual(
@@ -213,7 +213,7 @@ class RunLevelSummaryTests(unittest.TestCase):
         from io import StringIO
         from unittest.mock import patch
 
-        from cpp_search.runner import _print_summary
+        from cpp_search.experiments.runner import _print_summary
 
         headlines = {
             "1": {"runtime_s": 1.0, "status": "ok", "conditions": {}},
@@ -235,7 +235,7 @@ class ArtifactFailureExitTests(unittest.TestCase):
     def _run(self, directory, *extra):
         from unittest.mock import patch
 
-        from cpp_search.runner import main
+        from cpp_search.experiments.runner import main
 
         argv = [
             "--chapter", "1",
@@ -243,7 +243,7 @@ class ArtifactFailureExitTests(unittest.TestCase):
             *extra,
         ]
         with patch(
-            "cpp_search.figures.write_chapter_artifacts",
+            "cpp_search.reporting.figures.write_chapter_artifacts",
             side_effect=RuntimeError("boom"),
         ):
             return main(argv)
@@ -272,7 +272,7 @@ class ArtifactFailureExitTests(unittest.TestCase):
     def test_a_clean_run_returns_normally(self) -> None:
         from tempfile import TemporaryDirectory
 
-        from cpp_search.runner import main
+        from cpp_search.experiments.runner import main
 
         with TemporaryDirectory() as directory:
             main([
@@ -324,7 +324,7 @@ class FingerprintConflictExitTests(unittest.TestCase):
         from tempfile import TemporaryDirectory
         from unittest.mock import patch
 
-        from cpp_search import runner
+        from cpp_search.experiments import runner
 
         fingerprints = iter(("aaaaaaaaaaaaaaaa", "bbbbbbbbbbbbbbbb"))
         with TemporaryDirectory() as directory:
@@ -350,7 +350,7 @@ class FingerprintConflictExitTests(unittest.TestCase):
         from tempfile import TemporaryDirectory
         from unittest.mock import patch
 
-        from cpp_search import runner
+        from cpp_search.experiments import runner
 
         with TemporaryDirectory() as directory:
             with patch.object(runner, "ALL_CHAPTERS", ("1", "2")), patch.object(

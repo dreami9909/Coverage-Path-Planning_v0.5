@@ -16,7 +16,12 @@ scip = ["pyscipopt>=5.7,<6"]
 highs = ["highspy>=1.7,<2"]
 
 [project.scripts]
-cpp-research = "cpp_search.runner:main"
+cpp-research = "cpp_search.experiments.runner:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+# src-layout 을 pip install -e 없이도 import 가능하게 한다 (구 conftest.py 의 역할).
+pythonpath = ["src"]
+testpaths = ["tests"]

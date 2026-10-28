@@ -8,7 +8,7 @@
     (다) 셀 모형 탐지확률 수준에 따른 절대 차 — 거동별
 
 색 선과 표식은 본 표 규약(중심 경유)이다.
-자료: results/studies/gap-decomposition.json (tools/gap_decomposition.py, 입자 12만 실행)
+자료: results/studies/gap-decomposition.json (tools/audit/gap_decomposition.py, 입자 12만 실행)
       results/studies/mc2-rank-Tank-10.json   (같은 인스턴스의 계획 다섯 개, 공통 난수)
 간격은 각 계획을 낸 인증 결과 파일에서 읽고, 셀 모형 값이 자릿수까지 같은지로 짝을 확인한다.
 """

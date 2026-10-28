@@ -39,7 +39,7 @@ class TargetOperationalProfile:
     boundary_mode: str = "escape"
     #: 표적 운동모형. 기본은 IMM5 이고, ``isotropic`` 은 위치만 가진 무작위 방향
     #: 모형이다. 이산화 비가 운동모형에 달린 것인지 보려면 둘을 나란히 재야 한다
-    #: (``tools/iso_probe.py``, 본문 4.8절).
+    #: (``tools/probes/iso_probe.py``, 본문 4.8절).
     motion_model: str = "imm5"
     calibration_status: str = "uncalibrated research prior; track calibration pending"
 

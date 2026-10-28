@@ -1,8 +1,8 @@
 # 코드 구조
 
 수식별 구현 위치와 자동 추출한 의존 그래프는 [`MATH.md`](MATH.md)에 있다
-(`python3 tools/gen_math_doc.py`로 재생성). 각 모듈의 첫 docstring에도 그 파일이
-담당하는 수식과 위/아래 의존이 적혀 있다.
+(`make docs` = `python3 tools/report/gen_math_doc.py`로 재생성). 각 모듈의 첫
+docstring에도 그 파일이 담당하는 수식과 위/아래 의존이 적혀 있다.
 
 ## 두 계층
 
@@ -10,55 +10,69 @@
 
 > **"Chapter"나 "계획법"이라는 말이 필요 없으면 도메인 계층, 필요하면 연구 계층.**
 
+최상위에는 `__init__.py`·`__main__.py` 둘만 있고, 모든 모듈은 역할별 하위
+패키지 일곱 개 중 하나에 속한다 (2026-10-29 개편).
+
 ```
-src/cpp_search/models/          ← 도메인 계층: 세계를 기술한다 (구 core/)
+src/cpp_search/
 │
-├── models.py                   Point2D, SensorSpec, MissionConfig, PathSegment, Route
-├── geometry.py                 극좌표 <-> 월드좌표
-├── search_envelope.py          LM weave + EO/IR 주사 = 지지반폭 400 m, W = ∫PD(x)dx
-├── motion.py                   IMM5 표적 운동(HALT/저속CV/고속CV/CTRV/기동), 진리 궤적
-├── probability.py              표적 사전확률, 극좌표 확률지도
-├── belief.py                   로그오즈 증거지도 / 정규화 위치지도 / POC·POD·POS
-├── particle_filter.py          SIR PF: 예측·음성관측·재표본추출·roughening·격자투영
-├── sensor_observation.py       Tank/TEL 시그니처, EO/IR 성능, 공간 탐지모델(P_D, LOS)
-├── terrain.py                  합성 지형: 기동성·은폐·관측성 가중치
-├── profiles.py                 Tank/TEL 운용 프로파일 = 시그니처 + IMM5
-├── evaluation.py               경로 기하 KPI
-├── simulation.py               Monte Carlo 진리 생성 + 탐지시간 -> PerformanceMetrics
+├── models/                     ← 도메인 계층: 세계를 기술한다 (구 core/)
+│   ├── models.py               Point2D, SensorSpec, MissionConfig, PathSegment, Route
+│   ├── geometry.py             극좌표 <-> 월드좌표
+│   ├── search_envelope.py      LM weave + EO/IR 주사 = 지지반폭 400 m, W = ∫PD(x)dx
+│   ├── motion.py               IMM5 표적 운동(HALT/저속CV/고속CV/CTRV/기동), 진리 궤적
+│   ├── probability.py          표적 사전확률, 극좌표 확률지도
+│   ├── belief.py               로그오즈 증거지도 / 정규화 위치지도 / POC·POD·POS
+│   ├── particle_filter.py      SIR PF: 예측·음성관측·재표본추출·roughening·격자투영
+│   ├── sensor_observation.py   Tank/TEL 시그니처, EO/IR 성능, 공간 탐지모델(P_D, LOS)
+│   ├── terrain.py              합성 지형: 기동성·은폐·관측성 가중치
+│   ├── profiles.py             Tank/TEL 운용 프로파일 = 시그니처 + IMM5
+│   ├── evaluation.py           경로 기하 KPI
+│   ├── simulation.py           Monte Carlo 진리 생성 + 탐지시간 -> PerformanceMetrics
+│   ├── truth.py                진리 표적 앙상블 — 거동배정·지형결합·경계처리
+│   └── aoi.py                  AOI 포함률 사이징 + step_s / halt boost 민감도
 │
-└── (src/cpp_search 바로 아래)  ← 연구 계층: 연구를 수행한다
-    ├── config.py               실험 조건 로딩 (명령행 > config 파일 > 코드 기본값)
-    ├── options.py              해석이 끝난 실행 옵션
-    ├── truth.py                진리 표적 앙상블 — 거동배정·지형결합·경계처리
-    ├── aoi.py                  AOI 포함률 사이징 + step_s / halt boost 민감도
-    ├── kpi.py                  공통 KPI 블록 (5개 순위지표 + 이탈률·면적당탐지)
-    ├── reliability.py          부트스트랩 구간, 짝지은 비교, MC 설계 충분성
-    ├── figures.py              CSV·PNG 산출
-    ├── runner.py               CLI -> config -> 챕터 디스패치 -> JSON
-    │
-    ├── theory/                 경로제약 아래에서 무엇이 최적인가
-    │   ├── path_constrained.py 미탐지 질량 재귀(기준 평가함수), hazard 합,
-    │   │                       team H1/H2 후퇴지평 (**SPX warm start 전용**)
-    │   ├── stone_path.py       Stone(2016) SP1/SPX 절단평면 + 최적성 인증
-    │   └── markov.py           입자 belief -> 시공간 Markov 모델, 셀 도달가능성
-    │
-    ├── solvers/milp/           belief 를 축소 문제로, 그 답을 비행경로로
-    │   ├── terrain_belief.py   지형결합 IMM5 입자 belief (**공통 입력**)
-    │   ├── stone_spx.py        인스턴스 구축 / 절단평면 해법 / 진단 포장
-    │   └── routes.py           셀 경로 -> 시간예산이 맞는 평행소인 (**공통 변환**)
-    │
-    ├── solvers/mappo/          MAPPO 로 Stone 을 해석한다
-    │   ├── nets.py             의존성 없는 합성곱/선형 블록
-    │   ├── mappo.py            CTDE MAPPO 학습규칙 (GAE, 중앙비평자, PPO 클리핑)
-    │   ├── spx_env.py          StoneGridInstance -> 다중에이전트 환경
-    │   └── spx_policy.py       학습 루프 + SPX 대비 비교
-    │
-    └── experiments/            챕터 하나에 모듈 하나
-        ├── ch1_evaluation.py               평가도 / 탐색기 스펙 정의
-        ├── ch2_stone_spx.py                SPX + 지형 가중 + 최적성 인증
-        ├── ch2_studies.py                  Ch2 연구 측정 (챕터와 같은 코드 경유)
-        ├── ch3_mappo_stone.py              MAPPO 로 Stone 해석
-        └── ch4_synthetic_terrain.py        합성지형 실비행 결과
+├── common/                     ← 공용 지원: 어느 계층에도 속하지 않고 모두가 쓴다
+│   ├── config.py               실험 조건 로딩 (명령행 > config 파일 > 코드 기본값)
+│   └── options.py              해석이 끝난 실행 옵션
+│
+├── theory/                     경로제약 아래에서 무엇이 최적인가
+│   ├── path_constrained.py     미탐지 질량 재귀(기준 평가함수), hazard 합,
+│   │                           team H1/H2 후퇴지평 (**SPX warm start 전용**)
+│   ├── stone_path.py           Stone(2016) SP1/SPX 절단평면 + 최적성 인증
+│   ├── transitions.py          셀 전이 구조
+│   └── markov.py               입자 belief -> 시공간 Markov 모델, 셀 도달가능성
+│
+├── solvers/
+│   ├── milp/                   belief 를 축소 문제로, 그 답을 비행경로로
+│   │   ├── terrain_belief.py   지형결합 IMM5 입자 belief (**공통 입력**)
+│   │   ├── stone_spx.py        인스턴스 구축 / 절단평면 해법 / 진단 포장
+│   │   ├── continuous_mc.py    모형 밖 연속 MC 평가
+│   │   └── routes.py           셀 경로 -> 시간예산이 맞는 평행소인 (**공통 변환**)
+│   └── mappo/                  MAPPO 로 Stone 을 해석한다
+│       ├── nets.py             의존성 없는 합성곱/선형 블록
+│       ├── mappo.py            CTDE MAPPO 학습규칙 (GAE, 중앙비평자, PPO 클리핑)
+│       ├── continuous_env.py   연속 공간 학습 환경
+│       ├── spx_env.py          StoneGridInstance -> 다중에이전트 환경
+│       └── spx_policy.py       학습 루프 + SPX 대비 비교
+│
+├── reporting/                  ← 보고: 결과를 읽는 쪽
+│   ├── kpi.py                  공통 KPI 블록 (5개 순위지표 + 이탈률·면적당탐지)
+│   ├── reliability.py          부트스트랩 구간, 짝지은 비교, MC 설계 충분성
+│   └── figures.py              CSV·PNG 산출
+│
+├── experiments/                챕터 하나에 모듈 하나 + 러너
+│   ├── runner.py               CLI -> config -> 챕터 디스패치 -> JSON
+│   ├── ch1_evaluation.py       평가도 / 탐색기 스펙 정의
+│   ├── ch2_stone_spx.py        SPX + 지형 가중 + 최적성 인증
+│   ├── ch2_studies.py          Ch2 연구 측정 (챕터와 같은 코드 경유)
+│   ├── ch3_mappo_stone.py      MAPPO 로 Stone 해석
+│   └── ch4_synthetic_terrain.py 합성지형 실비행 결과
+│
+└── pipeline/                   시나리오 TOML -> Model -> Solver -> Output
+    ├── scenario.py             시나리오 해석·검증·탐색기 프리셋
+    ├── run.py                  실행 — results/runs/<name>/
+    └── figures.py              시나리오 그림
 ```
 
 ## 의존 방향
@@ -76,7 +90,9 @@ experiments -> solvers.mappo -> solvers.milp -> theory -> models(도메인)
   아니라 **존재 확인**으로 검사한다.
 - 반대 방향은 금지다. `planning`이 `learning`을 읽기 시작하면 계획법이 학습을
   알게 되고, 두 계획법을 같은 인스턴스로 비교한다는 전제가 무너진다.
-- `runner`만 예외적으로 전 계층을 본다 (챕터를 디스패치해야 하므로).
+- `common`(설정·옵션)과 `reporting`(지표·그림)은 사다리 밖 지원 계층이다 —
+  실행 계층(experiments·pipeline)을 import 하지 않는다.
+- `experiments/runner`는 실행 계층이므로 전 계층을 본다 (챕터를 디스패치해야 하므로).
 
 `tests/test_architecture.py`가 이 규칙을 코드로 검사한다.
 
@@ -99,17 +115,17 @@ v0.4의 핵심 주장은 "Stone SPX와 MAPPO를 같은 자로 쟀다"는 것이�
 | 하고 싶은 일 | 손댈 곳 |
 |---|---|
 | 실험 조건(격자, seed, 학습 하이퍼파라미터) 변경 | `config/chapter*.json` — 코드는 건드리지 않는다 |
-| 초기 belief 종류/오차 변경 | `config/common_experiment.json`의 `aoi.cue_ring.kind`(moving-ring/tp-centered)·`sigma_m` — `truth.cue_prior`가 읽는다 |
+| 초기 belief 종류/오차 변경 | `config/common_experiment.json`의 `aoi.cue_ring.kind`(moving-ring/tp-centered)·`sigma_m` — `models/truth.cue_prior`가 읽는다 |
 | 표적별 계획 hazard 켜기/끄기 | `stone_spx.target_hazard_from_signature` — 켜면 `chapter2.signature_hazard_multipliers`가 Ch1 소인폭 표에서 유도 |
-| 비행/표적 시간(현재 480 s) 변경 | `config/common_experiment.json`의 `mission.mission_time_s` + `tools/size_aoi.py --horizon-s <s> --apply`로 AOI 재측정 (둘을 같이 바꾸지 않으면 포함률 99% 주장이 깨진다) |
+| 비행/표적 시간(현재 480 s) 변경 | `config/common_experiment.json`의 `mission.mission_time_s` + `tools/runs/size_aoi.py --horizon-s <s> --apply`로 AOI 재측정 (둘을 같이 바꾸지 않으면 포함률 99% 주장이 깨진다) |
 | 새 격자 조건 추가 | `config`의 `grid_conditions` 배열 |
 | 지형 가중이 들어가는 지점 변경 | `solvers/milp/terrain_belief.py`의 `BeliefTerrainCoupling` (사전·전이. hazard 관측성은 합성지형에서 항상 1.0) |
 | SPX 제약 추가 (점유·분리·양립불가) | `theory/stone_path.py`의 `stone_spx_cutting_plane` |
 | MAPPO 관측·보상 변경 | `solvers/mappo/spx_env.py` |
 | 새 계획법 추가 | `StoneGridInstance`를 받아 `StoneGridPathSolution`을 돌려주는 함수 하나 + `route_plan_from_solution` |
 | 지형 대조군의 solver 한도만 바꾸기 | `config`의 `terrain_unweighted_overrides` |
-| 새 KPI 추가 | `src/cpp_search/kpi.py` 의 `mission_kpi` + `KPI_KEYS` |
-| 새 그림 추가 | `src/cpp_search/figures.py` 의 `_chapterN_artifacts` |
+| 새 KPI 추가 | `src/cpp_search/reporting/kpi.py` 의 `mission_kpi` + `KPI_KEYS` |
+| 새 그림 추가 | `src/cpp_search/reporting/figures.py` 의 `_chapterN_artifacts` |
 
 **새 계획법을 추가할 때 `StoneGridInstance`를 우회하면 안 된다.** 우회하면 그
 계획법은 다른 문제를 푼 것이고, 결과표에 나란히 실을 수 없다.

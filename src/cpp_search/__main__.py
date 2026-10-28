@@ -1,4 +1,4 @@
-from cpp_search.runner import main
+from cpp_search.experiments.runner import main
 
 
 if __name__ == "__main__":

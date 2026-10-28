@@ -25,8 +25,8 @@ from typing import Any, Iterable, Sequence
 import numpy as np
 
 from cpp_search.models.models import MissionConfig, SensorSpec
-from cpp_search.config import ChapterConfig
-from cpp_search.options import RunOptions
+from cpp_search.common.config import ChapterConfig
+from cpp_search.common.options import RunOptions
 from cpp_search.solvers.milp.stone_spx import StoneGridInstance, solve_stone_grid_paths
 from cpp_search.theory.stone_path import _nondetection_value_gradient, _target_path_hazard
 from cpp_search.experiments.ch2_stone_spx import (
@@ -148,7 +148,7 @@ def published_instance(
         seed=int(seed),
         terrain_weighting=True,
         # 표적을 직접 주면 그대로 쓴다 — 운동모형만 바꾼 대조군을 세울 때다
-        # (``tools/iso_probe.py``). 주지 않으면 케이스 선언에서 만든다.
+        # (``tools/probes/iso_probe.py``). 주지 않으면 케이스 선언에서 만든다.
         targets=case_target_specs(config, block) if targets is None else targets,
     )
 

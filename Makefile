@@ -44,24 +44,24 @@ all:    ## 1~4 순차 실행 + results/summary.json
 
 ## ---------------------------------------------------------------- 연구 측정
 mappo1: ## 1단계 — 학습 정책을 인증된 최적해와 같은 자로 (results/studies/mappo1-*)
-	$(PY) tools/run_mappo_stage1.py
-	$(PY) tools/mappo_stage1_table.py
+	$(PY) tools/runs/run_mappo_stage1.py
+	$(PY) tools/report/mappo_stage1_table.py
 
 mappo2: ## 2단계 — 연속 공간에서 보상을 받은 정책, 항적 규약 둘 (results/studies/mappo2*-*, entry-*)
-	$(PY) tools/continuous_env_check.py
-	$(PY) tools/run_mappo_stage2.py
-	ENV_ENTRY=centre-sync $(PY) tools/run_mappo_stage2.py
-	$(PY) tools/entry_probe.py
-	$(PY) tools/mappo2_rescore.py
-	RESCORE_ENTRY=centre-sync $(PY) tools/mappo2_rescore.py
+	$(PY) tools/audit/continuous_env_check.py
+	$(PY) tools/runs/run_mappo_stage2.py
+	ENV_ENTRY=centre-sync $(PY) tools/runs/run_mappo_stage2.py
+	$(PY) tools/probes/entry_probe.py
+	$(PY) tools/runs/mappo2_rescore.py
+	RESCORE_ENTRY=centre-sync $(PY) tools/runs/mappo2_rescore.py
 
 mappo3: ## 3단계 — 셀 안 항로까지 정책이 고른다 (results/studies/mappo3-*, mappo2 뒤에)
-	$(PY) tools/run_mappo_stage3.py Tank-4 Tank-8 Tank-10
+	$(PY) tools/runs/run_mappo_stage3.py Tank-4 Tank-8 Tank-10
 
 track-audit: ## 평가기가 깐 항적이 계획대로 나는지 감사 (results/studies/track-audit*-*)
-	$(PY) tools/track_audit.py
-	AUDIT_ENTRY=centre-sync $(PY) tools/track_audit.py
-	AUDIT_ENTRY=centre $(PY) tools/track_audit.py
+	$(PY) tools/audit/track_audit.py
+	AUDIT_ENTRY=centre-sync $(PY) tools/audit/track_audit.py
+	AUDIT_ENTRY=centre $(PY) tools/audit/track_audit.py
 
 ## ---------------------------------------------------------------- 검증
 test:       ## 전체 테스트 (약 5분)
@@ -83,11 +83,11 @@ check:      ## 정합성 점검 — 저장소 밖 절대경로와 낡은 이름�
 	  || (echo "  ↑ 개명 전 이름이 남아 있다"; exit 1)
 	@echo "  없음"
 	@echo "── MATH.md 가 코드와 붙어 있는가"
-	@$(PY) tools/gen_math_doc.py 2>&1 | grep -c MISS | xargs -I{} sh -c '[ {} -eq 0 ] && echo "  MISS 0" || (echo "  MISS {} 건 — make docs 로 재생성"; exit 1)'
+	@$(PY) tools/report/gen_math_doc.py 2>&1 | grep -c MISS | xargs -I{} sh -c '[ {} -eq 0 ] && echo "  MISS 0" || (echo "  MISS {} 건 — make docs 로 재생성"; exit 1)'
 
 ## ---------------------------------------------------------------- 문서·논문
 docs:       ## docs/MATH.md 재생성 (수식 ↔ 코드 연결 검사 포함)
-	$(PY) tools/gen_math_doc.py
+	$(PY) tools/report/gen_math_doc.py
 
 figures:    ## 논문 그림 재생성 → paper/fig/
 	$(PY) paper/make_figs.py

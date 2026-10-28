@@ -16,7 +16,7 @@
      매 슬라이스의 항법 지점으로 쓴 탓이며, 인증된 계획에서 체류 슬라이스의
      18~30 % 를 그 복귀 비행이 먹었다. 이제 있던 자리에서 회로를 이어 간다
      (2026-09-27). 소인 거리가 계획에 따라 2~36 % 늘고, 체류가 긴 계획일수록
-     많이 늘어난다 (``tools/dwell_probe.py``).
+     많이 늘어난다 (``tools/probes/dwell_probe.py``).
 
   5) 셀을 옮길 때 지금 위치에서 **다음 셀의 중심**까지 날아간 뒤 회로를 시작했다.
      회로 위 위치가 멀면 그 거리가 한 슬라이스에 날 수 있는 거리를 넘는데,
@@ -24,10 +24,10 @@
      (인증된 계획에서 이동의 18~27 % 가 지각, 최대 0.57 슬라이스). 이제 다음
      셀의 **가장 가까운 차선 끝**으로 들어가 그 자리에서 회로를 시작하고,
      슬라이스마다 정확히 한 슬라이스 분량만 난다 (2026-10-05,
-     ``tools/track_audit.py``). 옛 규약은 ``entry="centre"`` 로 남겨 둔다.
+     ``tools/audit/track_audit.py``). 옛 규약은 ``entry="centre"`` 로 남겨 둔다.
 
 ``planning/continuous_mc.py`` 가 이 항적으로 탐지를 계산한다. 항적이 계획대로
-나는지는 ``tools/track_audit.py`` 와 ``tests/test_searcher_track.py`` 가 확인한다.
+나는지는 ``tools/audit/track_audit.py`` 와 ``tests/test_searcher_track.py`` 가 확인한다.
 """
 import numpy as np
 from math import hypot
@@ -159,7 +159,7 @@ def build_windows(path, start_state, grid, *, transit_speed, search_speed,
                    정확히 한 슬라이스 분량만 난다. 못 닿으면 다음 슬라이스가 남은
                    거리를 먼저 날고 그만큼 덜 쓴다. **경로는 이전 규약 그대로 두고
                    시간 계산만 고친 것**으로, 결함 수정의 몫과 진입점 변경의 몫을
-                   가르는 대조용이다 (``tools/entry_probe.py``).
+                   가르는 대조용이다 (``tools/probes/entry_probe.py``).
         "centre"   그 셀의 중심까지 간 뒤 중심에서 회로를 시작한다. 2026-10-05
                    이전의 규약이며 **지각 결함**(머리말 5)이 그대로 들어 있다.
                    결함의 크기를 재는 대조용으로만 쓴다. 아래 ``dwell_from_centre``
@@ -179,12 +179,12 @@ def build_windows(path, start_state, grid, *, transit_speed, search_speed,
     ``start_xy`` 는 임무를 시작하는 **실제 위치**다. 주지 않으면 출발 셀의 중심에서
     시작한다 — 셀 모형이 그렇게 전제하기 때문이다. 실제 출발점(발사 고리 위의 점)은
     셀 중심에서 격자가 거칠수록 멀리 떨어져 있으므로, 그 반올림이 결과를 얼마나
-    움직이는지 재려면 이 값을 준다 (``tools/start_probe.py``). ``entry="centre"`` 는
+    움직이는지 재려면 이 값을 준다 (``tools/probes/start_probe.py``). ``entry="centre"`` 는
     받지 않는다.
 
     ``ledger`` 에 빈 리스트를 주면 슬라이스마다 장부 한 줄을 적어 준다 — 그
     슬라이스에 깐 항적 길이와, 슬라이스 끝에서 계획보다 얼마나 뒤처졌는지
-    (``lag_m``). 항적 자체는 바뀌지 않는다 (``tools/track_audit.py``).
+    (``lag_m``). 항적 자체는 바뀌지 않는다 (``tools/audit/track_audit.py``).
     """
     T = len(path)
     lanes = ([float(lane_m)] * T if np.isscalar(lane_m)

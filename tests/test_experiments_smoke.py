@@ -14,9 +14,9 @@ from __future__ import annotations
 import unittest
 from math import log
 
-from cpp_search.config import load_chapter_config
+from cpp_search.common.config import load_chapter_config
 from cpp_search.experiments import CHAPTER_MODULES
-from cpp_search.options import RunOptions
+from cpp_search.common.options import RunOptions
 
 
 def _options(**overrides) -> RunOptions:

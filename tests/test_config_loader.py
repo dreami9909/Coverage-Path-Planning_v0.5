@@ -11,14 +11,14 @@ import json
 import unittest
 from pathlib import Path
 
-from cpp_search.config import (
+from cpp_search.common.config import (
     CHAPTER_CONFIG_FILES,
     COMMON_CONFIG_FILE,
     find_config_root,
     load_chapter_config,
 )
 from cpp_search.experiments import CHAPTER_MODULES
-from cpp_search.runner import ALL_CHAPTERS, SEED_LIMIT_KEYS
+from cpp_search.experiments.runner import ALL_CHAPTERS, SEED_LIMIT_KEYS
 
 
 class ConfigInventoryTests(unittest.TestCase):

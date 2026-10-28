@@ -12,6 +12,9 @@ mappo 를 읽기 시작하면 "계획법이 학습을 안다"가 되어, 두 계
 2026-09-16 구조 개편: ``research/`` 한 단을 없애고 도메인 모형을 모았다.
 2026-10-28 구조 개편: core→models, planning→solvers/milp, learning→solvers/mappo,
 chapters→experiments.
+2026-10-29 구조 개편: 패키지 최상위의 낱개 모듈을 전부 하위 패키지로 —
+aoi·truth→models, config·options→common, kpi·reliability·figures→reporting,
+runner→experiments. 최상위에는 ``__init__``·``__main__`` 만 남는다.
 계층 규칙 자체는 그대로다 (내부 계층명 planning/learning 은 유지).
 """
 
@@ -27,18 +30,9 @@ SOURCE_ROOT = Path(__file__).resolve().parents[1] / "src" / "cpp_search"
 #: 각 계층이 import 해도 되는 상위 계층 (자기 계층과 아래는 항상 허용).
 LAYER_ORDER = ("domain", "theory", "planning", "learning", "chapters")
 
-RUNNER_MODULES = {"runner", "__init__", "figures"}
-
-#: ``python -m cpp_search`` 진입점. 챕터를 디스패치해야 하므로 러너를 읽는다.
-#: 도메인 규칙의 유일한 예외이고, 예외인 이유를 여기 적어 둔다.
+#: ``python -m cpp_search`` 진입점. 챕터를 디스패치해야 하므로 러너(chapters)를 읽는다.
+#: 계층 규칙의 유일한 예외이고, 예외인 이유를 여기 적어 둔다.
 ENTRY_POINT_MODULES = {"__main__"}
-
-
-#: 계층에 속하지 않는 공통 지원 모듈. 사다리에 놓지 않고 따로 다룬다.
-SUPPORT_MODULES = {
-    "aoi", "config", "figures", "kpi", "options", "reliability", "runner",
-    "truth", "__init__", "__main__",
-}
 
 
 def _layer(module: str) -> str:
@@ -57,8 +51,8 @@ def _layer(module: str) -> str:
         return head
     if head in {"experiments", "pipeline"}:
         return "chapters"  # 계층 라벨은 유지 — 둘 다 최상단 실행 계층
-    if head in SUPPORT_MODULES:
-        return "support"
+    # common(설정·옵션)·reporting(지표·그림)과 최상위 __init__/__main__ —
+    # 사다리에 놓지 않고 따로 다룬다.
     return "support"
 
 
@@ -164,7 +158,7 @@ class LayerRuleTests(unittest.TestCase):
 
     def test_support_modules_do_not_depend_on_chapters(self) -> None:
         for module, imports in self.graph.items():
-            if _layer(module) != "support" or module in RUNNER_MODULES:
+            if _layer(module) != "support" or module in ENTRY_POINT_MODULES:
                 continue
             offending = sorted(
                 name for name in imports if _layer(name) == "chapters"

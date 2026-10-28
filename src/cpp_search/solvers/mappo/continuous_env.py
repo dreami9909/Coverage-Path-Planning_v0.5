@@ -26,7 +26,7 @@
 
 표적 궤적은 계획에 의존하지 않으므로 학습 내내 **한 번만** 전개해 캐시한다
 (공통 난수). 래스터 해상도와 슬라이스 분할이 만드는 오차는 승인된 평가기와
-직접 대조해 보고한다 (``tools/continuous_env_check.py``).
+직접 대조해 보고한다 (``tools/audit/continuous_env_check.py``).
 """
 from __future__ import annotations
 
@@ -188,7 +188,7 @@ def build_particle_traces(instance, targets, *, mission, prior, terrain_coupling
     (셀 모형과 같은 ``stepping="model"``), 같은 순서(hazard 를 먼저 재고 그다음에 민다).
     조각 수를 평가기와 같게 두면 (``sub_slices`` = ``round(slice_s / dt_s)``) 입자 표본까지
     똑같아진다. 전에는 여기서 따로 5 초씩 전개했고, 그 표적은 셀 모형의 표적과 달랐다
-    (2026-10-08 수정, ``tools/target_step_probe.py``).
+    (2026-10-08 수정, ``tools/probes/target_step_probe.py``).
     """
 
     from cpp_search.solvers.milp.continuous_mc import particle_trace

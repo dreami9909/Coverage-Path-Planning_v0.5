@@ -8,15 +8,15 @@
 import unittest
 from dataclasses import replace
 
-from cpp_search.aoi import (
+from cpp_search.models.aoi import (
     containment_radius_m,
     describe,
     end_radius_samples,
     halt_boost_sweep,
     step_sensitivity,
 )
-from cpp_search.config import load_chapter_config
-from cpp_search.truth import cue_prior
+from cpp_search.common.config import load_chapter_config
+from cpp_search.models.truth import cue_prior
 
 
 class AoiSizingTests(unittest.TestCase):

@@ -63,8 +63,8 @@ from cpp_search.models.motion import (
     STOP_HEAVY_PROFILE,
 )
 from cpp_search.models.terrain import build_synthetic_terrain
-from cpp_search.config import ChapterConfig
-from cpp_search.options import RunOptions
+from cpp_search.common.config import ChapterConfig
+from cpp_search.common.options import RunOptions
 from cpp_search.solvers.milp.stone_spx import (
     StoneGridInstance,
     StoneSPXRouteConfig,
@@ -73,8 +73,8 @@ from cpp_search.solvers.milp.stone_spx import (
     build_stone_grid_instance,
     solve_stone_grid_paths,
 )
-from cpp_search.reliability import ReliabilityCriteria, paired_metric_report
-from cpp_search.truth import cue_prior, target_profile
+from cpp_search.reporting.reliability import ReliabilityCriteria, paired_metric_report
+from cpp_search.models.truth import cue_prior, target_profile
 
 
 def searcher_classes(

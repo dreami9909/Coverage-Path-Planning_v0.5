@@ -163,7 +163,7 @@ def particle_trace(instance, target, index, *, mission, prior, terrain_coupling,
     정지 모드로 끌어당기는 확률, 선회율의 감쇠)이 있어서, 잘게 부를수록 정지가 늘고
     순변위가 줄어든다 (Tank 8x8 에서 정지 모드 비율 0.11 대 0.27, 순변위 −16 %).
     선언된 모형은 적분 간격으로 정의되어 있고 셀 모형이 그것을 쓴다.
-    ``tools/target_step_probe.py`` 가 두 전개의 차이를 잰다.
+    ``tools/probes/target_step_probe.py`` 가 두 전개의 차이를 잰다.
     """
     if stepping not in ("fine", "model"):
         raise ValueError("stepping 은 'fine' | 'model' 이다")
@@ -264,7 +264,7 @@ def evaluate(instance, targets, plans, *, mission, prior, terrain_coupling,
         "centre-sync"  셀 중심까지 간 뒤 중심에서 회로를 시작하되, 슬라이스마다 정확히
                    한 슬라이스 분량만 난다 (기본, 2026-10-08). 셀 모형이 가정한 경로
                    (중심에서 중심으로)를 그대로 그린 것이라 본 표와 인증 판정에 쓴다.
-                   출발점을 흔들어도 거의 흔들리지 않는다 (``tools/start_probe.py``).
+                   출발점을 흔들어도 거의 흔들리지 않는다 (``tools/probes/start_probe.py``).
         "nearest"  가장 가까운 차선 끝으로 들어가 거기서 회로를 시작한다. 실제 비행에
                    가까워 PD 가 더 나오지만 출발점에 민감하다 — **참고 열**로 나란히 싣는다.
         "centre"   셀 중심까지 간 뒤 회로를 시작한다. 이전 규약이며 지각 결함이
@@ -281,7 +281,7 @@ def evaluate(instance, targets, plans, *, mission, prior, terrain_coupling,
         "cell"  출발 셀의 중심. 셀 모형이 계획을 세울 때의 전제이며, 격자가 거칠수록
                 실제 위치에서 멀다 (4x4 에서 최대 2.8 km). 그 영향을 재는 비교용.
         좌표 열  탐색자마다 (x, y) 하나씩. 출발점을 임의로 흔들어 볼 때 쓴다.
-    둘의 차이와 흔들림의 크기는 ``tools/start_probe.py`` 가 잰다.
+    둘의 차이와 흔들림의 크기는 ``tools/probes/start_probe.py`` 가 잰다.
 
     ``target_stepping`` 은 표적 입자를 전개하는 간격이다 (``particle_trace``). 기본
     "model" 은 셀 모형과 같은 간격이고, "fine" 은 2026-10-08 이전의 5 초 전개다.

@@ -104,7 +104,7 @@ def mc2_values(c):
 
 
 def start_spread(c, entry):
-    """출발점을 출발 셀 안에서 흔들었을 때 최저 PD 의 표준편차 (tools/start_probe.py). 없으면 None."""
+    """출발점을 출발 셀 안에서 흔들었을 때 최저 PD 의 표준편차 (tools/probes/start_probe.py). 없으면 None."""
     d = c["start"]
     if not d:
         return None

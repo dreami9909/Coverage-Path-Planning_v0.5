@@ -3,7 +3,7 @@
 figure1 — 가중치 지도: 기동성·은닉 지형 가중과 초기 belief 셀 질량.
 figure2 — step 별 비행체 이동: 셀 중심 경유 본 항적 (항적 규약) + 실제 발진 지점.
 
-챕터 그림(`cpp_search.figures`)과 같은 폰트·저장 규칙을 쓴다.
+챕터 그림(`cpp_search.reporting.figures`)과 같은 폰트·저장 규칙을 쓴다.
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from cpp_search.figures import _configure_korean_font, _text
+from cpp_search.reporting.figures import _configure_korean_font, _text
 from cpp_search.models.terrain import TerrainField
 from cpp_search.solvers.milp.stone_spx import StoneGridInstance, StoneSPXRoutePlan
 

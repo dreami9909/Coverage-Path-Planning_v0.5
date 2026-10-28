@@ -26,7 +26,7 @@ Tank/TEL 표적을 6대의 무인기로 찾는 문제에서, **경로제약 다�
 | 비행·표적 이동 시간 | **480 s** | 운용 요구 |
 | 비행속도 | **160 kph** (탐색 구간은 weave로 중심선 39.0 m/s) | 기체 성능 |
 | 탐색자 | **정상기 6대** (동일 → 등급 집계로 순열 대칭 제거) | 운용 구성 |
-| AOI | **TP 중심 반경 4,784 m** = 480 s 순변위 99% (TEL 결정) | `tools/size_aoi.py --rule net-displacement` |
+| AOI | **TP 중심 반경 4,784 m** = 480 s 순변위 99% (TEL 결정) | `tools/runs/size_aoi.py --rule net-displacement` |
 | 초기 belief | **tp-centered, σ = 500 m** (TP 정보 오차) | 선언 가정; 이 오차로 실제 포함률 97~98%, 이탈은 `escape_rate`로 보고 |
 | 계획 hazard | **표적별 W** (Tank 0.874 · TEL 0.867 × 기하 400 m) | 실비행과 같은 공간 탐지모델 |
 | polar 격자 | 600 m × 방위 N구간, **24슬라이스(20 s)**, 입자 3,000 | 방위 N은 민감도 실험으로 확정 |
@@ -37,7 +37,7 @@ Tank/TEL 표적을 6대의 무인기로 찾는 문제에서, **경로제약 다�
 ## 시간축과 평가지표 (2026-09-13 변경)
 
 - **표적이 움직이는 시간 = 비행 시간 = 8분 (480 s).** AOI 반경은 TP 기준
-  순변위(|x(T)−x(0)|)의 99% 분위수로 잰다 (`tools/size_aoi.py --rule
+  순변위(|x(T)−x(0)|)의 99% 분위수로 잰다 (`tools/runs/size_aoi.py --rule
   net-displacement --apply`, 결과는 `config/common_experiment.json`의 `aoi.measured`).
 - **헤드라인 지표는 둘이다.** 비행 전체에서 탐지된 표적 비율(**탐지율**,
   `detection_probability_within_limit` — 한계시간이 곧 비행 종료라 별도의
@@ -101,27 +101,27 @@ MAPPO는 SPX의 실행가능집합을 **넘지 않는다**. 행동 후보가 인
 
 ## 실행
 
-패키지는 `src/cpp_search/`에 있는 src-layout이다. `run_research.py`가 실행 시
-`src`를 `sys.path`에 직접 넣으므로 **환경변수 없이 그냥 실행하면 된다.**
-IDE의 실행/디버그 버튼도 그대로 동작한다.
+패키지는 `src/cpp_search/`에 있는 src-layout이다. `make` 타깃이
+`PYTHONPATH=src`를 스스로 붙이므로 **설치 없이 그대로 실행하면 된다**
+(`make install`로 editable 설치하면 `PYTHONPATH`도 필요 없다).
 
 ```bash
-python3 run_research.py --chapter 1
-python3 run_research.py --chapter 2
-python3 run_research.py --chapter 3
-python3 run_research.py --chapter 4
+make ch1    # = PYTHONPATH=src python3 -m cpp_search --chapter 1
+make ch2
+make ch3
+make ch4
 ```
 
 전부 한 번에 돌리고 요약표 + `results/summary.json` 생성:
 
 ```bash
-python3 run_research.py --chapter all
+make all
 ```
 
 빠른 확인이 필요할 때만 명령행으로 조건을 낮춘다:
 
 ```bash
-python3 run_research.py --chapter 3 --seed-count 1 --episodes 10
+PYTHONPATH=src python3 -m cpp_search --chapter 3 --seed-count 1 --episodes 10
 ```
 
 **조건을 낮춘 결과는 성능 주장에 쓸 수 없다.** 결과에
@@ -249,7 +249,7 @@ python3 -m pytest
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — 계층 구조, 의존 규칙,
   "어디에 무엇을 추가하나", v0.3에서 뺀 것과 고친 것
 - [`docs/MATH.md`](docs/MATH.md) — 수식 -> 구현 위치(파일:줄) 색인 77개 +
-  자동 추출 의존 그래프. `python3 tools/gen_math_doc.py`로 재생성
+  자동 추출 의존 그래프. `make docs`로 재생성
 
 ## 문제 해결
 
@@ -257,9 +257,9 @@ python3 -m pytest
 
 `src`가 `sys.path`에 없을 때 나온다.
 
-- `run_research.py`를 실행했는데도 난다면 저장소의
-  `src/cpp_search/__init__.py`가 없거나 파일이 저장소 밖으로 복사된 경우다.
-  저장소 루트에서 실행한다.
+- `make` 타깃과 `pytest`는 각각 `PYTHONPATH=src`와 pyproject의
+  `tool.pytest.ini_options.pythonpath`가 경로를 잡아 주므로 저장소 루트에서
+  실행하면 난 적이 없다. 루트 밖에서 실행했는지부터 확인한다.
 - 다른 스크립트나 노트북에서 직접 `import cpp_search`를 하려면
   `pip install -e .`로 설치하거나, IDE 실행 구성의 작업 디렉터리를 저장소
   루트로 두고 `PYTHONPATH`에 `src`를 추가한다.

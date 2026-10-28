@@ -1,27 +1,24 @@
-"""협동 표적탐색 연구 시뮬레이터 — 도메인 계층.
+"""협동 표적탐색 연구 시뮬레이터.
 
-이 패키지의 최상위 모듈은 "세계"를 기술한다. 챕터·탐색전략 개념이 전혀 없고,
-표적이 어떻게 움직이고 센서가 무엇을 보며 경로가 얼마나 덮는지만 안다.
+최상위에는 모듈을 두지 않는다. 모든 코드는 역할별 하위 패키지에 속한다.
 
 ```
 cpp_search/
-├── models.py             Point2D, SensorSpec(SR-Z50 기하·W·weave), MissionConfig, Route
-├── geometry.py           극좌표 <-> 월드좌표 변환
-├── search_envelope.py    LM weave + EO/IR 주사를 합친 400 m 지지반폭, W = ∫PD dx
-├── motion.py             IMM5 표적 운동모델(5모드)과 진리 궤적
-├── probability.py        표적 사전확률과 극좌표 확률지도
-├── belief.py             로그오즈 증거지도, 정규화 표적위치지도, POC/POD/POS
-├── particle_filter.py    SIR 입자필터(예측·음성관측·재표본추출·roughening)
-├── sensor_observation.py Tank/TEL 시그니처, EO/IR 성능, 공간 탐지모델
-├── terrain.py            합성 지형(기동성·사전·관측성 가중치)
-├── profiles.py           Tank/TEL 운용 프로파일 = 시그니처 + IMM5 거동
-├── evaluation.py         경로 기하 KPI(고유 면적·중복률·중심선 대 실제 거리)
-├── simulation.py         Monte Carlo 진리 생성과 탐지시간 평가 -> PerformanceMetrics
-└── research/             연구 계층(Stone SPX · MAPPO · 챕터 실험)
+├── models/       도메인 계층 — 센서·표적 운동·지형·belief·시뮬레이션 (세계 기술)
+├── common/       공용 지원 — 실험조건 로딩(config)·실행 옵션(options)
+├── theory/       경로제약 최적화 이론 — Stone SP1/SPX 절단평면·Markov 모델
+├── solvers/      milp/(절단평면 계획) · mappo/(학습 정책)
+├── reporting/    공통 KPI 블록·신뢰성 계약·CSV/PNG 산출
+├── experiments/  챕터 실험 ch1~ch4 + runner(CLI)
+└── pipeline/     시나리오 TOML -> Model -> Solver -> Output
 ```
 
-의존은 한 방향이다. ``research``는 이 계층을 자유롭게 쓰지만, 이 계층은
-``research``를 절대 import 하지 않는다. ``tests/test_architecture.py``가 강제한다.
+의존은 한 방향이다:
+``experiments -> solvers.mappo -> solvers.milp -> theory -> models``.
+``common``·``reporting``은 사다리 밖 지원 계층으로, 실행 계층을 import 하지
+않는다. ``tests/test_architecture.py``가 이 규칙을 코드로 강제한다.
+
+여기서 재수출하는 이름은 도메인 계층(models)의 공개 API다.
 """
 
 from cpp_search.models.models import MissionConfig, Point2D, Route, SensorChannelSpec, SensorSpec

@@ -47,9 +47,9 @@ from cpp_search.models.sensor_observation import (
     SENSOR_PERFORMANCE_SR_Z50,
     SpatialDetectionModel,
 )
-from cpp_search.aoi import containment_radius_m, halt_boost_sweep, step_sensitivity
-from cpp_search.config import ChapterConfig
-from cpp_search.options import RunOptions
+from cpp_search.models.aoi import containment_radius_m, halt_boost_sweep, step_sensitivity
+from cpp_search.common.config import ChapterConfig
+from cpp_search.common.options import RunOptions
 from cpp_search.models.profiles import NOMINAL_TARGET_PROFILES
 
 
@@ -377,7 +377,7 @@ def run(config: ChapterConfig, options: RunOptions) -> dict:
 def _motion_sensitivity(config: ChapterConfig, mission: MissionConfig) -> dict:
     """``step_s`` / ``halt_probability_boost`` 민감도와 AOI 포함률 사이징.
 
-    셋 다 ``tools/size_aoi.py`` 가 이미 재던 값이다. 도구로만 재고 결과에
+    셋 다 ``tools/runs/size_aoi.py`` 가 이미 재던 값이다. 도구로만 재고 결과에
     남기지 않으면 **그림 코드가 읽을 데이터가 없어서** Ch1 민감도 그림 3장이
     조용히 만들어지지 않는다. 실제로 그 상태였다.
 

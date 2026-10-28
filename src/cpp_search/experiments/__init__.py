@@ -2,7 +2,7 @@
 
 각 모듈은 ``run(config, options)`` 하나를 노출하고 JSON 으로 직렬화 가능한
 결과 dict 를 돌려준다. 실험의 주인은 챕터 모듈이고,
-``cpp_search.runner`` 는 명령행 해석 · config 로딩 · 결과 저장만 한다.
+``cpp_search.experiments.runner`` 는 명령행 해석 · config 로딩 · 결과 저장만 한다.
 
     1  평가도 정의 / 탐색기 스펙 정의        ch1_evaluation
     2  Stone(2016) SPX + 지형 가중          ch2_stone_spx

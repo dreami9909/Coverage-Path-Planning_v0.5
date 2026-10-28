@@ -32,14 +32,14 @@ from cpp_search.models.sensor_observation import (
 )
 from cpp_search.models.simulation import EvaluationConfig, evaluate_monte_carlo
 from cpp_search.models.terrain import build_synthetic_terrain
-from cpp_search.kpi import mission_kpi
+from cpp_search.reporting.kpi import mission_kpi
 from cpp_search.pipeline.scenario import Scenario
 from cpp_search.solvers.milp.stone_spx import (
     build_stone_grid_instance,
     route_plan_from_solution,
     solve_stone_grid_paths,
 )
-from cpp_search.truth import cue_prior, generate_truth
+from cpp_search.models.truth import cue_prior, generate_truth
 
 
 def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -> dict:
