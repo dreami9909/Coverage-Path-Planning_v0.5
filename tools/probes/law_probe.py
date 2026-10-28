@@ -23,7 +23,7 @@ from cpp_search.experiments.ch2_stone_spx import (
     build_instance, case_mission, case_specs, case_target_specs, cue_prior)
 from cpp_search.solvers.milp.terrain_belief import BELIEF_TERRAIN_FULL
 from cpp_search.solvers.milp.continuous_mc import evaluate, selftest, SUPPORT_HALF_M
-from tools.erasure_probe import CONDITIONS, SEED, H
+from erasure_probe import CONDITIONS, SEED, H
 from tools.conditions import BASELINE
 
 PARTICLES = int(os.environ.get("MC_PARTICLES", 40_000))

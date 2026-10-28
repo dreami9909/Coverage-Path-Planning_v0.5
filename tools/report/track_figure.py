@@ -12,6 +12,7 @@ import json, pathlib, sys
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "tools"))
+sys.path.insert(0, str(ROOT / "tools" / "runs"))
 
 import numpy as np
 import matplotlib
@@ -28,7 +29,7 @@ from cpp_search.experiments.ch2_studies import published_instance
 from cpp_search.models.searcher_track import build_windows
 from cpp_search.solvers.milp.continuous_mc import SUPPORT_HALF_M
 
-from run_continuous_mc import CONDITIONS as BASE            # noqa: E402
+from conditions import CONDITIONS as BASE            # noqa: E402
 
 SEED, DT_S = 20260201, 5.0
 PLAN_FILES = {(c, n): f for c, n, f in BASE}
