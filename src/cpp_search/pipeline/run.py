@@ -140,9 +140,13 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
         flight_blocks.append(block)
 
     model_worst = float(min(solution.target_detection_probabilities))
-    flown_worst = float(
-        min(block["detection_probability_within_limit"] for block in flight_blocks)
-    )
+    flown_values = [
+        float(block["detection_probability_within_limit"]) for block in flight_blocks
+    ]
+    flown_worst = min(flown_values)
+    # v0.4 규약(ch4): 거동 등가중 평균이 "실비행 PD"다 — 모형의 minimax 와
+    # 비교하는 공표값. 최악 거동값은 참고로 같이 남긴다.
+    flown_mean = float(np.mean(flown_values))
     certified = bool(
         np.isfinite(diagnostics.relative_optimality_gap)
         and diagnostics.relative_optimality_gap <= scenario.solver.certificate_gap
@@ -205,8 +209,9 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
                 }
                 for block in flight_blocks
             },
+            "detection_probability_mean": flown_mean,
             "detection_probability_worst": flown_worst,
-            "model_minus_flown": model_worst - flown_worst,
+            "model_minus_flown": model_worst - flown_mean,
         },
         "wall_time_s": None,  # 아래에서 채움
     }

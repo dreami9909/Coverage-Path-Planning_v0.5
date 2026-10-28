@@ -48,6 +48,7 @@ def main(argv: list[str] | None = None) -> int:
             "model_PD_worst": round(solver["model_detection_probability_worst"], 4),
             "optimality_gap": solver["relative_optimality_gap"],
             "certified": solver["certified"],
+            "flown_PD_mean": round(flight["detection_probability_mean"], 4),
             "flown_PD_worst": round(flight["detection_probability_worst"], 4),
             "model_minus_flown": round(flight["model_minus_flown"], 4),
         },
