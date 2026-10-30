@@ -1,0 +1,35 @@
+# demo_custom 의 대조 실행 — [truth] 블록만 뺀 같은 세계.
+# 평가가 belief 추첨(기본 계약)으로 돌아오면 MC 값이 정상 수준으로 회복되는지 확인.
+
+name = "demo_custom_ab"
+
+[target]
+case = "TEL"
+[target.behaviour]
+base = "RELOCATION_HEAVY"
+mode_probabilities = [0.35, 0.15, 0.35, 0.10, 0.05]
+persistence_alpha = 0.55
+
+[belief]
+kind = "tp-centered"
+sigma_m = 800.0
+
+[terrain.layout]
+corridors    = [ { from = [-7000, 5000], to = [6000, -6000], width_m = 1200 } ]
+obstacles    = [ { center = [3500, 3500], radius_m = 1500 } ]
+concealments = [
+  { center = [-3000, -2000], radius_m = 1000 },
+  { center = [4000, -3500],  radius_m = 900  },
+]
+
+# [truth] 없음 — 케이스 최악 거동 집합 + custom 을 belief 추첨 출발로 평가
+
+[grid]
+n = 6
+
+[solver]
+time_limit_s = 120
+
+[evaluation]
+mc_samples = 200
+particles = 2000
