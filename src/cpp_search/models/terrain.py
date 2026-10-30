@@ -748,6 +748,60 @@ def build_synthetic_terrain(
     )
 
 
+def build_declared_terrain(
+    search_radius_m: float,
+    *,
+    corridors: tuple = (),
+    barriers: tuple = (),
+    concealments: tuple = (),
+    background: float = 0.06,
+) -> TerrainField:
+    """추첨 없이 **선언된 배치 그대로** 지형을 만든다 (시나리오 [terrain.layout]).
+
+    인자는 좌표·치수의 평범한 튜플이다 — 시나리오 계층이 모델 타입을 몰라도
+    되게 하기 위해서다.
+
+        corridors    : ((x0, y0), (x1, y1), width_m) 의 열. width_m 은 띠의
+                       전체 폭이고 가우시안 sigma 는 그 절반이다.
+        barriers     : ((x, y), radius_m) 의 열.
+        concealments : ((x, y), radius_m) 또는 ((x, y), radius_m, strength) 의 열.
+
+    가중의 '세기'(bias·offroad·halt boost)는 여기 소관이 아니다 — 그건
+    배치가 추첨이든 선언이든 똑같이 [terrain] 키가 정한다.
+    """
+
+    R = search_radius_m
+    return TerrainField(
+        corridors=tuple(
+            Corridor(
+                Point2D(float(start[0]), float(start[1])),
+                Point2D(float(end[0]), float(end[1])),
+                half_width_m=float(width_m) / 2.0,
+                strength=1.0,
+            )
+            for start, end, width_m in corridors
+        ),
+        barriers=tuple(
+            Barrier(
+                Point2D(float(center[0]), float(center[1])),
+                radius_m=float(radius_m),
+                softness_m=0.05 * R,
+            )
+            for center, radius_m in barriers
+        ),
+        concealments=tuple(
+            ConcealmentPatch(
+                Point2D(float(item[0][0]), float(item[0][1])),
+                radius_m=float(item[1]),
+                strength=float(item[2]) if len(item) > 2 else 1.0,
+            )
+            for item in concealments
+        ),
+        background=background,
+        search_radius_m=search_radius_m,
+    )
+
+
 def build_control_terrain(
     search_radius_m: float,
     seed: int = 20260817,

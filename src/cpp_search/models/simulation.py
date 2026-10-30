@@ -169,23 +169,32 @@ def generate_moving_targets(
     terrain_bias_strength: float = 0.0,
     terrain_offroad_probability: float = 0.2,
     terrain_halt_probability_boost: float = 0.0,
+    initial_points: list[Point2D] | None = None,
 ) -> list[TargetTrajectory]:
-    """Generate shared piecewise-linear Markov target trajectories."""
+    """Generate shared piecewise-linear Markov target trajectories.
+
+    ``initial_points`` 를 주면 사전분포 추첨을 건너뛰고 그 좌표들에서 출발한다
+    — 시나리오의 명시 가설([truth] hypotheses)이 쓰는 통로다. 궤적별 난수열
+    규약(seed_k)은 두 경로 모두 동일하다.
+    """
     if horizon_s <= 0.0:
         raise ValueError("horizon_s must be positive")
 
-    initial_points = generate_targets(
-        mission,
-        config,
-        prior,
-        terrain,
-        terrain_stop_ratio,
-        (
-            motion.effective_initial_mode_probabilities
-            if motion.motion_model == "imm5"
-            else None
-        ),
-    )
+    if initial_points is None:
+        initial_points = generate_targets(
+            mission,
+            config,
+            prior,
+            terrain,
+            terrain_stop_ratio,
+            (
+                motion.effective_initial_mode_probabilities
+                if motion.motion_model == "imm5"
+                else None
+            ),
+        )
+    else:
+        initial_points = list(initial_points)
     trajectories: list[TargetTrajectory] = []
     for target_index, initial_point in enumerate(initial_points):
         # Give every target its own deterministic stream.  Extending the

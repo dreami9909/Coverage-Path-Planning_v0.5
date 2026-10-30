@@ -217,8 +217,13 @@ def generate_truth(
     step_s: float | None = None,
     coupling: TerrainCoupling | None = None,
     boundary_mode: str | None = None,
+    initial_points=None,
 ) -> list[TargetTrajectory]:
-    """config가 선언한 조건으로 진리 표적 앙상블을 만든다."""
+    """config가 선언한 조건으로 진리 표적 앙상블을 만든다.
+
+    ``initial_points`` 를 주면 사전분포 추첨 대신 그 좌표들에서 출발한다
+    (시나리오의 명시 가설 통로 — ``generate_moving_targets`` 로 전달만 한다).
+    """
 
     link = coupling or terrain_coupling(config)
     # 초기분포 기본값은 config가 절대 미터로 고정한 cue ring이다.
@@ -240,6 +245,7 @@ def generate_truth(
         terrain_bias_strength=link.bias_strength,
         terrain_offroad_probability=link.offroad_probability,
         terrain_halt_probability_boost=link.halt_probability_boost,
+        initial_points=initial_points,
     )
 
 

@@ -39,6 +39,10 @@ SEEKER_TEMPLATES: dict[str, dict[str, Any]] = {
 _CASES = ("Tank", "TEL")
 _SOLVERS = ("milp", "mappo")
 _GRID_KINDS = ("square", "operational-polar")
+_BELIEF_KINDS = {"tp-centered": "tp-centered", "ring": "moving-ring",
+                 "moving-ring": "moving-ring"}
+#: 커스텀 거동이 config 에 등록되는 이름. 결과 표기는 CUSTOM(base=...) 이다.
+CUSTOM_BEHAVIOUR_NAME = "CUSTOM"
 
 
 class ScenarioError(ValueError):
@@ -109,6 +113,83 @@ class TargetSpec:
 
 
 @dataclass(frozen=True)
+class BehaviourOverrideSpec:
+    """배정 거동 오버라이드 — "TEL 로 보이는데 움직임은 내 정의".
+
+    여기서 만든 프로파일 하나가 belief 전개·셀 모형 전이행렬·진리 생성에
+    **동일하게** 들어간다 (config 오버레이 경유 — 단일 출처 원칙).
+    """
+
+    base: str | None                     # 출발 프리셋. 생략하면 케이스 기본 배정
+    mode_probabilities: tuple[float, ...] | None
+    persistence_alpha: float | None
+    process_noise_scale: float | None
+    turn_rate_scale: float | None
+    mode_speed_bounds_kph: tuple[tuple[float, float], ...] | None
+
+    def overrides(self) -> dict[str, Any]:
+        """config behaviour_profiles 항목에 덮을 키만 모은다."""
+
+        body: dict[str, Any] = {}
+        if self.mode_probabilities is not None:
+            body["mode_probabilities"] = list(self.mode_probabilities)
+        if self.persistence_alpha is not None:
+            body["persistence_alpha"] = self.persistence_alpha
+        if self.process_noise_scale is not None:
+            body["process_noise_scale"] = self.process_noise_scale
+        if self.turn_rate_scale is not None:
+            body["turn_rate_scale"] = self.turn_rate_scale
+        if self.mode_speed_bounds_kph is not None:
+            body["mode_speed_bounds_kph"] = [list(b) for b in self.mode_speed_bounds_kph]
+        return body
+
+
+@dataclass(frozen=True)
+class BeliefSpec:
+    """초기 belief — 종류·폭은 반영되고, center_m 은 **선언만** 기록된다.
+
+    현행 ``TargetPrior`` 가 반경 대칭이라 중심 이동은 belief 기구 전체(표본
+    추출·셀 질량 투영)가 바뀌는 모형 변경이다 — VFOV 와 같은 결정 대기.
+    """
+
+    kind: str                            # tp-centered | moving-ring (ring 별칭 허용)
+    sigma_m: float
+    center_m: tuple[float, float] | None = None
+
+
+@dataclass(frozen=True)
+class CorridorSpec:
+    start: tuple[float, float]
+    end: tuple[float, float]
+    width_m: float
+
+
+@dataclass(frozen=True)
+class CircleSpec:
+    center: tuple[float, float]
+    radius_m: float
+    strength: float = 1.0
+
+
+@dataclass(frozen=True)
+class LayoutSpec:
+    """지형 배치 명시 — 있으면 seed 추첨 대신 이 배치를 쓴다."""
+
+    corridors: tuple[CorridorSpec, ...]
+    obstacles: tuple[CircleSpec, ...]
+    concealments: tuple[CircleSpec, ...]
+
+
+@dataclass(frozen=True)
+class HypothesisSpec:
+    """평가 가설 한 판 — '표적이 (x, y) 에서 이 거동이었던 세계'."""
+
+    x: float
+    y: float
+    behaviour: str                       # 프리셋 이름 또는 "custom"
+
+
+@dataclass(frozen=True)
 class TerrainSpec:
     weighting: bool                # 지형 가중(사전·전이) on/off
     bias_strength: float           # 이동 편향 (지형 가중치)
@@ -153,8 +234,49 @@ class Scenario:
     grid: GridSpec
     solver: SolverSpec
     evaluation: EvaluationSpec
+    behaviour: BehaviourOverrideSpec | None = None
+    belief: BeliefSpec | None = None
+    layout: LayoutSpec | None = None
+    hypotheses: tuple[HypothesisSpec, ...] = ()
     source_path: Path | None = None
     warnings: tuple[str, ...] = field(default=())
+
+    @property
+    def custom_inputs(self) -> tuple[str, ...]:
+        """신설 입력 블록 중 쓰인 것 — 하나라도 있으면 v0.4 인증 실적과 비교 불가."""
+
+        used = []
+        if self.behaviour is not None:
+            used.append("target.behaviour")
+        if self.belief is not None:
+            used.append("belief")
+        if self.layout is not None:
+            used.append("terrain.layout")
+        if self.hypotheses:
+            used.append("truth.hypotheses")
+        return tuple(used)
+
+    def validate_geometry(self, aoi_radius_m: float) -> None:
+        """AOI 가 해소된 뒤의 좌표 검증 — 실행 전에 거부한다."""
+
+        def inside(x: float, y: float, what: str) -> None:
+            if (x * x + y * y) ** 0.5 > aoi_radius_m:
+                raise ScenarioError(
+                    f"{what} ({x:.0f}, {y:.0f}) 가 AOI 반경 {aoi_radius_m:.0f} m 밖이다"
+                )
+
+        if self.layout is not None:
+            for corridor in self.layout.corridors:
+                inside(*corridor.start, "terrain.layout corridor 시작점")
+                inside(*corridor.end, "terrain.layout corridor 끝점")
+            for circle in self.layout.obstacles:
+                inside(*circle.center, "terrain.layout obstacle 중심")
+            for circle in self.layout.concealments:
+                inside(*circle.center, "terrain.layout concealment 중심")
+        if self.belief is not None and self.belief.center_m is not None:
+            inside(*self.belief.center_m, "belief.center_m")
+        for hypothesis in self.hypotheses:
+            inside(hypothesis.x, hypothesis.y, f"truth.hypotheses({hypothesis.behaviour})")
 
     # ------------------------------------------------- 기존 실행 경로로 번역
     def chapter_config(self, *, config_root: Path | None = None) -> ChapterConfig:
@@ -165,6 +287,40 @@ class Scenario:
         """
 
         base = load_chapter_config("2", config_root=config_root)
+
+        cue_ring: dict[str, Any] = {"sigma_m": self.target.tp_error_sigma_m}
+        if self.belief is not None:
+            cue_ring = {"kind": self.belief.kind, "sigma_m": self.belief.sigma_m}
+
+        target_motion: dict[str, Any] = {
+            "terrain_coupling": {
+                "bias_strength": self.terrain.bias_strength,
+                "offroad_probability": self.terrain.offroad_probability,
+                "halt_probability_boost": self.terrain.halt_probability_boost,
+            }
+        }
+        if self.behaviour is not None:
+            profiles = (
+                base.common.get("target_motion", {}).get("behaviour_profiles", {}) or {}
+            )
+            assignment = (
+                base.common.get("target_motion", {}).get("assignment", {}) or {}
+            )
+            nominal = f"{self.target.case}-nominal"
+            base_name = self.behaviour.base or str(assignment.get(nominal, ""))
+            declared = profiles.get(base_name)
+            if declared is None:
+                raise ScenarioError(
+                    f"target.behaviour.base {base_name!r} 는 config 의 "
+                    f"behaviour_profiles 에 없다 — 선언된 프로파일: {sorted(profiles)}"
+                )
+            custom = _deep_merge(dict(declared), self.behaviour.overrides())
+            custom["description"] = f"scenario override (base={base_name})"
+            target_motion["behaviour_profiles"] = {CUSTOM_BEHAVIOUR_NAME: custom}
+            target_motion["assignment"] = {nominal: CUSTOM_BEHAVIOUR_NAME}
+            # run.py 가 결과 표기 이름 CUSTOM(base=...) 을 만들 때 쓴다.
+            target_motion["custom_behaviour_base"] = base_name
+
         common = _deep_merge(
             base.common,
             {
@@ -193,14 +349,8 @@ class Scenario:
                     "ingress_s": self.mission.ingress_s,
                     "mission_time_s": self.mission.search_s,
                 },
-                "aoi": {"cue_ring": {"sigma_m": self.target.tp_error_sigma_m}},
-                "target_motion": {
-                    "terrain_coupling": {
-                        "bias_strength": self.terrain.bias_strength,
-                        "offroad_probability": self.terrain.offroad_probability,
-                        "halt_probability_boost": self.terrain.halt_probability_boost,
-                    }
-                },
+                "aoi": {"cue_ring": cue_ring},
+                "target_motion": target_motion,
                 "monte_carlo": {
                     "sample_count": self.evaluation.mc_samples,
                     "base_seed": self.seed,
@@ -317,6 +467,12 @@ def build_scenario(raw: dict[str, Any], *, source_path: Path | None = None) -> S
         ),
         aoi_radius_m=float(aoi_radius) if aoi_radius is not None else None,
     )
+    behaviour = _behaviour_override(
+        target_raw.get("behaviour"), max_speed_kph=target.max_speed_kph
+    )
+    belief = _belief(raw.get("belief"), default_sigma_m=target.tp_error_sigma_m,
+                     warnings=warnings)
+    hypotheses = _hypotheses(raw.get("truth"), behaviour=behaviour)
 
     terrain_raw = dict(raw.get("terrain", {}) or {})
     terrain = TerrainSpec(
@@ -336,6 +492,7 @@ def build_scenario(raw: dict[str, Any], *, source_path: Path | None = None) -> S
         concealment_count=int(terrain_raw.get("concealment_count", 3)),
         background=float(terrain_raw.get("background", 0.06)),
     )
+    layout = _layout(terrain_raw.get("layout"))
 
     grid_raw = dict(raw.get("grid", {}) or {})
     kind = str(grid_raw.get("kind", "square"))
@@ -392,9 +549,168 @@ def build_scenario(raw: dict[str, Any], *, source_path: Path | None = None) -> S
         grid=grid,
         solver=solver,
         evaluation=evaluation,
+        behaviour=behaviour,
+        belief=belief,
+        layout=layout,
+        hypotheses=hypotheses,
         source_path=source_path,
         warnings=tuple(warnings),
     )
+
+
+# ---------------------------------------------------------- 신설 블록 파서
+
+def _behaviour_override(
+    raw: Any, *, max_speed_kph: float
+) -> BehaviourOverrideSpec | None:
+    if raw is None:
+        return None
+    raw = dict(raw)
+
+    probabilities = raw.get("mode_probabilities")
+    if probabilities is not None:
+        probabilities = tuple(float(v) for v in probabilities)
+        if len(probabilities) != 5 or any(not 0.0 <= v <= 1.0 for v in probabilities):
+            raise ScenarioError(
+                "target.behaviour.mode_probabilities 는 [0,1] 값 5개 (HALT·LOW_CV·HIGH_CV·CTRV·MANEUVER)"
+            )
+        if abs(sum(probabilities) - 1.0) > 1e-6:
+            raise ScenarioError(
+                f"target.behaviour.mode_probabilities 합은 1 이어야 한다 "
+                f"(지금 {sum(probabilities):.6f})"
+            )
+
+    alpha = raw.get("persistence_alpha")
+    if alpha is not None:
+        alpha = _probability(alpha, "target.behaviour.persistence_alpha")
+
+    bounds = raw.get("mode_speed_bounds_kph")
+    if bounds is not None:
+        if len(bounds) != 5:
+            raise ScenarioError("target.behaviour.mode_speed_bounds_kph 는 [lo, hi] 5쌍")
+        bounds = tuple((float(lo), float(hi)) for lo, hi in bounds)
+        for index, (lo, hi) in enumerate(bounds):
+            if lo < 0.0 or lo > hi:
+                raise ScenarioError(
+                    f"mode_speed_bounds_kph[{index}] 는 0 <= lo <= hi (지금 [{lo}, {hi}])"
+                )
+            if hi > max_speed_kph:
+                raise ScenarioError(
+                    f"mode_speed_bounds_kph[{index}] 상한 {hi} 가 "
+                    f"target.max_speed_kph({max_speed_kph}) 를 넘는다"
+                )
+        if bounds[0] != (0.0, 0.0):
+            raise ScenarioError("mode_speed_bounds_kph 첫 쌍(HALT)은 [0, 0] 이어야 한다")
+
+    return BehaviourOverrideSpec(
+        base=str(raw["base"]) if raw.get("base") else None,
+        mode_probabilities=probabilities,
+        persistence_alpha=alpha,
+        process_noise_scale=(
+            _positive(raw["process_noise_scale"], "target.behaviour.process_noise_scale")
+            if raw.get("process_noise_scale") is not None else None
+        ),
+        turn_rate_scale=(
+            _positive(raw["turn_rate_scale"], "target.behaviour.turn_rate_scale")
+            if raw.get("turn_rate_scale") is not None else None
+        ),
+        mode_speed_bounds_kph=bounds,
+    )
+
+
+def _belief(
+    raw: Any, *, default_sigma_m: float, warnings: list[str]
+) -> BeliefSpec | None:
+    if raw is None:
+        return None
+    raw = dict(raw)
+    kind = str(raw.get("kind", "tp-centered"))
+    if kind not in _BELIEF_KINDS:
+        raise ScenarioError(
+            f"belief.kind 는 {sorted(set(_BELIEF_KINDS))} 중 하나 (지금 {kind!r})"
+        )
+    center = raw.get("center_m")
+    if center is not None:
+        if len(center) != 2:
+            raise ScenarioError("belief.center_m 은 [x, y] 좌표 한 쌍")
+        center = (float(center[0]), float(center[1]))
+        if center != (0.0, 0.0):
+            warnings.append(
+                "belief.center_m 은 선언만 기록된다 — 현행 belief 사전분포가 "
+                "AOI 중심 대칭이라, 중심 이동은 표본추출·셀 질량 투영이 바뀌는 "
+                "모형 변경이다 (결정 대기). 지형 대비 상대 위치가 목적이면 "
+                "terrain.layout 좌표를 반대로 옮기면 같은 효과다."
+            )
+    return BeliefSpec(
+        kind=_BELIEF_KINDS[kind],
+        sigma_m=_positive(raw.get("sigma_m", default_sigma_m), "belief.sigma_m"),
+        center_m=center,
+    )
+
+
+def _layout(raw: Any) -> LayoutSpec | None:
+    if raw is None:
+        return None
+    raw = dict(raw)
+
+    def point(value: Any, name: str) -> tuple[float, float]:
+        if value is None or len(value) != 2:
+            raise ScenarioError(f"{name} 은 [x, y] 좌표 한 쌍")
+        return (float(value[0]), float(value[1]))
+
+    corridors = tuple(
+        CorridorSpec(
+            start=point(item.get("from"), "terrain.layout.corridors[].from"),
+            end=point(item.get("to"), "terrain.layout.corridors[].to"),
+            width_m=_positive(item.get("width_m", 0.0), "terrain.layout.corridors[].width_m"),
+        )
+        for item in (raw.get("corridors") or [])
+    )
+
+    def circles(key: str) -> tuple[CircleSpec, ...]:
+        return tuple(
+            CircleSpec(
+                center=point(item.get("center"), f"terrain.layout.{key}[].center"),
+                radius_m=_positive(
+                    item.get("radius_m", 0.0), f"terrain.layout.{key}[].radius_m"
+                ),
+                strength=float(item.get("strength", 1.0)),
+            )
+            for item in (raw.get(key) or [])
+        )
+
+    layout = LayoutSpec(
+        corridors=corridors, obstacles=circles("obstacles"),
+        concealments=circles("concealments"),
+    )
+    if not (layout.corridors or layout.obstacles or layout.concealments):
+        raise ScenarioError("terrain.layout 블록이 비어 있다 — 쓰지 않으려면 블록을 지워라")
+    return layout
+
+
+def _hypotheses(
+    raw: Any, *, behaviour: BehaviourOverrideSpec | None
+) -> tuple[HypothesisSpec, ...]:
+    if raw is None:
+        return ()
+    declared = list(dict(raw).get("hypotheses") or [])
+    if not declared:
+        raise ScenarioError("truth 블록에는 hypotheses 목록이 있어야 한다")
+    out = []
+    for item in declared:
+        name = str(item.get("behaviour", "")).strip()
+        if not name:
+            raise ScenarioError("truth.hypotheses[].behaviour 는 거동 이름 또는 'custom'")
+        if name == "custom" and behaviour is None:
+            raise ScenarioError(
+                "truth.hypotheses 의 'custom' 은 [target.behaviour] 블록이 있을 때만 쓴다"
+            )
+        out.append(
+            HypothesisSpec(
+                x=float(item["x"]), y=float(item["y"]), behaviour=name
+            )
+        )
+    return tuple(out)
 
 
 def _seeker(raw: dict[str, Any], warnings: list[str]) -> SeekerSpec:

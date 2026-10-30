@@ -142,14 +142,16 @@ v0.4 gap-decomposition 연구가 기록한 모형 계층(셀 → 연속 MC → �
 
 ---
 
-## 입력 확장 설계 — 확정안, **아직 미구현** (2026-10-31)
+## 입력 확장 — 선언적 명시 입력 (2026-10-31 구현)
 
 seed 추첨 대신 지형 배치·초기 belief·거동·평가 가설을 **직접 지정**하는
 선택 블록 4개. 설계 원칙은 둘이다 — ① 모든 블록은 생략 가능하고, 생략하면
 현행(케이스 확정값 + seed 추첨) 그대로다. ② 프로파일은 단일 출처다:
-`[target.behaviour]` 가 만든 프로파일 객체 하나가 belief 전개·셀 모형
-전이행렬·진리 생성에 **동일하게** 들어간다 (한 군데만 바꾸면 "계획이 상대한
-표적과 다른 표적으로 채점"하는 사고가 재발한다).
+`[target.behaviour]` 는 config 오버레이(`behaviour_profiles.CUSTOM` + 배정
+교체) 하나로 주입되어 belief 전개·셀 모형 전이행렬·진리 생성이 **같은
+프로파일**을 보게 된다 (한 군데만 바꾸면 "계획이 상대한 표적과 다른 표적으로
+채점"하는 사고가 재발한다). 계약은 `tests/test_scenario_extensions.py` 가
+코드로 지킨다.
 
 ```toml
 [target.behaviour]           # 배정 거동 오버라이드 — "움직임만 내 정의로"
@@ -162,8 +164,11 @@ mode_speed_bounds_kph = [[0,0],[0,20],[20,40],[2,32],[0,40]]
 
 [belief]                     # 초기 belief — 생략 시 케이스 확정값
 kind = "tp-centered"         # tp-centered | ring
-center_m = [1500, -800]      # TP 좌표 (AOI 중심 기준)
 sigma_m = 500.0              # (기존 target.tp_error_sigma_m 자리 이동, 호환 유지)
+# center_m = [1500, -800]    # 선언만 기록 + 경고 — 현행 사전분포가 AOI 중심
+#                              대칭이라 중심 이동은 모형 변경(결정 대기).
+#                              지형 대비 상대 위치가 목적이면 terrain.layout
+#                              좌표를 반대로 옮기면 같은 효과다.
 
 [terrain.layout]             # 배치 명시 — 있으면 추첨 대신 사용, 가중 세기는 [terrain] 그대로
 corridors    = [ { from = [-6000, 2000], to = [7000, -1000], width_m = 800 } ]
@@ -215,9 +220,12 @@ hypotheses = [
 - 커스텀 프로파일의 결과 표기 이름은 `CUSTOM(base=RELOCATION_HEAVY)`.
 - 재현성은 현행 그대로 — `scenario.toml` 스냅샷이 입력 전부다.
 
-### 구현 접점 (작업 시)
+### 구현 메모 (2026-10-31)
 
-`pipeline/scenario.py`(파싱·검증·프로파일 조립) → `models/profiles.py`·`motion.py`
-(프리셋 위 오버라이드 생성) → `models/terrain.py`(명시 배치 수용) →
-`models/truth.py`(가설 주입) → `pipeline/run.py`(provenance 기록).
-예상 규모: 검증 테스트 포함 하루 안쪽.
+- `pipeline/scenario.py` — 파싱·거부 규칙 전부와 config 오버레이(CUSTOM 주입).
+  좌표 검증은 AOI 가 해소되는 `pipeline/run.py` 초입에서 실행 전에 거부한다.
+- `models/terrain.py::build_declared_terrain` — 선언 배치 그대로 지형 구성.
+- `models/simulation.py` / `models/truth.py` — `initial_points` 통로로 명시
+  가설이 그 좌표에서 출발한다 (궤적별 난수열 규약은 추첨 경로와 동일).
+- 결과 표기: 계획 표적에 `…/CUSTOM(base=<프리셋>)`, 평가 가설에 `<거동>@(x,y)`.
+- **편차 1건**: `belief.center_m` 은 선언만 기록된다 (위 주석 참조).

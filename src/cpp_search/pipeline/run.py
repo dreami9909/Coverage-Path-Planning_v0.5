@@ -17,6 +17,7 @@ from typing import Any
 import numpy as np
 
 from cpp_search.experiments.ch2_stone_spx import (
+    IMM5_BEHAVIORS,
     case_mission,
     case_specs,
     case_target_specs,
@@ -24,22 +25,25 @@ from cpp_search.experiments.ch2_stone_spx import (
     resolved_grid,
     route_config,
     searcher_classes,
+    signature_hazard_multipliers,
 )
 from cpp_search.models.evaluation import evaluate_routes
+from cpp_search.models.models import Point2D
 from cpp_search.models.sensor_observation import (
     SENSOR_PERFORMANCE_SR_Z50,
     SpatialDetectionModel,
 )
 from cpp_search.models.simulation import EvaluationConfig, evaluate_monte_carlo
-from cpp_search.models.terrain import build_synthetic_terrain
+from cpp_search.models.terrain import build_declared_terrain, build_synthetic_terrain
 from cpp_search.reporting.kpi import mission_kpi
-from cpp_search.pipeline.scenario import Scenario
+from cpp_search.pipeline.scenario import CUSTOM_BEHAVIOUR_NAME, Scenario, ScenarioError
 from cpp_search.solvers.milp.stone_spx import (
+    StoneSPXTargetSpec,
     build_stone_grid_instance,
     route_plan_from_solution,
     solve_stone_grid_paths,
 )
-from cpp_search.models.truth import cue_prior, generate_truth
+from cpp_search.models.truth import behaviour_profile, cue_prior, generate_truth, target_profile
 
 
 def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -> dict:
@@ -54,8 +58,14 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
     mission = case_mission(config.mission(), case)
     if scenario.target.aoi_radius_m is not None:
         mission = replace(mission, search_radius_m=scenario.target.aoi_radius_m)
+    # AOI 가 해소됐으니 명시 입력의 좌표를 지금 검증한다 — solver 전 거부.
+    scenario.validate_geometry(mission.search_radius_m)
     sensor = config.sensor()
     targets = case_target_specs(config, case)
+    if scenario.behaviour is not None:
+        # 케이스 최악 거동 집합에 custom 가설을 **추가**한다 (설계 확정
+        # 2026-10-31) — 보수성은 유지하고 "내 거동이 실제였다면"도 채점된다.
+        targets = (*targets, _custom_target_spec(config, case))
 
     base_grid = _base_grid_declaration(config)
     grid = resolved_grid(
@@ -66,14 +76,30 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
     )
 
     prior = cue_prior(config, mission.search_radius_m)[0]
-    terrain = build_synthetic_terrain(
-        mission.search_radius_m,
-        seed=scenario.seed,
-        corridor_count=scenario.terrain.corridor_count,
-        barrier_count=scenario.terrain.barrier_count,
-        concealment_count=scenario.terrain.concealment_count,
-        background=scenario.terrain.background,
-    )
+    if scenario.layout is not None:
+        terrain = build_declared_terrain(
+            mission.search_radius_m,
+            corridors=tuple(
+                (c.start, c.end, c.width_m) for c in scenario.layout.corridors
+            ),
+            barriers=tuple(
+                (c.center, c.radius_m) for c in scenario.layout.obstacles
+            ),
+            concealments=tuple(
+                (c.center, c.radius_m, c.strength)
+                for c in scenario.layout.concealments
+            ),
+            background=scenario.terrain.background,
+        )
+    else:
+        terrain = build_synthetic_terrain(
+            mission.search_radius_m,
+            seed=scenario.seed,
+            corridor_count=scenario.terrain.corridor_count,
+            barrier_count=scenario.terrain.barrier_count,
+            concealment_count=scenario.terrain.concealment_count,
+            background=scenario.terrain.background,
+        )
     positions = launch_positions(
         mission,
         ring_ratio=float(config.get("stone_spx.initial_position_ring_ratio", 0.25)),
@@ -108,9 +134,9 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
         seed=scenario.seed ^ 0x4556_414C,
         detection_time_limit_s=options.mission_time_s,
     )
-    strata = tuple(spec.profile for spec in targets)
+    strata = _evaluation_strata(scenario, config, case, targets)
     flight_blocks: list[dict] = []
-    for index, profile in enumerate(strata):
+    for index, (label, profile, start) in enumerate(strata):
         truths = generate_truth(
             config,
             mission,
@@ -119,6 +145,9 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
             horizon_s=options.mission_time_s,
             terrain=terrain,
             prior=prior,
+            initial_points=(
+                [Point2D(*start)] * options.sample_count if start is not None else None
+            ),
         )
         performance = evaluate_monte_carlo(
             plan.routes,
@@ -136,7 +165,7 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
         block = mission_kpi(
             performance, uav_count=mission.uav_count, geometry=geometry
         )
-        block["target_profile"] = profile.name
+        block["target_profile"] = label
         flight_blocks.append(block)
 
     model_worst = float(min(solution.target_detection_probabilities))
@@ -154,6 +183,12 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
 
     metrics: dict[str, Any] = {
         "scenario": scenario.snapshot(),
+        "provenance": {
+            # 신설 입력 블록 사용 여부 — 하나라도 쓰면 20260201~03 anchor 와
+            # 다른 세계이므로 v0.4 인증 실적 표에 나란히 싣지 않는다.
+            "custom_inputs": list(scenario.custom_inputs),
+            "comparable_to_v04_anchors": not scenario.custom_inputs,
+        },
         "resolved": {
             "aoi_radius_m": mission.search_radius_m,
             "grid_kind": diagnostics.grid_kind,
@@ -237,6 +272,66 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
             Path(scenario.source_path).read_text(encoding="utf-8"), encoding="utf-8"
         )
     return metrics
+
+
+def _custom_target_spec(config, case: dict) -> StoneSPXTargetSpec:
+    """[target.behaviour] 의 custom 프로파일을 평가 가설 하나로 포장한다.
+
+    base 프로파일은 config 오버레이(assignment=CUSTOM)를 거쳐 이미 custom
+    거동을 달고 있다. 배율 규칙은 ``case_target_specs`` 와 동일하게 따른다.
+    """
+
+    base = target_profile(config, str(case["signature_profile"]))
+    from_signature = bool(config.get("stone_spx.target_hazard_from_signature", False))
+    multiplier = (
+        signature_hazard_multipliers(config)[base.name] if from_signature else 1.0
+    )
+    base_name = str(
+        config.common_get("target_motion.custom_behaviour_base", "?")
+    )
+    profile = replace(base, name=f"{base.name}/CUSTOM(base={base_name})")
+    return StoneSPXTargetSpec(profile, multiplier)
+
+
+def _evaluation_strata(
+    scenario: Scenario, config, case: dict, targets
+) -> list[tuple[str, Any, tuple[float, float] | None]]:
+    """실비행 평가가 돌 가설 목록: (표기 이름, 프로파일, 시작좌표 | None).
+
+    [truth] hypotheses 가 없으면 현행 그대로 — 계획 인스턴스의 표적 집합
+    (custom 포함)을 사전분포 추첨 출발로 평가한다. 있으면 **평가 쪽만**
+    그 가설들로 바뀐다 (계획·인증은 그대로 — 설계 의미 규칙).
+    """
+
+    if not scenario.hypotheses:
+        return [(spec.profile.name, spec.profile, None) for spec in targets]
+
+    base = target_profile(config, str(case["signature_profile"]))
+    strata: list[tuple[str, Any, tuple[float, float] | None]] = []
+    for hypothesis in scenario.hypotheses:
+        name = hypothesis.behaviour
+        if name == "custom":
+            base_name = str(
+                config.common_get("target_motion.custom_behaviour_base", "?")
+            )
+            profile = replace(base, name=f"{base.name}/CUSTOM(base={base_name})")
+        elif name in IMM5_BEHAVIORS:
+            profile = replace(
+                base, imm5_behavior=IMM5_BEHAVIORS[name], name=f"{base.name}/{name}"
+            )
+        else:
+            try:
+                declared = behaviour_profile(config, name)
+            except KeyError:
+                raise ScenarioError(
+                    f"truth.hypotheses 의 거동 {name!r} 은 코드 레지스트리에도 "
+                    f"config behaviour_profiles 에도 없다 — "
+                    f"코드: {sorted(IMM5_BEHAVIORS)}"
+                ) from None
+            profile = replace(base, imm5_behavior=declared, name=f"{base.name}/{name}")
+        label = f"{name}@({hypothesis.x:.0f},{hypothesis.y:.0f})"
+        strata.append((label, profile, (hypothesis.x, hypothesis.y)))
+    return strata
 
 
 def _select_case(config, case_name: str) -> dict:
