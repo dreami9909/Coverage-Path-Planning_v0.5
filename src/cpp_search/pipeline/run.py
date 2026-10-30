@@ -168,11 +168,23 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
         block["target_profile"] = label
         flight_blocks.append(block)
 
-    model_worst = float(min(solution.target_detection_probabilities))
+    model_by_target = {
+        name: float(value)
+        for name, value in zip(
+            instance.target_names, solution.target_detection_probabilities
+        )
+    }
+    # 최악값에는 **누가** 최악인지를 항상 같이 남긴다 — 모형과 실비행이 서로
+    # 다른 거동을 최악으로 지목하는 일이 흔하다 (profile-rank 연구, 2026-10-31).
+    model_worst_target = min(model_by_target, key=model_by_target.get)
+    model_worst = model_by_target[model_worst_target]
     flown_values = [
         float(block["detection_probability_within_limit"]) for block in flight_blocks
     ]
     flown_worst = min(flown_values)
+    flown_worst_target = flight_blocks[
+        flown_values.index(flown_worst)
+    ]["target_profile"]
     # v0.4 규약(ch4): 거동 등가중 평균이 "실비행 PD"다 — 모형의 minimax 와
     # 비교하는 공표값. 최악 거동값은 참고로 같이 남긴다.
     flown_mean = float(np.mean(flown_values))
@@ -205,12 +217,8 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
         "solver": {
             "kind": scenario.solver.kind,
             "model_detection_probability_worst": model_worst,
-            "model_detection_probability_by_target": {
-                name: float(value)
-                for name, value in zip(
-                    instance.target_names, solution.target_detection_probabilities
-                )
-            },
+            "model_detection_probability_worst_target": model_worst_target,
+            "model_detection_probability_by_target": model_by_target,
             "relative_optimality_gap": float(diagnostics.relative_optimality_gap),
             "certified": certified,
             "required_relative_gap": scenario.solver.certificate_gap,
@@ -246,6 +254,7 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
             },
             "detection_probability_mean": flown_mean,
             "detection_probability_worst": flown_worst,
+            "detection_probability_worst_target": flown_worst_target,
             "model_minus_flown": model_worst - flown_mean,
         },
         "wall_time_s": None,  # 아래에서 채움

@@ -167,6 +167,16 @@ class EndToEndTests(unittest.TestCase):
         self.assertTrue(any("CUSTOM(base=" in name for name in model_targets))
         self.assertGreater(len(model_targets), 1)
 
+        # 최악값에는 누가 최악인지 이름이 같이 남는다.
+        self.assertIn(
+            metrics["solver"]["model_detection_probability_worst_target"],
+            model_targets,
+        )
+        self.assertIn(
+            metrics["flight"]["detection_probability_worst_target"],
+            metrics["flight"]["by_target"],
+        )
+
         # 평가: 명시 가설 두 판이 라벨 그대로 채점된다.
         flight_keys = sorted(metrics["flight"]["by_target"])
         self.assertEqual(len(flight_keys), 2)
