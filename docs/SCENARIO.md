@@ -139,3 +139,85 @@ v0.4 gap-decomposition 연구가 기록한 모형 계층(셀 → 연속 MC → �
 
 참고 시나리오: `config/scenarios/baseline_tel.toml`(인증 조건),
 `config/scenarios/smoke.toml`(수십 초 연기 시험).
+
+---
+
+## 입력 확장 설계 — 확정안, **아직 미구현** (2026-10-31)
+
+seed 추첨 대신 지형 배치·초기 belief·거동·평가 가설을 **직접 지정**하는
+선택 블록 4개. 설계 원칙은 둘이다 — ① 모든 블록은 생략 가능하고, 생략하면
+현행(케이스 확정값 + seed 추첨) 그대로다. ② 프로파일은 단일 출처다:
+`[target.behaviour]` 가 만든 프로파일 객체 하나가 belief 전개·셀 모형
+전이행렬·진리 생성에 **동일하게** 들어간다 (한 군데만 바꾸면 "계획이 상대한
+표적과 다른 표적으로 채점"하는 사고가 재발한다).
+
+```toml
+[target.behaviour]           # 배정 거동 오버라이드 — "움직임만 내 정의로"
+base = "RELOCATION_HEAVY"    # 출발 프리셋, 아래 키가 그 위에 덮임
+mode_probabilities = [0.05, 0.10, 0.65, 0.15, 0.05]  # π: HALT·LOW·HIGH·CTRV·MANV
+persistence_alpha = 0.65     # α: 모드 유지 끈기
+process_noise_scale = 0.75
+turn_rate_scale = 0.75
+mode_speed_bounds_kph = [[0,0],[0,20],[20,40],[2,32],[0,40]]
+
+[belief]                     # 초기 belief — 생략 시 케이스 확정값
+kind = "tp-centered"         # tp-centered | ring
+center_m = [1500, -800]      # TP 좌표 (AOI 중심 기준)
+sigma_m = 500.0              # (기존 target.tp_error_sigma_m 자리 이동, 호환 유지)
+
+[terrain.layout]             # 배치 명시 — 있으면 추첨 대신 사용, 가중 세기는 [terrain] 그대로
+corridors    = [ { from = [-6000, 2000], to = [7000, -1000], width_m = 800 } ]
+obstacles    = [ { center = [3000, 4000], radius_m = 1500 } ]
+concealments = [ { center = [-2000, -3000], radius_m = 1200 } ]
+
+[truth]                      # 평가 가설 명시 — 생략 시 아래 기본 규칙
+hypotheses = [
+  { x = 4200,  y = -1300, behaviour = "STOP_HEAVY" },
+  { x = -2500, y = 3100,  behaviour = "custom" },   # custom = [target.behaviour] 프로파일
+]
+```
+
+### 의미 규칙
+
+| 블록 | 바꾸는 것 | 안 바꾸는 것 |
+|---|---|---|
+| `[target.behaviour]` | 배정 거동 (belief·계획·전이행렬·진리가 공통으로 쓰는 프로파일) | 센서 시그니처·AOI (그건 `case` 소관) |
+| `[truth]` hypotheses | 평가 가설 집합 — 각 판 따로 채점, 최악 보고 | 배정 거동·belief |
+| `[terrain.layout]` | 지형 배치 | 가중 세기 (`[terrain]` 키가 계속 적용) |
+| `[belief]` | 초기 belief 종류·중심·폭 | 이송 480 s 확산 (여전히 자동) |
+
+- **가설 기본 규칙 (확정)**: `[truth]` 를 생략하면 가설 = 케이스 최악 거동 집합.
+  단 `[target.behaviour]` 가 있으면 **custom 프로파일을 그 집합에 추가**한다
+  (기존 3개 + custom) — 보수성은 유지하면서 "내 거동이 실제였다면"도 채점된다.
+- **seed 와의 관계**: 명시한 성분은 seed 소관에서 빠진다. seed(생략 시 기본값)는
+  남은 무작위 — 입자 추첨·모드 전환 타이밍·탐지 주사위 — 만 결정하므로,
+  시나리오 비교는 seed 를 건드리지 않고 입력만 바꾸는 것이 짝지은 비교가 된다.
+- **표적 타입**: `case` 는 그대로 필수 선언 — 시그니처·AOI·최악 거동 집합을 정한다.
+  behaviour 오버라이드는 "TEL 로 보이는데 움직임은 내 정의"를 만든다.
+  새 표적 타입(새 시그니처)은 이 설계 범위 밖 — 표적 템플릿 등록이 따로 필요하다.
+
+### 로딩 시 검증 (어기면 실행 전 거부)
+
+| 필드 | 규칙 |
+|---|---|
+| `mode_probabilities` | 길이 5, 각 [0,1], 합 = 1 (±1e-6) |
+| `persistence_alpha` | (0, 1] |
+| `*_scale` | > 0 |
+| `mode_speed_bounds_kph` | 5쌍, lo ≤ hi, HALT(첫 쌍) = [0,0], hi ≤ `target.max_speed_kph` |
+| layout 좌표·반경 | AOI 원 안, `width_m`·`radius_m` > 0 |
+| hypotheses | 좌표 AOI 안, `behaviour` 는 알려진 프리셋 또는 "custom"("custom" 은 `[target.behaviour]` 있을 때만) |
+
+### 출력 규약
+
+- 신설 블록을 하나라도 쓰면 `metrics.json` 에
+  `provenance.custom_inputs = ["target.behaviour", ...]` 를 기록하고
+  **"v0.4 인증 실적과 비교 불가"** 라벨을 남긴다 — 기준 표에 섞이는 사고 방지.
+- 커스텀 프로파일의 결과 표기 이름은 `CUSTOM(base=RELOCATION_HEAVY)`.
+- 재현성은 현행 그대로 — `scenario.toml` 스냅샷이 입력 전부다.
+
+### 구현 접점 (작업 시)
+
+`pipeline/scenario.py`(파싱·검증·프로파일 조립) → `models/profiles.py`·`motion.py`
+(프리셋 위 오버라이드 생성) → `models/terrain.py`(명시 배치 수용) →
+`models/truth.py`(가설 주입) → `pipeline/run.py`(provenance 기록).
+예상 규모: 검증 테스트 포함 하루 안쪽.
