@@ -1,0 +1,41 @@
+# 입력 확장 시연 — 신설 블록 4개를 전부 쓴다 (docs/SCENARIO.md "입력 확장" 참조).
+# seed 는 일부러 생략한다: 명시한 입력은 seed 소관에서 빠지고, 남은 주사위
+# (입자 추첨·모드 전환·탐지)만 기본 seed 로 고정된다. 수치는 연구 값이 아니다.
+
+name = "demo_custom"
+
+[target]
+case = "TEL"
+# 거동 오버라이드 — 재배치형을 바탕으로 더 자주 숨는 표적을 정의
+[target.behaviour]
+base = "RELOCATION_HEAVY"
+mode_probabilities = [0.35, 0.15, 0.35, 0.10, 0.05]   # HALT 비중을 크게
+persistence_alpha = 0.55
+
+[belief]
+kind = "tp-centered"
+sigma_m = 800.0              # 제보가 평소(500 m)보다 부정확했던 상황
+
+[terrain.layout]             # 추첨 대신 명시 배치 — 북동-남서 회랑 + 호수 + 은닉 2곳
+corridors    = [ { from = [-7000, 5000], to = [6000, -6000], width_m = 1200 } ]
+obstacles    = [ { center = [3500, 3500], radius_m = 1500 } ]
+concealments = [
+  { center = [-3000, -2000], radius_m = 1000 },
+  { center = [4000, -3500],  radius_m = 900  },
+]
+
+[truth]                      # 평가 가설 — 은닉지에 숨은 정지형 vs 회랑 위의 custom
+hypotheses = [
+  { x = -3000, y = -2000, behaviour = "STOP_HEAVY" },   # 은닉 패치 정중앙
+  { x = -1000, y = 0,     behaviour = "custom" },       # 회랑 근처
+]
+
+[grid]
+n = 6                        # 시연용 — 인증 보장 없음 (연구는 10×10 + 인증 seed)
+
+[solver]
+time_limit_s = 120
+
+[evaluation]
+mc_samples = 200
+particles = 2000

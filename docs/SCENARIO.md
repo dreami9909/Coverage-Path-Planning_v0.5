@@ -138,7 +138,8 @@ v0.4 gap-decomposition 연구가 기록한 모형 계층(셀 → 연속 MC → �
 4. 동시 실행은 6~7개까지 (디스크 여유 2~5 GB).
 
 참고 시나리오: `config/scenarios/baseline_tel.toml`(인증 조건),
-`config/scenarios/smoke.toml`(수십 초 연기 시험).
+`config/scenarios/smoke.toml`(수십 초 연기 시험),
+`config/scenarios/demo_custom.toml`(입력 확장 4블록 시연 — 아래 절).
 
 ---
 
