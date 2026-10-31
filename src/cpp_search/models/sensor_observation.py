@@ -1,7 +1,9 @@
 """EO/IR 탐지모델 — 표적 신호, 채널 성능, 공간 탐지확률.
 
 카탈로그가 탐지확률 곡선을 공개하지 않으므로, 아래 계수들은 **A급 모델링
-가정**이지 제조사 성능 주장이 아니다.
+가정**이지 제조사 성능 주장이 아니다. 각 계수를 공개 문헌으로 괄호친
+근거는 ``docs/REFERENCES.md`` 참조 (Johnson/TTPF의 N50, ATR 탐지율 상한,
+위장망 복사 감쇠 측정치).
 
 핵심 수식
 ---------
@@ -144,6 +146,11 @@ class CamouflageSpec:
             raise ValueError("camouflage multipliers must be in (0, 1]")
 
 
+# 문헌 괄호치기 (docs/REFERENCES.md §3): IR nominal ×0.85는 LWIR 복사 13%
+# 감쇠 측정(Nature Comm. 12:1805)과, heavy ×0.65는 MWIR 53% 감쇠~벤더 75%
+# 억제 주장 사이에 놓인다. EO ×0.75/×0.45는 현장 관측 실험(Vitoul 2025)의
+# 자연위장 탐지율 저하 범위 내 보수치. 알고리즘 ×0.92/×0.75는 위장표적
+# 딥러닝 탐지기의 미탐지율 8.5%~mAP 70% 보고와 일치한다.
 CAMOUFLAGE_NONE = CamouflageSpec("None", 1.00, 1.00, 1.00)
 CAMOUFLAGE_NOMINAL = CamouflageSpec("Nominal", 0.75, 0.85, 0.92)
 CAMOUFLAGE_HEAVY = CamouflageSpec("Heavy", 0.45, 0.65, 0.75)
@@ -187,7 +194,14 @@ class ChannelDetectionConfig:
 
 @dataclass(frozen=True, slots=True)
 class SensorPerformanceConfig:
-    """A-grade EO/IR performance assumptions; not an equipment data sheet."""
+    """A-grade EO/IR performance assumptions; not an equipment data sheet.
+
+    문헌 괄호치기 (docs/REFERENCES.md §1~2): pixels_50 EO 8 px(=4 cycles),
+    IR 6 px(=3 cycles)는 NVTherm N50 표의 고클러터 탐지(~3.0 cycles)~인식
+    (4~5 cycles) 구간에 해당하는 보수 설정. algorithm_efficiency 0.90/0.86은
+    현장 관측 실험의 센서별 탐지 성공률(광학 80~92% > 열상 70%)과 딥러닝
+    ATR 탐지율 상한(0.80~0.99) 범위의 중상단 값이며 EO > IR 순서를 따른다.
+    """
 
     eo: ChannelDetectionConfig = ChannelDetectionConfig(
         name="EO",
