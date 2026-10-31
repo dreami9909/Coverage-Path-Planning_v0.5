@@ -1,0 +1,9 @@
+# 인증 seed 3종 중 ① — 20260201 세계 (baseline_tel 과 같은 실험, 결과 폴더만 다름).
+# 모든 키가 생략 = v0.4 확정값. 인증 계획: results/studies/anchor-TEL-10-20260201.json
+# 기록 실적: 모형 PD 0.728 · gap 0.81% 인증 O · 실비행 PD 0.381 (2026-10-28 재현 확인).
+
+name = "cert_tel_20260201"
+seed = 20260201
+
+[target]
+case = "TEL"

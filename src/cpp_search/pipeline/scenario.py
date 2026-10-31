@@ -260,7 +260,9 @@ class Scenario:
         """AOI 가 해소된 뒤의 좌표 검증 — 실행 전에 거부한다."""
 
         def inside(x: float, y: float, what: str) -> None:
-            if (x * x + y * y) ** 0.5 > aoi_radius_m:
+            # 합성 지형은 회랑 끝점을 AOI 원주 위에 두므로, 반올림된 좌표가
+            # 경계를 수 cm 넘는 것은 허용한다 (0.5 m 오차).
+            if (x * x + y * y) ** 0.5 > aoi_radius_m + 0.5:
                 raise ScenarioError(
                     f"{what} ({x:.0f}, {y:.0f}) 가 AOI 반경 {aoi_radius_m:.0f} m 밖이다"
                 )

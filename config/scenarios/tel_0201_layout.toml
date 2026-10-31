@@ -1,0 +1,25 @@
+# 20260201 세계의 지형을 명시 배치로 복제한 예시 — 단, seed 는 지정하지 않음.
+# 지형(회랑 2·장애물 1·은닉 3)은 cert_tel_20260201 과 동일 좌표.
+# 나머지 주사위(belief 입자 추첨, MC 표본, 탐지 난수)는 기본 seed 20260830 세계를 따름.
+# → 기대: 지형이 같으므로 20260201 기록(모형 0.728 / gap 0.81% / 실비행 0.381) 근방,
+#   그러나 추첨이 다르므로 동일하지는 않음. provenance 는 terrain.layout 사용으로
+#   comparable_to_v04_anchors = false 로 표기됨.
+
+name = "tel_0201_layout"
+
+[target]
+case = "TEL"
+
+[terrain.layout]
+corridors = [
+  { from = [-6044.7, -7903.4], to = [1159.0, 9882.3], width_m = 2643.0 },
+  { from = [-7162.0, -6907.1], to = [8869.3, 4509.8], width_m = 2659.9 },
+]
+obstacles = [
+  { center = [-2870.3, 130.7], radius_m = 1312.7 },
+]
+concealments = [
+  { center = [3921.6, 5896.7], radius_m = 1300.3 },
+  { center = [3642.6, -2499.6], radius_m = 1730.5 },
+  { center = [-1561.3, 6912.2], radius_m = 1320.0 },
+]

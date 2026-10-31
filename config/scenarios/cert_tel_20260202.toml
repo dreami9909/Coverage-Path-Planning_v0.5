@@ -1,0 +1,8 @@
+# 인증 seed 3종 중 ② — 20260202 세계 (지형·belief·표적 추첨만 다른 독립 복제).
+# 모든 키가 생략 = v0.4 확정값. 인증 계획: results/studies/anchor-TEL-10-20260202.json
+
+name = "cert_tel_20260202"
+seed = 20260202
+
+[target]
+case = "TEL"
