@@ -44,6 +44,10 @@ _BELIEF_KINDS = {"tp-centered": "tp-centered", "ring": "moving-ring",
 #: 커스텀 거동이 config 에 등록되는 이름. 결과 표기는 CUSTOM(base=...) 이다.
 CUSTOM_BEHAVIOUR_NAME = "CUSTOM"
 
+# v0.4 확정 2단계 임무 — 여기서 벗어나면 provenance 에 mission.time 으로 남는다.
+V04_INGRESS_S = 480.0
+V04_SEARCH_S = 600.0
+
 
 class ScenarioError(ValueError):
     """시나리오 파일이 선언한 값이 실행 불가능하다."""
@@ -254,6 +258,13 @@ class Scenario:
             used.append("terrain.layout")
         if self.hypotheses:
             used.append("truth.hypotheses")
+        # v0.4 확정 2단계 임무(480+600 s)에서 벗어난 시간도 비교 불가로 표시한다
+        # (2026-11-03). 명시로 기본값을 적은 것은 같은 세계라 구분하지 않는다.
+        if (
+            self.mission.ingress_s != V04_INGRESS_S
+            or self.mission.search_s != V04_SEARCH_S
+        ):
+            used.append("mission.time")
         return tuple(used)
 
     def validate_geometry(self, aoi_radius_m: float) -> None:
@@ -450,8 +461,12 @@ def build_scenario(raw: dict[str, Any], *, source_path: Path | None = None) -> S
 
     mission_raw = dict(raw.get("mission", {}) or {})
     mission = MissionSpec(
-        ingress_s=_positive(mission_raw.get("ingress_s", 480.0), "mission.ingress_s"),
-        search_s=_positive(mission_raw.get("search_s", 600.0), "mission.search_s"),
+        ingress_s=_positive(
+            mission_raw.get("ingress_s", V04_INGRESS_S), "mission.ingress_s"
+        ),
+        search_s=_positive(
+            mission_raw.get("search_s", V04_SEARCH_S), "mission.search_s"
+        ),
     )
 
     target_raw = dict(raw.get("target", {}) or {})

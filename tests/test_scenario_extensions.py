@@ -65,6 +65,14 @@ class ParseAndValidateTests(unittest.TestCase):
         # center_m 은 선언만 — 경고가 남는다.
         self.assertTrue(any("belief.center_m" in w for w in scenario.warnings))
 
+    def test_mission_time_change_is_flagged_in_provenance(self) -> None:
+        raw = _full_raw()
+        raw["mission"] = {"search_s": 900.0}
+        self.assertIn("mission.time", build_scenario(raw).custom_inputs)
+        # 기본값(480+600)을 명시로 적은 것은 같은 세계 — 표시하지 않는다.
+        raw["mission"] = {"ingress_s": 480.0, "search_s": 600.0}
+        self.assertNotIn("mission.time", build_scenario(raw).custom_inputs)
+
     def test_mode_probabilities_must_sum_to_one(self) -> None:
         raw = _full_raw()
         raw["target"]["behaviour"]["mode_probabilities"] = [0.4, 0.4, 0.4, 0.1, 0.1]

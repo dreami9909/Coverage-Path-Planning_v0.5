@@ -50,7 +50,10 @@ transit_speed_kph = 160.0
 
 [mission]
 ingress_s = 480.0            # 이송 — 이 동안의 표적 확산이 belief에 반영됨
-search_s = 600.0             # 탐색
+search_s = 600.0             # 탐색 — 480+600에서 벗어나면 provenance에
+                             # mission.time으로 남고 v0.4 앵커와 비교 불가.
+                             # AOI는 케이스 확정값이라 따라 커지지 않으니
+                             # 시간을 크게 바꾸면 aoi_radius_m도 함께 조정
 
 [target]
 case = "TEL"                 # Tank | TEL — 최악 거동 집합·AOI·인증 격자를 정함
