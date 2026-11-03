@@ -60,12 +60,13 @@ def _print_summary(metrics: dict, out_dir: Path) -> None:
     """
 
     solver = metrics["solver"]
-    flight = metrics["flight"]
+    mc = metrics["mc"]
+    flightlike = mc["kind"] == "flight-hypotheses"
     model_by_target: dict[str, float] = solver["model_detection_probability_by_target"]
     model_by_token = {_behaviour_token(k): v for k, v in model_by_target.items()}
 
     rows = []
-    for label, block in flight["by_target"].items():
+    for label, block in mc["by_target"].items():
         model_pd = model_by_target.get(label)
         if model_pd is None:                 # 명시 가설 — 거동 토큰으로 대응
             model_pd = model_by_token.get(_behaviour_token(label))
@@ -78,44 +79,51 @@ def _print_summary(metrics: dict, out_dir: Path) -> None:
     def fmt(value, pattern: str, blank: str = "      —") -> str:
         return pattern % value if value is not None else blank
 
-    print(f"{'profile':<{width}}  model_PD   MC_PD  model-MC  fail_rate  t_detect[s]")
+    # t_detect 는 실비행 채점에만 있다 — 규약 맞춤 연속 MC 는 시간 분해가 없다.
+    tail = "  t_detect[s]" if flightlike else ""
+    print(f"{'profile':<{width}}  model_PD   MC_PD  model-MC  fail_rate{tail}")
     for label, model_pd, mc_pd, failure, time_s in rows:
         delta = (model_pd - mc_pd) if model_pd is not None else None
-        print(
+        line = (
             f"{label:<{width}}  {fmt(model_pd, '%8.4f')}  {mc_pd:6.4f}"
-            f"  {fmt(delta, '%+8.4f')}  {failure:9.4f}  {fmt(time_s, '%11.1f')}"
+            f"  {fmt(delta, '%+8.4f')}  {failure:9.4f}"
         )
+        if flightlike:
+            line += f"  {fmt(time_s, '%11.1f')}"
+        print(line)
 
-    blocks = list(flight["by_target"].values())
-    coverage = next(
-        (b["unique_area_coverage_ratio"] for b in blocks
-         if b.get("unique_area_coverage_ratio") is not None),
-        None,
-    )
-    detection_times = [
-        b["conditional_mean_detection_time_s"] for b in blocks
-        if b.get("conditional_mean_detection_time_s") is not None
-    ]
+    coverage = metrics.get("geometry", {}).get("unique_area_coverage_ratio")
     gap = solver["relative_optimality_gap"]
+    device = (
+        f"실비행 (표본 {mc['monte_carlo_samples']})" if flightlike
+        else f"규약맞춤 연속 (centre-sync, 입자 {mc['particles']:,})"
+    )
     print(f"\nrun_dir: {out_dir}")
     print(
         f"공통  optimality gap {gap:.3%} · 인증 {'O' if solver['certified'] else 'X'}"
         + (f" · AOI 커버리지 {100.0 * coverage:.1f}%" if coverage is not None else "")
+        + f" · MC 장치 {device}"
     )
-    mean_time = (
-        f"{sum(detection_times) / len(detection_times):.0f} s" if detection_times else "—"
+    summary = (
+        f"요약  MC 평균 {mc['detection_probability_mean']:.4f}"
+        f" (실패율 {1.0 - mc['detection_probability_mean']:.4f})"
     )
-    print(
-        f"요약  flown 평균 {flight['detection_probability_mean']:.4f}"
-        f" (실패율 {1.0 - flight['detection_probability_mean']:.4f})"
-        f" · 평균 탐지시간 {mean_time}"
-        f" · model−flown {flight['model_minus_flown']:+.4f}"
-    )
+    if flightlike:
+        detection_times = [
+            b["conditional_mean_detection_time_s"] for b in mc["by_target"].values()
+            if b.get("conditional_mean_detection_time_s") is not None
+        ]
+        if detection_times:
+            summary += (
+                f" · 평균 탐지시간 {sum(detection_times) / len(detection_times):.0f} s"
+            )
+    summary += f" · model−MC {mc['model_minus_mc']:+.4f}"
+    print(summary)
     print(
         f"최악  model: {solver['model_detection_probability_worst_target']}"
         f" ({solver['model_detection_probability_worst']:.4f})"
-        f" · flown: {flight['detection_probability_worst_target']}"
-        f" ({flight['detection_probability_worst']:.4f})"
+        f" · MC: {mc['detection_probability_worst_target']}"
+        f" ({mc['detection_probability_worst']:.4f})"
     )
 
 

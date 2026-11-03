@@ -173,18 +173,46 @@ class EndToEndTests(unittest.TestCase):
             model_targets,
         )
         self.assertIn(
-            metrics["flight"]["detection_probability_worst_target"],
-            metrics["flight"]["by_target"],
+            metrics["mc"]["detection_probability_worst_target"],
+            metrics["mc"]["by_target"],
         )
 
-        # 평가: 명시 가설 두 판이 라벨 그대로 채점된다.
-        flight_keys = sorted(metrics["flight"]["by_target"])
-        self.assertEqual(len(flight_keys), 2)
-        self.assertTrue(any(key.startswith("STOP_HEAVY@") for key in flight_keys))
-        self.assertTrue(any(key.startswith("custom@") for key in flight_keys))
-        for block in metrics["flight"]["by_target"].values():
+        # 평가: [truth] 가설이 있으면 실비행 MC 로, 두 판이 라벨 그대로 채점된다.
+        self.assertEqual(metrics["mc"]["kind"], "flight-hypotheses")
+        mc_keys = sorted(metrics["mc"]["by_target"])
+        self.assertEqual(len(mc_keys), 2)
+        self.assertTrue(any(key.startswith("STOP_HEAVY@") for key in mc_keys))
+        self.assertTrue(any(key.startswith("custom@") for key in mc_keys))
+        for block in metrics["mc"]["by_target"].values():
             self.assertGreaterEqual(block["detection_probability"], 0.0)
             self.assertLessEqual(block["detection_probability"], 1.0)
+
+    def test_standard_run_scores_continuous_convention_mc(self) -> None:
+        """[truth] 없음 → MC 열은 규약 맞춤 연속 MC, 표적 집합은 모형과 같다."""
+        import tempfile
+        from pathlib import Path
+
+        from cpp_search.pipeline.run import run_scenario
+
+        raw = _full_raw()
+        raw.pop("truth")
+        scenario = build_scenario(raw)
+        with tempfile.TemporaryDirectory() as tmp:
+            metrics = run_scenario(scenario, out_root=Path(tmp))
+
+        mc = metrics["mc"]
+        self.assertEqual(mc["kind"], "continuous-centre-sync")
+        self.assertEqual(
+            sorted(mc["by_target"]),
+            sorted(metrics["solver"]["model_detection_probability_by_target"]),
+        )
+        self.assertIn(mc["detection_probability_worst_target"], mc["by_target"])
+        for block in mc["by_target"].values():
+            self.assertGreaterEqual(block["detection_probability"], 0.0)
+            self.assertLessEqual(block["detection_probability"], 1.0)
+        self.assertIsNotNone(
+            metrics["geometry"]["unique_area_coverage_ratio"]
+        )
 
 
 if __name__ == "__main__":

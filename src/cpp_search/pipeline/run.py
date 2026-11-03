@@ -129,44 +129,19 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
     geometry = evaluate_routes(
         plan.routes, mission, sensor, time_limit_s=options.mission_time_s
     )
-    evaluation = EvaluationConfig(
-        sample_count=options.sample_count,
-        seed=scenario.seed ^ 0x4556_414C,
-        detection_time_limit_s=options.mission_time_s,
-    )
-    strata = _evaluation_strata(scenario, config, case, targets)
-    flight_blocks: list[dict] = []
-    for index, (label, profile, start) in enumerate(strata):
-        truths = generate_truth(
-            config,
-            mission,
-            replace(evaluation, seed=evaluation.seed ^ (index * 0x9E37)),
-            profile,
-            horizon_s=options.mission_time_s,
-            terrain=terrain,
-            prior=prior,
-            initial_points=(
-                [Point2D(*start)] * options.sample_count if start is not None else None
-            ),
+    # MC 열은 규약 맞춤 연속 MC 다 (B안, 2026-11-03 확정) — 셀 모형과 항적
+    # 규약·소인 법칙·이송 처리를 맞춰서 model−MC 가 곧 셀 모형 가정(주로
+    # Markov 섞임)의 몫이 되게 한다. [truth] 고정 출발점 가설만 예외로
+    # 실비행 MC 로 채점한다 (고정 initial_points 를 지원하는 유일한 장치).
+    if scenario.hypotheses:
+        mc = _flight_hypotheses_block(
+            scenario, config, case, targets, plan, mission, sensor,
+            terrain, prior, options, geometry,
         )
-        performance = evaluate_monte_carlo(
-            plan.routes,
-            mission,
-            sensor,
-            truths,
-            evaluation,
-            detection_model=SpatialDetectionModel(
-                condition="sensor",
-                sensor_performance=SENSOR_PERFORMANCE_SR_Z50,
-                target_signature=profile.signature,
-            ),
-            sensor_detection_seed=scenario.seed ^ 0x5345_4E53 ^ (index * 0x9E37),
+    else:
+        mc = _continuous_mc_block(
+            scenario, instance, plan, targets, mission, prior, options
         )
-        block = mission_kpi(
-            performance, uav_count=mission.uav_count, geometry=geometry
-        )
-        block["target_profile"] = label
-        flight_blocks.append(block)
 
     model_by_target = {
         name: float(value)
@@ -178,16 +153,12 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
     # 다른 거동을 최악으로 지목하는 일이 흔하다 (profile-rank 연구, 2026-10-31).
     model_worst_target = min(model_by_target, key=model_by_target.get)
     model_worst = model_by_target[model_worst_target]
-    flown_values = [
-        float(block["detection_probability_within_limit"]) for block in flight_blocks
-    ]
-    flown_worst = min(flown_values)
-    flown_worst_target = flight_blocks[
-        flown_values.index(flown_worst)
-    ]["target_profile"]
-    # v0.4 규약(ch4): 거동 등가중 평균이 "실비행 PD"다 — 모형의 minimax 와
-    # 비교하는 공표값. 최악 거동값은 참고로 같이 남긴다.
-    flown_mean = float(np.mean(flown_values))
+    # model−MC: 규약 맞춤 MC 는 minimax 끼리(최악 vs 최악) 비교가 성립하고,
+    # 실비행 가설 채점은 v0.4 규약대로 등가중 평균과 비교한다.
+    if mc["kind"] == "continuous-centre-sync":
+        mc["model_minus_mc"] = model_worst - mc["detection_probability_worst"]
+    else:
+        mc["model_minus_mc"] = model_worst - mc["detection_probability_mean"]
     certified = bool(
         np.isfinite(diagnostics.relative_optimality_gap)
         and diagnostics.relative_optimality_gap <= scenario.solver.certificate_gap
@@ -228,35 +199,17 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
             "converged": diagnostics.converged,
             "runtime_s": diagnostics.runtime_s,
         },
-        "flight": {
-            "monte_carlo_samples": options.sample_count,
-            "by_target": {
-                block["target_profile"]: {
-                    "detection_probability": float(
-                        block["detection_probability_within_limit"]
-                    ),
-                    "failure_rate": 1.0
-                    - float(block["detection_probability_within_limit"]),
-                    "conditional_mean_detection_time_s": _maybe_float(
-                        block.get("conditional_mean_detection_time_s")
-                    ),
-                    "restricted_mean_detection_time_s": _maybe_float(
-                        block.get("restricted_mean_detection_time_s")
-                    ),
-                    "unique_area_coverage_ratio": _maybe_float(
-                        block.get("unique_area_coverage_ratio")
-                    ),
-                    "probability_mass_coverage": _maybe_float(
-                        block.get("probability_mass_coverage")
-                    ),
-                }
-                for block in flight_blocks
-            },
-            "detection_probability_mean": flown_mean,
-            "detection_probability_worst": flown_worst,
-            "detection_probability_worst_target": flown_worst_target,
-            "model_minus_flown": model_worst - flown_mean,
+        "geometry": {
+            # 커버리지는 경로 기하라 가설과 무관 — MC 장치가 바뀌어도 그대로다.
+            "unique_area_coverage_ratio": _maybe_float(
+                geometry.unique_area_coverage_ratio
+            ),
+            "probability_mass_coverage": _maybe_float(
+                geometry.probability_mass_coverage
+            ),
+            "total_distance_m": float(geometry.total_distance_m),
         },
+        "mc": mc,
         "wall_time_s": None,  # 아래에서 채움
     }
 
@@ -281,6 +234,136 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
             Path(scenario.source_path).read_text(encoding="utf-8"), encoding="utf-8"
         )
     return metrics
+
+
+def _continuous_mc_block(
+    scenario: Scenario, instance, plan, targets, mission, prior, options
+) -> dict:
+    """규약 맞춤 연속 MC — 파이프라인의 MC 열 (B안, 2026-11-03 확정).
+
+    셀 모형과 항적 규약(centre-sync)·지수 소인 법칙·이송 처리(belief 480 s
+    predict 만)를 전부 맞추고, 표적이 셀 안 실제 위치를 기억한다는 것만
+    현실로 되돌린다. 그래서 model−MC 가 곧 셀 모형 가정(주로 Markov 섞임)의
+    몫이다. 끝단 실비행 평가는 [truth] 고정 출발점 가설 경로에만 남는다.
+    """
+
+    from cpp_search.solvers.milp.continuous_mc import SUPPORT_HALF_M
+    from cpp_search.solvers.milp.continuous_mc import evaluate as continuous_evaluate
+    from cpp_search.solvers.milp.terrain_belief import BELIEF_TERRAIN_FULL
+
+    paths = tuple(tuple(int(cell) for cell in path) for path in plan.assignments)
+    result = continuous_evaluate(
+        instance,
+        targets,
+        [("centre-sync", paths, SUPPORT_HALF_M)],
+        mission=mission,
+        prior=prior,
+        terrain_coupling=BELIEF_TERRAIN_FULL,
+        particle_count=options.particle_count,
+        dt_s=5.0,
+        seed=scenario.seed,
+        erase=("none",),
+        entry=("centre-sync",),
+        belief_delay_s=scenario.mission.ingress_s,
+    )
+    by_target = {
+        spec.profile.name: {
+            "detection_probability": float(row["pd"][0]),
+            "failure_rate": 1.0 - float(row["pd"][0]),
+        }
+        for spec, row in zip(targets, result["targets"])
+    }
+    values = {
+        name: block["detection_probability"] for name, block in by_target.items()
+    }
+    worst_target = min(values, key=values.get)
+    return {
+        "kind": "continuous-centre-sync",
+        "particles": options.particle_count,
+        "by_target": by_target,
+        "detection_probability_mean": float(np.mean(list(values.values()))),
+        "detection_probability_worst": values[worst_target],
+        "detection_probability_worst_target": worst_target,
+    }
+
+
+def _flight_hypotheses_block(
+    scenario: Scenario, config, case, targets, plan, mission, sensor,
+    terrain, prior, options, geometry,
+) -> dict:
+    """[truth] 고정 출발점 가설의 채점 — 실비행 MC.
+
+    고정 initial_points 를 지원하는 유일한 장치라 이 경로만 실비행으로
+    남는다. 공표 MC(규약 맞춤 연속)와 장치가 다르므로 kind 로 구분한다.
+    """
+
+    evaluation = EvaluationConfig(
+        sample_count=options.sample_count,
+        seed=scenario.seed ^ 0x4556_414C,
+        detection_time_limit_s=options.mission_time_s,
+    )
+    strata = _evaluation_strata(scenario, config, case, targets)
+    flight_blocks: list[dict] = []
+    for index, (label, profile, start) in enumerate(strata):
+        truths = generate_truth(
+            config,
+            mission,
+            replace(evaluation, seed=evaluation.seed ^ (index * 0x9E37)),
+            profile,
+            horizon_s=options.mission_time_s,
+            terrain=terrain,
+            prior=prior,
+            initial_points=(
+                [Point2D(*start)] * options.sample_count if start is not None else None
+            ),
+        )
+        performance = evaluate_monte_carlo(
+            plan.routes,
+            mission,
+            sensor,
+            truths,
+            evaluation,
+            detection_model=SpatialDetectionModel(
+                condition="sensor",
+                sensor_performance=SENSOR_PERFORMANCE_SR_Z50,
+                target_signature=profile.signature,
+            ),
+            sensor_detection_seed=scenario.seed ^ 0x5345_4E53 ^ (index * 0x9E37),
+        )
+        block = mission_kpi(
+            performance, uav_count=mission.uav_count, geometry=geometry
+        )
+        block["target_profile"] = label
+        flight_blocks.append(block)
+
+    by_target = {
+        block["target_profile"]: {
+            "detection_probability": float(
+                block["detection_probability_within_limit"]
+            ),
+            "failure_rate": 1.0
+            - float(block["detection_probability_within_limit"]),
+            "conditional_mean_detection_time_s": _maybe_float(
+                block.get("conditional_mean_detection_time_s")
+            ),
+            "restricted_mean_detection_time_s": _maybe_float(
+                block.get("restricted_mean_detection_time_s")
+            ),
+        }
+        for block in flight_blocks
+    }
+    values = {
+        name: block["detection_probability"] for name, block in by_target.items()
+    }
+    worst_target = min(values, key=values.get)
+    return {
+        "kind": "flight-hypotheses",
+        "monte_carlo_samples": options.sample_count,
+        "by_target": by_target,
+        "detection_probability_mean": float(np.mean(list(values.values()))),
+        "detection_probability_worst": values[worst_target],
+        "detection_probability_worst_target": worst_target,
+    }
 
 
 def _custom_target_spec(config, case: dict) -> StoneSPXTargetSpec:
