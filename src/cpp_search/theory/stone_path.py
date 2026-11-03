@@ -219,6 +219,7 @@ def stone_spx_cutting_plane(
     exact_backend: str = "highs",
     master_backend: str = "highs",
     local_improvement_passes: int = 0,
+    progress=None,
 ) -> StoneCuttingPlaneResult:
     """Solve Stone model SPX with the Chapter 4 cutting-plane algorithm.
 
@@ -852,7 +853,7 @@ def stone_spx_cutting_plane(
                 f"HiGHS failed at iteration {iteration}; returning the best "
                 f"certified incumbent: {solved.message}"
             )
-            _record_bounds(bound_history, iteration, certified_lower, best_upper)
+            _record_bounds(bound_history, iteration, certified_lower, best_upper, progress)
             break
 
         # With a nonzero MILP tolerance ``fun`` is only the incumbent master
@@ -921,7 +922,7 @@ def stone_spx_cutting_plane(
             # 분리 제약만 추가하고 재해결하는 반복. 상한은 그대로여도 하한은
             # 이미 갱신됐으므로 궤적에 남겨야 한다. 빠뜨리면 수렴 그림이
             # 실제보다 적은 반복으로 닫힌 것처럼 보인다.
-            _record_bounds(bound_history, iteration, certified_lower, best_upper)
+            _record_bounds(bound_history, iteration, certified_lower, best_upper, progress)
             continue
         # master 가 돌려준 **그 점**에 접선을 먼저 놓는다. 국소개선이 점을
         # 옮긴 뒤 옮긴 점에만 절단을 놓으면 master 해는 반증되지 않아 같은
@@ -973,7 +974,7 @@ def stone_spx_cutting_plane(
         relative_gap = max(0.0, best_upper - certified_lower) / max(
             abs(best_upper), 1e-15
         )
-        _record_bounds(bound_history, iteration, certified_lower, best_upper)
+        _record_bounds(bound_history, iteration, certified_lower, best_upper, progress)
         if relative_gap <= relative_tolerance:
             converged = True
             break
@@ -1088,11 +1089,14 @@ def _record_bounds(
     iteration: int,
     lower: float,
     upper: float,
+    progress=None,
 ) -> None:
     """반복 하나의 (하한, 상한, 상대갭)을 궤적에 남긴다.
 
     상한이 아직 무한대인 초기 반복은 갭을 1.0 으로 적는다 (정수해가 없어
     아무것도 인증되지 않은 상태). 한 반복에 두 번 불리면 뒤의 값으로 덮는다.
+    ``progress`` 가 있으면 반복 한 줄을 그리로 보낸다 — 수십 분 걸리는
+    solve 가 살아 있는지 밖에서 볼 수 있게 (2026-11-03).
     """
 
     gap = 1.0
@@ -1103,6 +1107,12 @@ def _record_bounds(
         history[-1] = row
     else:
         history.append(row)
+    if progress is not None:
+        upper_text = f"{upper:.4f}" if isfinite(upper) else "—"
+        progress(
+            f"  SPX 반복 {iteration:>3}  비탐지 하한 {lower:.4f}"
+            f" · 상한 {upper_text} · gap {gap:.3%}"
+        )
 
 
 def _solve_exact_survival_milp(

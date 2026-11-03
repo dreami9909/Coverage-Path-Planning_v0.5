@@ -136,8 +136,32 @@ def run_scenario(
     plan_path = out_dir / "plan.json"
     solution = _cached_solution(plan_path, instance.fingerprint) if reuse_plan else None
     plan_reused = solution is not None
+    solve_attempts = 0
     if solution is None:
-        solution = solve_stone_grid_paths(instance, method="stone-spx")
+        progress = lambda line: print(line, flush=True)  # noqa: E731
+        solution = solve_stone_grid_paths(
+            instance, method="stone-spx", progress=progress
+        )
+        solve_attempts = 1
+        # 인증 재시도 정책 (2026-11-03 확정): solve 는 비결정적이라 gap 이
+        # 실행 운에 갈린다 (같은 입력이 4.07%→0.91%→0.99% 관측). 기준을
+        # 넘으면 **한 번만** 다시 풀고, 둘 중 gap 이 작은 쪽을 쓴다.
+        gap = solution.relative_optimality_gap
+        if not (np.isfinite(gap) and gap <= scenario.solver.certificate_gap):
+            print(
+                f"  gap {gap:.3%} > 기준 {scenario.solver.certificate_gap:.1%}"
+                " — 재시도 1회 (인증 재시도 정책)",
+                flush=True,
+            )
+            retry = solve_stone_grid_paths(
+                instance, method="stone-spx", progress=progress
+            )
+            solve_attempts = 2
+            retry_gap = retry.relative_optimality_gap
+            if np.isfinite(retry_gap) and (
+                not np.isfinite(gap) or retry_gap < gap
+            ):
+                solution = retry
         _store_solution(plan_path, instance.fingerprint, solution)
     plan = route_plan_from_solution(instance, solution, method="stone-spx")
     diagnostics = plan.diagnostics
@@ -205,6 +229,7 @@ def run_scenario(
         "solver": {
             "kind": scenario.solver.kind,
             "plan_reused": plan_reused,
+            "solve_attempts": solve_attempts,
             "model_detection_probability_worst": model_worst,
             "model_detection_probability_worst_target": model_worst_target,
             "model_detection_probability_by_target": model_by_target,

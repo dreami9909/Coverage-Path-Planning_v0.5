@@ -58,20 +58,37 @@ def _full_raw(**overrides):
 class ParseAndValidateTests(unittest.TestCase):
     def test_full_template_parses_and_records_custom_inputs(self) -> None:
         scenario = build_scenario(_full_raw())
-        self.assertEqual(
-            scenario.custom_inputs,
-            ("target.behaviour", "belief", "terrain.layout", "truth.hypotheses"),
+        custom = set(scenario.custom_inputs)
+        # 신설 4블록은 블록 단위 라벨로 올라간다.
+        self.assertLessEqual(
+            {"target.behaviour", "belief", "terrain.layout", "truth.hypotheses"},
+            custom,
+        )
+        # 전수 감시: 연기 시험 크기(격자·시간한도·입자)도 비교 불가 사유다.
+        self.assertLessEqual(
+            {"grid.n", "solver.time_limit_s", "evaluation.particles"}, custom
         )
         # center_m 은 선언만 — 경고가 남는다.
         self.assertTrue(any("belief.center_m" in w for w in scenario.warnings))
 
-    def test_mission_time_change_is_flagged_in_provenance(self) -> None:
-        raw = _full_raw()
-        raw["mission"] = {"search_s": 900.0}
-        self.assertIn("mission.time", build_scenario(raw).custom_inputs)
-        # 기본값(480+600)을 명시로 적은 것은 같은 세계 — 표시하지 않는다.
-        raw["mission"] = {"ingress_s": 480.0, "search_s": 600.0}
-        self.assertNotIn("mission.time", build_scenario(raw).custom_inputs)
+    def test_any_departure_from_v04_defaults_is_flagged(self) -> None:
+        """전수 감시 (2026-11-03): 목록 밖 키도 기본형과의 diff 로 잡힌다."""
+        base = {"name": "p", "target": {"case": "TEL"}}
+        self.assertEqual(build_scenario(base).custom_inputs, ())
+        self.assertEqual(
+            build_scenario({**base, "vehicle": {"count": 4}}).custom_inputs,
+            ("vehicle.count",),
+        )
+        self.assertEqual(
+            build_scenario({**base, "mission": {"search_s": 900.0}}).custom_inputs,
+            ("mission.search_s",),
+        )
+        # 기본값을 명시로 적은 것은 같은 세계 — 올라가지 않는다.
+        explicit = {**base, "mission": {"ingress_s": 480.0, "search_s": 600.0}}
+        self.assertEqual(build_scenario(explicit).custom_inputs, ())
+        # 평가 표본 수는 정밀도만 — 예외.
+        samples = {**base, "evaluation": {"mc_samples": 50}}
+        self.assertEqual(build_scenario(samples).custom_inputs, ())
 
     def test_mode_probabilities_must_sum_to_one(self) -> None:
         raw = _full_raw()

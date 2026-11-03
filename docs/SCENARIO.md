@@ -51,7 +51,7 @@ transit_speed_kph = 160.0
 [mission]
 ingress_s = 480.0            # 이송 — 이 동안의 표적 확산이 belief에 반영됨
 search_s = 600.0             # 탐색 — 480+600에서 벗어나면 provenance에
-                             # mission.time으로 남고 v0.4 앵커와 비교 불가.
+                             # 남고 v0.4 앵커와 비교 불가 (아래 출력 규약).
                              # AOI는 케이스 확정값이라 따라 커지지 않으니
                              # 시간을 크게 바꾸면 aoi_radius_m도 함께 조정
 
@@ -126,6 +126,13 @@ particles = 5000
 |---|---|
 | `metrics.json` | 모형 PD(최악표적·표적별), optimality gap, **인증 판정**, MC PD(표적별·평균·최악), 실패율, 면적 커버리지(경로 기하), model−MC, 해소된 격자 값 전부 |
 | `plan.json` | 셀 경로·인증 경계 + 입력 fingerprint — **같은 입력의 재실행은 다시 풀지 않고 이 계획을 재사용**한다 (solve 는 실행마다 다른 계획을 낼 수 있음 — 위 비결정성 관측). 다시 풀려면 `--resolve` |
+
+실행 중 피드백·인증 재시도 (2026-11-03): solve 는 SPX 반복마다
+`SPX 반복 n 비탐지 하한 · 상한 · gap` 한 줄을 찍는다 — 수십 분 실행이
+살아 있는지 밖에서 보인다. 그리고 **인증 재시도 정책**: 첫 solve 의 gap 이
+기준(1%)을 넘으면 자동으로 **한 번만** 다시 풀고 둘 중 gap 이 작은 쪽을
+쓴다 (`metrics.json` 의 `solver.solve_attempts` 에 횟수가 남는다).
+비결정성 때문에 인증이 실행 운에 갈리는 것을 줄이는 공표 절차다.
 | `figure1_weights.png` | 가중치 지도 3면 — 기동성·은닉·초기 belief 셀 질량 |
 | `figure2_tracks.png` | step별 1~N 비행체 항적 (셀 중심 경유 본 표, ×=실제 발진 지점) |
 | `scenario.toml` | 입력 스냅샷 — 이 파일이 재현의 근거 |
@@ -227,9 +234,13 @@ hypotheses = [
 
 ### 출력 규약
 
-- 신설 블록을 하나라도 쓰면 `metrics.json` 에
-  `provenance.custom_inputs = ["target.behaviour", ...]` 를 기록하고
-  **"v0.4 인증 실적과 비교 불가"** 라벨을 남긴다 — 기준 표에 섞이는 사고 방지.
+- **provenance 전수 감시 (2026-11-03)**: v0.4 확정값(= 모든 키 생략의
+  기본형)에서 벗어난 입력 키를 **전부** 자동 감지해 `metrics.json` 의
+  `provenance.custom_inputs = ["vehicle.count", "target.behaviour", ...]` 에
+  키 경로로 기록하고 **"v0.4 인증 실적과 비교 불가"** 라벨을 남긴다 —
+  기준 표에 섞이는 사고 방지. 예외는 셋뿐: `name`(폴더명), `seed`(같은
+  실험의 다른 추첨), `evaluation.mc_samples`(평가 정밀도만). 기본값을
+  명시로 적은 것은 같은 세계라 올라가지 않는다.
 - 커스텀 프로파일의 결과 표기 이름은 `CUSTOM(base=RELOCATION_HEAVY)`.
 - 재현성은 현행 그대로 — `scenario.toml` 스냅샷이 입력 전부다.
 

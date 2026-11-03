@@ -11,7 +11,7 @@
 from __future__ import annotations
 
 import tomllib
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, fields
 from pathlib import Path
 from typing import Any
 
@@ -226,6 +226,46 @@ class EvaluationSpec:
     particles: int
 
 
+# ------------------------------------------- provenance 전수 감시 (2026-11-03)
+# v0.4 확정값(= 모든 키 생략의 기본형)과 다른 키 경로를 전부 custom_inputs 에
+# 올린다. 예외만 아래에 명시한다 — 목록을 들고 일부만 확인하던 이전 방식은
+# 목록 밖 키(예: vehicle.count)를 바꿔도 '비교 가능' 거짓 라벨이 남았다.
+_PROVENANCE_SKIP_FIELDS = ("name", "seed", "source_path", "warnings")
+_PROVENANCE_EXEMPT_PATHS = frozenset({
+    # 평가 표본 수는 공표값의 분산만 바꾸고 세계·계획은 바꾸지 않는다.
+    # (particles 는 계획 인스턴스의 belief 에 들어가므로 예외가 아니다.)
+    "evaluation.mc_samples",
+})
+_PROVENANCE_BLOCK_LABELS = {
+    "behaviour": "target.behaviour",
+    "layout": "terrain.layout",
+    "hypotheses": "truth.hypotheses",
+}
+
+
+def _diff_paths(mine: Any, base: Any, prefix: str) -> list[str]:
+    """두 spec 트리가 갈라지는 잎 경로를 모은다 (dataclass 는 재귀)."""
+
+    from dataclasses import fields as dc_fields, is_dataclass
+
+    if (
+        is_dataclass(mine)
+        and is_dataclass(base)
+        and type(mine) is type(base)
+    ):
+        out: list[str] = []
+        for spec_field in dc_fields(mine):
+            out.extend(
+                _diff_paths(
+                    getattr(mine, spec_field.name),
+                    getattr(base, spec_field.name),
+                    f"{prefix}.{spec_field.name}",
+                )
+            )
+        return out
+    return [] if mine == base else [prefix]
+
+
 @dataclass(frozen=True)
 class Scenario:
     name: str
@@ -247,25 +287,39 @@ class Scenario:
 
     @property
     def custom_inputs(self) -> tuple[str, ...]:
-        """신설 입력 블록 중 쓰인 것 — 하나라도 있으면 v0.4 인증 실적과 비교 불가."""
+        """v0.4 확정값에서 벗어난 입력 키 전부 — 하나라도 있으면 anchor 비교 불가.
 
-        used = []
-        if self.behaviour is not None:
-            used.append("target.behaviour")
-        if self.belief is not None:
-            used.append("belief")
-        if self.layout is not None:
-            used.append("terrain.layout")
-        if self.hypotheses:
-            used.append("truth.hypotheses")
-        # v0.4 확정 2단계 임무(480+600 s)에서 벗어난 시간도 비교 불가로 표시한다
-        # (2026-11-03). 명시로 기본값을 적은 것은 같은 세계라 구분하지 않는다.
-        if (
-            self.mission.ingress_s != V04_INGRESS_S
-            or self.mission.search_s != V04_SEARCH_S
-        ):
-            used.append("mission.time")
-        return tuple(used)
+        기준형(모든 키 생략 = v0.4 확정값, 같은 case)과 필드 단위로 대조해
+        자동 수집한다. 명시로 기본값을 적은 것은 같은 세계라 올라가지 않고,
+        예외는 name(폴더명)·seed(같은 실험의 다른 추첨)·
+        evaluation.mc_samples(평가 정밀도만) 셋뿐이다.
+        """
+
+        baseline = build_scenario(
+            {
+                "name": self.name,
+                "seed": self.seed,
+                "target": {"case": self.target.case},
+            }
+        )
+        paths: list[str] = []
+        for spec_field in fields(self):
+            key = spec_field.name
+            if key in _PROVENANCE_SKIP_FIELDS:
+                continue
+            mine, base = getattr(self, key), getattr(baseline, key)
+            if mine == base:
+                continue
+            block_label = _PROVENANCE_BLOCK_LABELS.get(key)
+            if block_label is not None:  # 신설 블록은 블록 단위 라벨 유지
+                paths.append(block_label)
+                continue
+            paths.extend(
+                path
+                for path in _diff_paths(mine, base, key)
+                if path not in _PROVENANCE_EXEMPT_PATHS
+            )
+        return tuple(paths)
 
     def validate_geometry(self, aoi_radius_m: float) -> None:
         """AOI 가 해소된 뒤의 좌표 검증 — 실행 전에 거부한다."""

@@ -1149,8 +1149,12 @@ def solve_stone_grid_paths(
     instance: StoneGridInstance,
     *,
     method: StoneGridMethod = "stone-spx",
+    progress=None,
 ) -> StoneGridPathSolution:
-    """Stone 절단평면(또는 그 warm start 휴리스틱)으로 셀 경로를 고른다."""
+    """Stone 절단평면(또는 그 warm start 휴리스틱)으로 셀 경로를 고른다.
+
+    ``progress`` 가 있으면 SPX 반복마다 (하한·상한·gap) 한 줄을 보낸다.
+    """
 
     config = instance.config
     started = perf_counter()
@@ -1191,6 +1195,7 @@ def solve_stone_grid_paths(
             exact_backend=config.exact_backend,
             master_backend=config.master_backend,
             local_improvement_passes=config.local_improvement_passes,
+            progress=progress,
         )
         paths = solution.paths
         return StoneGridPathSolution(
