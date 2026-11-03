@@ -222,6 +222,31 @@ class EndToEndTests(unittest.TestCase):
             metrics["geometry"]["unique_area_coverage_ratio"]
         )
 
+    def test_second_run_reuses_stored_plan(self) -> None:
+        """같은 입력의 재실행은 plan.json 을 재사용한다 — solve 비결정성 차단."""
+        import tempfile
+        from pathlib import Path
+
+        from cpp_search.pipeline.run import run_scenario
+
+        raw = _full_raw()
+        raw.pop("truth")
+        scenario = build_scenario(raw)
+        with tempfile.TemporaryDirectory() as tmp:
+            first = run_scenario(scenario, out_root=Path(tmp))
+            second = run_scenario(scenario, out_root=Path(tmp))
+
+        self.assertFalse(first["solver"]["plan_reused"])
+        self.assertTrue(second["solver"]["plan_reused"])
+        self.assertEqual(
+            first["solver"]["model_detection_probability_by_target"],
+            second["solver"]["model_detection_probability_by_target"],
+        )
+        self.assertEqual(
+            first["solver"]["relative_optimality_gap"],
+            second["solver"]["relative_optimality_gap"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

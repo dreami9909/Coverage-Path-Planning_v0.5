@@ -125,6 +125,7 @@ particles = 5000
 | 파일 | 내용 |
 |---|---|
 | `metrics.json` | 모형 PD(최악표적·표적별), optimality gap, **인증 판정**, MC PD(표적별·평균·최악), 실패율, 면적 커버리지(경로 기하), model−MC, 해소된 격자 값 전부 |
+| `plan.json` | 셀 경로·인증 경계 + 입력 fingerprint — **같은 입력의 재실행은 다시 풀지 않고 이 계획을 재사용**한다 (solve 는 실행마다 다른 계획을 낼 수 있음 — 위 비결정성 관측). 다시 풀려면 `--resolve` |
 | `figure1_weights.png` | 가중치 지도 3면 — 기동성·은닉·초기 belief 셀 질량 |
 | `figure2_tracks.png` | step별 1~N 비행체 항적 (셀 중심 경유 본 표, ×=실제 발진 지점) |
 | `scenario.toml` | 입력 스냅샷 — 이 파일이 재현의 근거 |

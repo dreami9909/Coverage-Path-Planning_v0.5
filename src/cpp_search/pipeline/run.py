@@ -46,8 +46,19 @@ from cpp_search.solvers.milp.stone_spx import (
 from cpp_search.models.truth import behaviour_profile, cue_prior, generate_truth, target_profile
 
 
-def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -> dict:
-    """시나리오를 실행하고 ``<out_root>/<name>/`` 에 산출물을 남긴다."""
+def run_scenario(
+    scenario: Scenario,
+    *,
+    out_root: str | Path = "results/runs",
+    reuse_plan: bool = True,
+) -> dict:
+    """시나리오를 실행하고 ``<out_root>/<name>/`` 에 산출물을 남긴다.
+
+    ``reuse_plan`` 이면 같은 입력(fingerprint 일치)의 저장된 계획
+    (``plan.json``)을 다시 풀지 않고 쓴다 — solve 가 실행마다 다른 계획을
+    낼 수 있어(비결정성 관측 2026-11-03: 같은 입력이 gap 4.07%→0.91%→0.99%)
+    공표 실행의 재현에는 계획 자체를 보관해야 한다.
+    """
 
     started = time.time()
     config = scenario.chapter_config()
@@ -121,7 +132,13 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
     )
 
     # --------------------------------------------------------------- Solver
-    solution = solve_stone_grid_paths(instance, method="stone-spx")
+    out_dir = Path(out_root) / scenario.name
+    plan_path = out_dir / "plan.json"
+    solution = _cached_solution(plan_path, instance.fingerprint) if reuse_plan else None
+    plan_reused = solution is not None
+    if solution is None:
+        solution = solve_stone_grid_paths(instance, method="stone-spx")
+        _store_solution(plan_path, instance.fingerprint, solution)
     plan = route_plan_from_solution(instance, solution, method="stone-spx")
     diagnostics = plan.diagnostics
 
@@ -187,6 +204,7 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
         },
         "solver": {
             "kind": scenario.solver.kind,
+            "plan_reused": plan_reused,
             "model_detection_probability_worst": model_worst,
             "model_detection_probability_worst_target": model_worst_target,
             "model_detection_probability_by_target": model_by_target,
@@ -213,7 +231,6 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
         "wall_time_s": None,  # 아래에서 채움
     }
 
-    out_dir = Path(out_root) / scenario.name
     out_dir.mkdir(parents=True, exist_ok=True)
 
     from cpp_search.pipeline.figures import weight_figure, track_figure
@@ -234,6 +251,66 @@ def run_scenario(scenario: Scenario, *, out_root: str | Path = "results/runs") -
             Path(scenario.source_path).read_text(encoding="utf-8"), encoding="utf-8"
         )
     return metrics
+
+
+_SOLUTION_FIELDS = (
+    "paths", "target_detection_probabilities", "lower_bound_nondetection",
+    "upper_bound_nondetection", "relative_optimality_gap", "iterations",
+    "converged", "fallback_used", "fallback_reason", "runtime_s",
+    "incumbent_source",
+)
+
+
+def _store_solution(path: Path, fingerprint: str, solution) -> None:
+    """solve 결과 중 계획 재구성에 필요한 필드만 ``plan.json`` 에 남긴다."""
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "fingerprint": fingerprint,
+        "solution": {
+            name: getattr(solution, name) for name in _SOLUTION_FIELDS
+        },
+    }
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=1, default=_json_default),
+        encoding="utf-8",
+    )
+
+
+def _cached_solution(path: Path, fingerprint: str):
+    """저장된 계획이 **같은 인스턴스**의 것일 때만 되살린다.
+
+    fingerprint 가 다르면 입력이 바뀐 것 — 조용히 다시 푼다. 반복별
+    bound_history 류는 저장하지 않으므로 재사용 실행에는 비어 있다
+    (파이프라인 지표·그림은 그것을 쓰지 않는다).
+    """
+
+    if not path.exists():
+        return None
+    try:
+        stored = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    if stored.get("fingerprint") != fingerprint:
+        return None
+    from cpp_search.solvers.milp.stone_spx import StoneGridPathSolution
+
+    raw = stored["solution"]
+    return StoneGridPathSolution(
+        paths=tuple(tuple(int(cell) for cell in p) for p in raw["paths"]),
+        target_detection_probabilities=tuple(
+            float(v) for v in raw["target_detection_probabilities"]
+        ),
+        lower_bound_nondetection=float(raw["lower_bound_nondetection"]),
+        upper_bound_nondetection=float(raw["upper_bound_nondetection"]),
+        relative_optimality_gap=float(raw["relative_optimality_gap"]),
+        iterations=int(raw["iterations"]),
+        converged=bool(raw["converged"]),
+        fallback_used=bool(raw["fallback_used"]),
+        fallback_reason=raw["fallback_reason"],
+        runtime_s=float(raw["runtime_s"]),
+        incumbent_source=str(raw.get("incumbent_source", "unknown")),
+    )
 
 
 def _continuous_mc_block(

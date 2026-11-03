@@ -23,6 +23,11 @@ def main(argv: list[str] | None = None) -> int:
         "--validate-only", action="store_true",
         help="입력 검증까지만 하고 실행하지 않는다",
     )
+    parser.add_argument(
+        "--resolve", action="store_true",
+        help="저장된 계획(plan.json)을 무시하고 다시 푼다 — solve 는 실행마다 "
+             "다른 계획을 낼 수 있다 (기본은 같은 입력이면 재사용)",
+    )
     args = parser.parse_args(argv)
 
     try:
@@ -37,7 +42,9 @@ def main(argv: list[str] | None = None) -> int:
               f"{scenario.grid.kind} {scenario.grid.n}×{scenario.grid.n})")
         return 0
 
-    metrics = run_scenario(scenario, out_root=args.out)
+    metrics = run_scenario(
+        scenario, out_root=args.out, reuse_plan=not args.resolve
+    )
     out_dir = Path(args.out) / scenario.name
     _print_summary(metrics, out_dir)
     return 0
@@ -103,6 +110,7 @@ def _print_summary(metrics: dict, out_dir: Path) -> None:
         f"공통  optimality gap {gap:.3%} · 인증 {'O' if solver['certified'] else 'X'}"
         + (f" · AOI 커버리지 {100.0 * coverage:.1f}%" if coverage is not None else "")
         + f" · MC 장치 {device}"
+        + (" · 계획 plan.json 재사용" if solver.get("plan_reused") else "")
     )
     summary = (
         f"요약  MC 평균 {mc['detection_probability_mean']:.4f}"
