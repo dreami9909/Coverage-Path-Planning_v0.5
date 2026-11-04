@@ -482,6 +482,72 @@ class Scenario:
 
 # ------------------------------------------------------------------ 로딩/검증
 
+# 받아들이는 키의 전부 — 여기 없는 키는 로딩 시 거부된다. 오타(`vehical`,
+# `mc_sample`)가 조용히 기본값으로 떨어져 **쓴 것과 다른 실험**이 도는 것이
+# 가장 위험한 입력 사고라서다 (2026-11-04). 입력을 새로 열면 이 목록과
+# docs/SCENARIO.md 를 같이 고친다. 값: None=단일 값, dict=하위 블록,
+# ("each", dict)=테이블 목록.
+_CHANNEL_SCHEMA = {"resolution": None, "hfov_deg": None, "vfov_deg": None}
+_SCHEMA: dict[str, Any] = {
+    "name": None,
+    "seed": None,
+    "seeker": {
+        "template": None, "altitude_m": None, "frame_rate_hz": None,
+        "detection_probability": None, "false_alarm_probability": None,
+        "eo": _CHANNEL_SCHEMA, "ir": _CHANNEL_SCHEMA,
+        "gimbal": {"max_angle_deg": None, "slew_rate_dps": None,
+                   "scan_rate_dps": None},
+    },
+    "vehicle": {"count": None, "search_speed_kph": None,
+                "transit_speed_kph": None},
+    "mission": {"ingress_s": None, "search_s": None},
+    "target": {
+        "case": None, "max_speed_kph": None, "tp_error_sigma_m": None,
+        "aoi_radius_m": None,
+        "behaviour": {"base": None, "mode_probabilities": None,
+                      "persistence_alpha": None, "process_noise_scale": None,
+                      "turn_rate_scale": None, "mode_speed_bounds_kph": None},
+    },
+    "belief": {"kind": None, "sigma_m": None, "center_m": None},
+    "terrain": {
+        "weighting": None, "bias_strength": None, "offroad_probability": None,
+        "halt_probability_boost": None, "corridor_count": None,
+        "barrier_count": None, "concealment_count": None, "background": None,
+        "layout": {
+            "corridors": ("each", {"from": None, "to": None, "width_m": None}),
+            "obstacles": ("each", {"center": None, "radius_m": None,
+                                   "strength": None}),
+            "concealments": ("each", {"center": None, "radius_m": None,
+                                      "strength": None}),
+        },
+    },
+    "grid": {"kind": None, "n": None, "radial_step_m": None,
+             "angular_bins": None},
+    "solver": {"kind": None, "certificate_gap": None, "time_limit_s": None},
+    "evaluation": {"mc_samples": None, "particles": None},
+    "truth": {"hypotheses": ("each", {"x": None, "y": None,
+                                      "behaviour": None})},
+}
+
+
+def _reject_unknown_keys(
+    raw: dict[str, Any], schema: dict[str, Any], prefix: str = ""
+) -> None:
+    for key, value in raw.items():
+        if key not in schema:
+            raise ScenarioError(
+                f"알 수 없는 키 {prefix + str(key)!r} — 오타가 기본값으로 조용히 "
+                f"빠지는 것을 막는다. 이 자리에서 받는 키: {sorted(schema)}"
+            )
+        sub = schema[key]
+        if isinstance(sub, dict) and isinstance(value, dict):
+            _reject_unknown_keys(value, sub, prefix=f"{prefix}{key}.")
+        elif isinstance(sub, tuple) and isinstance(value, list):
+            for item in value:
+                if isinstance(item, dict):
+                    _reject_unknown_keys(item, sub[1], prefix=f"{prefix}{key}[].")
+
+
 def load_scenario(path: str | Path) -> Scenario:
     path = Path(path)
     raw = tomllib.loads(path.read_text(encoding="utf-8"))
@@ -489,6 +555,7 @@ def load_scenario(path: str | Path) -> Scenario:
 
 
 def build_scenario(raw: dict[str, Any], *, source_path: Path | None = None) -> Scenario:
+    _reject_unknown_keys(raw, _SCHEMA)
     warnings: list[str] = []
 
     name = str(raw.get("name", "")).strip()
@@ -536,7 +603,10 @@ def build_scenario(raw: dict[str, Any], *, source_path: Path | None = None) -> S
         tp_error_sigma_m=_positive(
             target_raw.get("tp_error_sigma_m", 500.0), "target.tp_error_sigma_m"
         ),
-        aoi_radius_m=float(aoi_radius) if aoi_radius is not None else None,
+        aoi_radius_m=(
+            _positive(aoi_radius, "target.aoi_radius_m")
+            if aoi_radius is not None else None
+        ),
     )
     behaviour = _behaviour_override(
         target_raw.get("behaviour"), max_speed_kph=target.max_speed_kph
@@ -775,6 +845,10 @@ def _hypotheses(
         if name == "custom" and behaviour is None:
             raise ScenarioError(
                 "truth.hypotheses 의 'custom' 은 [target.behaviour] 블록이 있을 때만 쓴다"
+            )
+        if item.get("x") is None or item.get("y") is None:
+            raise ScenarioError(
+                f"truth.hypotheses[] ({name}) 는 x·y 출발좌표가 둘 다 필요하다"
             )
         out.append(
             HypothesisSpec(

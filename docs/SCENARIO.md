@@ -6,16 +6,31 @@
 
 ## 실행
 
-```bash
-# 저장소 루트에서
-python3 -m cpp_search.pipeline config/scenarios/baseline_tel.toml
+저장소 루트에서, Python 3.11 이상 (`tomllib` 필요):
 
-# 검증만 (실행 없이 입력 오류 확인)
-python3 -m cpp_search.pipeline my_scenario.toml --validate-only
+```bash
+# make 타깃이 PYTHONPATH=src 를 스스로 붙인다
+make scenario S=config/scenarios/baseline_tel.toml
+
+# 직접 실행하려면 PYTHONPATH=src 가 필요하다 (make install 뒤에는 불필요)
+PYTHONPATH=src python3 -m cpp_search.pipeline config/scenarios/baseline_tel.toml
+
+# 검증만 — 실행 없이 입력 오류 확인 (한도·오타·config 해소·좌표·거동 이름 전부)
+PYTHONPATH=src python3 -m cpp_search.pipeline my_scenario.toml --validate-only
 ```
 
+플래그: `--out <루트>` 결과 루트 변경(기본 `results/runs`), `--resolve`
+저장된 plan.json 을 무시하고 다시 solve (아래 결과물 절).
+
 잘못된 값은 **실행 전에 거부**된다 — 수십 분 돌고 나서 죽는 일이 없도록
-모든 한도를 로딩 시점에 검사한다.
+한도·config 해소·좌표·가설 거동 이름을 solver 전에 전부 검사하고,
+**목록에 없는 키는 오타로 보고 거부**한다 (오타가 기본값으로 조용히
+떨어져 쓴 것과 다른 실험이 도는 사고 방지, 2026-11-04).
+
+대략의 실행 시간 (Apple Silicon): `smoke.toml` 수십 초,
+10×10 인증 조건(`baseline_tel` 류)은 **solve 가 수십 분**이고 gap 이
+기준을 넘으면 자동 재시도로 **두 배**까지 간다. 같은 입력의 재실행은
+plan.json 재사용으로 MC 평가만 돌아 수 분이다.
 
 ## 전체 예시 (주석이 곧 설명)
 
@@ -66,6 +81,9 @@ weighting = true             # 지형 가중(사전·전이) on/off
 bias_strength = 0.6          # 이동 편향 (지형 가중치)
 offroad_probability = 0.2
 halt_probability_boost = 0.35
+background = 0.06            # 지형 특징 없는 셀의 바닥 가중
+corridor_count = 2           # ↓ 셋은 seed 추첨 개수 — [terrain.layout] 을
+barrier_count = 1            #   쓰면 추첨 자체가 없어 무시된다
 concealment_count = 3        # 은닉 지대 수 (은닉 가중치)
 
 [grid]
@@ -83,11 +101,16 @@ particles = 5000
 ```
 
 모든 키는 생략 가능하다 — 생략하면 위 값(= v0.4 확정값)이 기본으로 들어간다.
-최소 시나리오는 `name` 과 `[target] case` 두 줄이면 된다.
+필수는 `name` 하나다 (`target.case` 생략 시 TEL). 반대로 **위 목록에 없는
+키를 적으면 거부**된다 — 받는 키의 전부가 `scenario.py` 의 `_SCHEMA` 다.
 
 ## seed 설정
 
 `seed` 하나가 지형 생성·belief 입자·Monte Carlo·탐지 난수를 전부 결정한다.
+생략하면 **기본 seed 20260830** 이 들어간다 — 주의: seed 는 provenance
+감시 대상이 아니므로(같은 코드의 다른 추첨일 뿐), seed 를 생략한 실행도
+`comparable_to_v04_anchors = true` 로 나올 수 있다. anchor(20260201~03)
+실적 표에 나란히 실으려면 seed 까지 같아야 한다는 것은 사람이 지켜야 한다.
 
 | 목적 | 권장 seed |
 |---|---|
@@ -125,7 +148,10 @@ particles = 5000
 | 파일 | 내용 |
 |---|---|
 | `metrics.json` | 모형 PD(최악표적·표적별), optimality gap, **인증 판정**, MC PD(표적별·평균·최악), 실패율, 면적 커버리지(경로 기하), model−MC, 해소된 격자 값 전부 |
-| `plan.json` | 셀 경로·인증 경계 + 입력 fingerprint — **같은 입력의 재실행은 다시 풀지 않고 이 계획을 재사용**한다 (solve 는 실행마다 다른 계획을 낼 수 있음 — 위 비결정성 관측). 다시 풀려면 `--resolve` |
+| `plan.json` | 셀 경로·인증 경계 + 입력 fingerprint + solver 설정 — **같은 입력의 재실행은 다시 풀지 않고 이 계획을 재사용**한다 (solve 는 실행마다 다른 계획을 낼 수 있음 — 위 비결정성 관측). solver 설정(`time_limit_s`·`certificate_gap`)만 바꿔도 다시 푼다. 강제로 다시 풀려면 `--resolve` |
+| `figure1_weights.png` | 가중치 지도 3면 — 기동성·은닉·초기 belief 셀 질량 |
+| `figure2_tracks.png` | step별 1~N 비행체 항적 (셀 중심 경유 본 표, ×=실제 발진 지점) |
+| `scenario.toml` | 입력 스냅샷 — 이 파일이 재현의 근거 |
 
 실행 중 피드백·인증 재시도 (2026-11-03): solve 는 SPX 반복마다
 `SPX 반복 n 비탐지 하한 · 상한 · gap` 한 줄을 찍는다 — 수십 분 실행이
@@ -133,9 +159,24 @@ particles = 5000
 기준(1%)을 넘으면 자동으로 **한 번만** 다시 풀고 둘 중 gap 이 작은 쪽을
 쓴다 (`metrics.json` 의 `solver.solve_attempts` 에 횟수가 남는다).
 비결정성 때문에 인증이 실행 운에 갈리는 것을 줄이는 공표 절차다.
-| `figure1_weights.png` | 가중치 지도 3면 — 기동성·은닉·초기 belief 셀 질량 |
-| `figure2_tracks.png` | step별 1~N 비행체 항적 (셀 중심 경유 본 표, ×=실제 발진 지점) |
-| `scenario.toml` | 입력 스냅샷 — 이 파일이 재현의 근거 |
+실측 사례 (tel_0201_layout, 2026-11-04): 1차 solve gap 1.073% 미인증 →
+자동 재시도 → 0.943% 인증.
+
+### metrics.json 읽는 법 (핵심 키)
+
+| 키 | 뜻 |
+|---|---|
+| `provenance.custom_inputs` | v0.4 기본형에서 벗어난 입력의 전체 목록 (기본형과의 전수 diff). 비어 있지 않으면 `comparable_to_v04_anchors = false` |
+| `resolved.*` | 입력에서 자동 유도된 값 전부 — AOI·셀 크기·슬라이스 수·발사 지점·표적 이름·인스턴스 fingerprint |
+| `solver.model_detection_probability_by_target` | **셀 모형** 표적별 PD (minimax 계획의 값) |
+| `solver.relative_optimality_gap` / `certified` | SPX 인증폭과 기준(1%) 판정 |
+| `solver.lower/upper_bound_nondetection` | 절단평면 하한 / 정수 master 상한 (비탐지확률) — gap 의 두 끝 |
+| `solver.plan_reused` / `solve_attempts` | plan.json 재사용 여부 / 이번 실행의 solve 횟수 (재사용이면 0, 재시도면 2). 재사용 시 `runtime_s` 는 **저장 당시** solve 시간 |
+| `mc.kind` | MC 장치 — `continuous-centre-sync`(기본) 또는 `flight-hypotheses`([truth] 있을 때) |
+| `mc.by_target` / `..._mean` / `..._worst` | MC 표적별·평균·최악 PD. 최악에는 누가 최악인지 이름이 같이 남는다 |
+| `mc.model_minus_mc` | 기본 장치: 모형 최악 − MC 최악 (= 셀 모형 가정의 몫). 실비행 장치: 모형 최악 − MC **평균** (v0.4 model−flown 정의) |
+| `mc.*detection_time*` | **실비행 장치에만 있다** — 연속 MC 는 생존곡선 적분이라 개별 탐지시각이 없다 |
+| `geometry.unique_area_coverage_ratio` | 계획 경로 기하의 AOI 면적 커버리지 (MC 아님) |
 
 **MC 장치 (2026-11-03 B안 확정)**: MC 열은 **규약 맞춤 연속 MC** 다 —
 셀 모형과 항적 규약(centre-sync)·지수 소인 법칙·이송 처리(표적만 480 s
@@ -153,7 +194,9 @@ particles = 5000
    실제 반영은 인증 결과가 바뀌는 모형 변경이어서 별도 결정 대기 중.
 2. `solver.kind = "mappo"` 는 v0.5 2단계(MAPPO implementation)에서 열린다.
 3. 새 탐색기는 `src/cpp_search/pipeline/scenario.py` 의 `SEEKER_TEMPLATES`
-   에 한 항목으로 등록한다.
+   에 한 항목으로 등록한다. 단, **실비행 MC**(`[truth]` 가설 채점)의 공간
+   탐지모델은 아직 SR-Z50 성능표가 박혀 있다 — 다른 탐색기 스펙은 계획
+   모형·규약 맞춤 MC 에는 반영되지만 실비행 채점에는 반영되지 않는다.
 4. 동시 실행은 6~7개까지 (디스크 여유 2~5 GB).
 
 참고 시나리오: `config/scenarios/baseline_tel.toml`(인증 조건),

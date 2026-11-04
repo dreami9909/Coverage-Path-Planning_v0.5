@@ -19,7 +19,11 @@ Tank/TEL 표적을 6대의 무인기로 찾는 문제에서, **경로제약 다�
 | 3 | 학습된 정책이 Stone 문제를 대신 풀 수 있는가 | 학습곡선, **학습효과**(학습-미학습), **도달률**(MAPPO/SPX), 같은 인스턴스 짝지은 비교, 실행시간 |
 | 4 | 그 계획을 실제로 비행시키면 무엇이 남는가 | 합성지형·대조군 지형 실비행 **탐지율 + 평균탐지시간** + 95% CI, **계획모형 − 실비행 차이**(model − flown) |
 
-## 시나리오 확정값 (2026-09-13)
+## 챕터 실험 확정값 (2026-09-13)
+
+아래는 **챕터 실험(ch1~4)의** 확정 조건이다. v0.5 시나리오 파이프라인의
+기본값(2단계 임무 480+600 s, AOI 9,950/8,884 m, 입자 5,000 등)은
+[`docs/SCENARIO.md`](docs/SCENARIO.md)가 단일 출처다.
 
 | 항목 | 값 | 근거 |
 |---|---|---|
@@ -101,9 +105,26 @@ MAPPO는 SPX의 실행가능집합을 **넘지 않는다**. 행동 후보가 인
 
 ## 실행
 
-패키지는 `src/cpp_search/`에 있는 src-layout이다. `make` 타깃이
-`PYTHONPATH=src`를 스스로 붙이므로 **설치 없이 그대로 실행하면 된다**
-(`make install`로 editable 설치하면 `PYTHONPATH`도 필요 없다).
+패키지는 `src/cpp_search/`에 있는 src-layout이다 (Python **3.11 이상**).
+`make` 타깃이 `PYTHONPATH=src`를 스스로 붙이므로 **설치 없이 그대로 실행하면
+된다** (`make install`로 editable 설치하면 `PYTHONPATH`도 필요 없다).
+
+### 시나리오 파이프라인 (v0.5의 주 인터페이스)
+
+**TOML 파일 하나 = 실험 하나.** 조건을 선언하면 Input→Model→Solver→Output
+으로 돌고 `results/runs/<이름>/`에 입력 스냅샷·지표·그림·계획이 남는다.
+작성법·필드 한도·결과 읽는 법 전부가
+[`docs/SCENARIO.md`](docs/SCENARIO.md)에 있다.
+
+```bash
+make scenario S=config/scenarios/smoke.toml      # 수십 초 연기 시험
+make scenario S=config/scenarios/baseline_tel.toml   # 인증 조건 (solve 수십 분)
+make validate S=my_scenario.toml                 # 실행 없이 입력 검증만
+```
+
+아래 챕터 실행(`make ch1..4`)은 v0.4의 연구 본문(격자 사다리·MAPPO 비교·
+실비행 분해)을 재현하는 경로이고, 새 조건 실험은 시나리오 파이프라인으로
+한다.
 
 ```bash
 make ch1    # = PYTHONPATH=src python3 -m cpp_search --chapter 1
@@ -162,6 +183,7 @@ SPX의 정수 master는 기본적으로 `scipy.optimize.milp`(HiGHS)로 푼다. 
 
 ```
 config/
+├── scenarios/                          v0.5 시나리오 TOML (파일 하나 = 실험 하나)
 ├── common_experiment.json              네 챕터가 공유하는 조건 (단일 출처)
 ├── chapter1_evaluation_contract.json   Chapter 1 이 무엇을 보고하는지
 ├── chapter2_stone_spx_terrain.json     격자 사다리, 인증 관문, 지형 대조군
@@ -246,10 +268,13 @@ python3 -m pytest
 
 ## 문서
 
+- [`docs/SCENARIO.md`](docs/SCENARIO.md) — **시나리오 작성 매뉴얼** (v0.5
+  파이프라인의 입력 전부, seed·provenance 규약, metrics.json 읽는 법)
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — 계층 구조, 의존 규칙,
   "어디에 무엇을 추가하나", v0.3에서 뺀 것과 고친 것
 - [`docs/MATH.md`](docs/MATH.md) — 수식 -> 구현 위치(파일:줄) 색인 77개 +
   자동 추출 의존 그래프. `make docs`로 재생성
+- [`docs/RESULTS_KO.md`](docs/RESULTS_KO.md) — 실행 결과 기록
 
 ## 문제 해결
 

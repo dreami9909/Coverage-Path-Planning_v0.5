@@ -90,6 +90,40 @@ class ParseAndValidateTests(unittest.TestCase):
         samples = {**base, "evaluation": {"mc_samples": 50}}
         self.assertEqual(build_scenario(samples).custom_inputs, ())
 
+    def test_unknown_keys_are_rejected(self) -> None:
+        """오타가 기본값으로 조용히 떨어지지 않는다 (2026-11-04)."""
+        for raw in (
+            _full_raw(vehical={"count": 4}),                       # 최상위 오타
+            _full_raw(evaluation={"mc_sample": 10}),               # 블록 안 오타
+            _full_raw(target={"case": "Tank", "behavior": {}}),    # 영/미 철자
+        ):
+            with self.assertRaisesRegex(ScenarioError, "알 수 없는 키"):
+                build_scenario(raw)
+        # 테이블 목록 항목 안의 오타도 잡는다.
+        raw = _full_raw()
+        raw["truth"]["hypotheses"][0]["behavior"] = "STOP_HEAVY"
+        with self.assertRaisesRegex(ScenarioError, "hypotheses\\[\\].behavior"):
+            build_scenario(raw)
+
+    def test_hypothesis_requires_coordinates(self) -> None:
+        raw = _full_raw()
+        del raw["truth"]["hypotheses"][0]["x"]
+        with self.assertRaisesRegex(ScenarioError, "x·y"):
+            build_scenario(raw)
+
+    def test_validate_inputs_rejects_unknown_hypothesis_behaviour(self) -> None:
+        """가설 거동 이름 검사가 solve 전(--validate-only 경로)에 돈다."""
+        from cpp_search.pipeline.run import validate_inputs
+
+        raw = _full_raw()
+        raw["truth"]["hypotheses"][0]["behaviour"] = "NO_SUCH_BEHAVIOUR"
+        scenario = build_scenario(raw)
+        with self.assertRaisesRegex(ScenarioError, "NO_SUCH_BEHAVIOUR"):
+            validate_inputs(scenario)
+        # 정상 시나리오는 해소값을 돌려준다.
+        resolved = validate_inputs(build_scenario(_full_raw()))
+        self.assertGreater(resolved["aoi_radius_m"], 0.0)
+
     def test_mode_probabilities_must_sum_to_one(self) -> None:
         raw = _full_raw()
         raw["target"]["behaviour"]["mode_probabilities"] = [0.4, 0.4, 0.4, 0.1, 0.1]
@@ -263,6 +297,24 @@ class EndToEndTests(unittest.TestCase):
             first["solver"]["relative_optimality_gap"],
             second["solver"]["relative_optimality_gap"],
         )
+
+    def test_changed_solver_settings_invalidate_stored_plan(self) -> None:
+        """solver 설정은 인스턴스 fingerprint 에 없다 — 따로 대조해서,
+        time_limit·인증 기준을 바꾼 재실행이 옛 계획을 재사용하지 않는다."""
+        import tempfile
+        from pathlib import Path
+
+        from cpp_search.pipeline.run import run_scenario
+
+        raw = _full_raw()
+        raw.pop("truth")
+        with tempfile.TemporaryDirectory() as tmp:
+            first = run_scenario(build_scenario(raw), out_root=Path(tmp))
+            raw["solver"]["time_limit_s"] = 90
+            changed = run_scenario(build_scenario(raw), out_root=Path(tmp))
+
+        self.assertFalse(first["solver"]["plan_reused"])
+        self.assertFalse(changed["solver"]["plan_reused"])
 
 
 if __name__ == "__main__":

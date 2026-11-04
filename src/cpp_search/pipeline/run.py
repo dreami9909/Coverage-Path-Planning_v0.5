@@ -1,9 +1,20 @@
 """시나리오 하나를 Input -> Model -> Solver -> Output 으로 돌린다.
 
-실행 흐름은 Chapter 4 의 평가 루프와 같다 — 계획(모형 PD·인증)과
-실비행(Monte Carlo PD)을 **같은 인스턴스**에서 재서, 계획모형과 실비행의
-차이(``model_minus_flown``)까지 결과에 남긴다. 함수는 전부 실험 챕터의
-것을 재사용한다. 여기서 새 모형을 만들지 않는다.
+계획(모형 PD·인증)과 Monte Carlo 평가를 **같은 인스턴스**에서 재서,
+``model_minus_mc`` 까지 결과에 남긴다. 함수는 전부 실험 챕터의 것을
+재사용하고, 여기서 새 모형을 만들지 않는다.
+
+MC 장치는 둘이다 (B안, 2026-11-03 확정):
+
+* 기본 — **규약 맞춤 연속 MC** (``kind="continuous-centre-sync"``). 셀 모형과
+  항적 규약·소인 법칙·이송 처리를 전부 맞추고, 표적이 셀 안 실제 위치를
+  기억한다는 것만 현실로 되돌린 평가. ``model_minus_mc`` = 모형 최악 − MC
+  최악 (minimax 끼리)이고, 그 값이 곧 셀 모형 가정(주로 Markov 섞임)의 몫.
+* 예외 — ``[truth]`` 고정 출발점 가설이 있으면 **실비행 MC**
+  (``kind="flight-hypotheses"``, 이송·실궤적·센서 주사위·탐지시간 포함).
+  고정 initial_points 를 지원하는 유일한 장치라서다. 이때
+  ``model_minus_mc`` = 모형 최악 − MC **평균** (v0.4 Chapter 4 의
+  model−flown 정의 그대로).
 """
 
 from __future__ import annotations
@@ -44,6 +55,32 @@ from cpp_search.solvers.milp.stone_spx import (
     solve_stone_grid_paths,
 )
 from cpp_search.models.truth import behaviour_profile, cue_prior, generate_truth, target_profile
+
+
+def validate_inputs(scenario: Scenario) -> dict[str, Any]:
+    """실행 없이 입력 전부를 검증한다 — ``--validate-only`` 가 부른다.
+
+    ``build_scenario`` 의 로딩 한도 검사가 못 보는 나머지: config 오버레이
+    해소(``target.behaviour.base`` 존재), AOI 해소 후 명시 좌표 검사,
+    평가 가설의 거동 이름. "잘못된 값은 실행 전에 거부"라는 SCENARIO.md
+    약속이 solver 를 돌리기 전에 전부 지켜지게 한다. 해소된 값 몇 개를
+    돌려줘서 CLI 가 확인용으로 찍을 수 있다.
+    """
+
+    config = scenario.chapter_config()
+    case = _select_case(config, scenario.target.case)
+    mission = case_mission(config.mission(), case)
+    if scenario.target.aoi_radius_m is not None:
+        mission = replace(mission, search_radius_m=scenario.target.aoi_radius_m)
+    scenario.validate_geometry(mission.search_radius_m)
+    targets = case_target_specs(config, case)
+    if scenario.behaviour is not None:
+        targets = (*targets, _custom_target_spec(config, case))
+    _evaluation_strata(scenario, config, case, targets)
+    return {
+        "aoi_radius_m": mission.search_radius_m,
+        "targets": [spec.profile.name for spec in targets],
+    }
 
 
 def run_scenario(
@@ -113,7 +150,9 @@ def run_scenario(
         )
     positions = launch_positions(
         mission,
-        ring_ratio=float(config.get("stone_spx.initial_position_ring_ratio", 0.25)),
+        # 폴백은 config 선언값(0.45)과 같게 둔다 — 더 안쪽이면 축소격자에서
+        # 점유·예약이 첫 슬라이스부터 과포화된다 (README 격자 사다리 절).
+        ring_ratio=float(config.get("stone_spx.initial_position_ring_ratio", 0.45)),
     )
 
     # ---------------------------------------------------------------- Model
@@ -134,7 +173,18 @@ def run_scenario(
     # --------------------------------------------------------------- Solver
     out_dir = Path(out_root) / scenario.name
     plan_path = out_dir / "plan.json"
-    solution = _cached_solution(plan_path, instance.fingerprint) if reuse_plan else None
+    # 인스턴스 fingerprint 는 **문제**만 지문한다 — solver 설정(시간 한도·
+    # 인증 기준)은 안 들어간다. 설정을 바꾼 재실행이 옛 계획을 조용히
+    # 재사용하면 안 되므로 solver 키를 따로 대조한다 (2026-11-04).
+    solver_key = {
+        "kind": scenario.solver.kind,
+        "certificate_gap": scenario.solver.certificate_gap,
+        "time_limit_s": scenario.solver.time_limit_s,
+    }
+    solution = (
+        _cached_solution(plan_path, instance.fingerprint, solver_key)
+        if reuse_plan else None
+    )
     plan_reused = solution is not None
     solve_attempts = 0
     if solution is None:
@@ -162,7 +212,7 @@ def run_scenario(
                 not np.isfinite(gap) or retry_gap < gap
             ):
                 solution = retry
-        _store_solution(plan_path, instance.fingerprint, solution)
+        _store_solution(plan_path, instance.fingerprint, solver_key, solution)
     plan = route_plan_from_solution(instance, solution, method="stone-spx")
     diagnostics = plan.diagnostics
 
@@ -286,12 +336,15 @@ _SOLUTION_FIELDS = (
 )
 
 
-def _store_solution(path: Path, fingerprint: str, solution) -> None:
+def _store_solution(
+    path: Path, fingerprint: str, solver_key: dict, solution
+) -> None:
     """solve 결과 중 계획 재구성에 필요한 필드만 ``plan.json`` 에 남긴다."""
 
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "fingerprint": fingerprint,
+        "solver": solver_key,
         "solution": {
             name: getattr(solution, name) for name in _SOLUTION_FIELDS
         },
@@ -302,12 +355,13 @@ def _store_solution(path: Path, fingerprint: str, solution) -> None:
     )
 
 
-def _cached_solution(path: Path, fingerprint: str):
-    """저장된 계획이 **같은 인스턴스**의 것일 때만 되살린다.
+def _cached_solution(path: Path, fingerprint: str, solver_key: dict):
+    """저장된 계획이 **같은 인스턴스·같은 solver 설정**의 것일 때만 되살린다.
 
-    fingerprint 가 다르면 입력이 바뀐 것 — 조용히 다시 푼다. 반복별
-    bound_history 류는 저장하지 않으므로 재사용 실행에는 비어 있다
-    (파이프라인 지표·그림은 그것을 쓰지 않는다).
+    fingerprint 가 다르면 입력이 바뀐 것 — 조용히 다시 푼다. solver 설정만
+    다르면(예: time_limit_s 를 올려 인증을 노리는 재실행) 그 사실을 알리고
+    다시 푼다. 반복별 bound_history 류는 저장하지 않으므로 재사용 실행에는
+    비어 있다 (파이프라인 지표·그림은 그것을 쓰지 않는다).
     """
 
     if not path.exists():
@@ -317,6 +371,13 @@ def _cached_solution(path: Path, fingerprint: str):
     except (OSError, json.JSONDecodeError):
         return None
     if stored.get("fingerprint") != fingerprint:
+        return None
+    if stored.get("solver") != solver_key:
+        print(
+            "  plan.json 의 solver 설정이 지금과 다르다 "
+            f"(저장 {stored.get('solver')} ≠ 지금 {solver_key}) — 다시 푼다",
+            flush=True,
+        )
         return None
     from cpp_search.solvers.milp.stone_spx import StoneGridPathSolution
 

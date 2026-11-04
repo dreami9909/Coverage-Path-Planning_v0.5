@@ -9,7 +9,7 @@ PYTEST   = PYTHONPATH=src $(PY) -m pytest
 RESULTS  = results
 
 .DEFAULT_GOAL := help
-.PHONY: help install ch1 ch2 ch3 ch4 all mappo1 mappo2 mappo3 track-audit test test-fast paper figures docs clean clean-results check
+.PHONY: help install ch1 ch2 ch3 ch4 all scenario validate mappo1 mappo2 mappo3 track-audit test test-fast paper figures docs clean clean-results check
 
 ## ---------------------------------------------------------------- 도움말
 help:   ## 타깃 목록
@@ -41,6 +41,16 @@ ch4:    ## Chapter 4 합성지형 실비행
 all:    ## 1~4 순차 실행 + results/summary.json
 	@mkdir -p $(RESULTS)
 	$(RUN) --chapter all --output $(RESULTS)
+
+## ---------------------------------------------------------------- 시나리오 (v0.5)
+# 시나리오 TOML 하나 = 실험 하나 — docs/SCENARIO.md 가 매뉴얼이다.
+scenario: ## 시나리오 실행 — make scenario S=config/scenarios/smoke.toml
+	@test -n "$(S)" || (echo "사용법: make scenario S=<시나리오.toml>"; exit 2)
+	PYTHONPATH=src $(PY) -m cpp_search.pipeline $(S)
+
+validate: ## 시나리오 검증만 (실행 없음) — make validate S=<시나리오.toml>
+	@test -n "$(S)" || (echo "사용법: make validate S=<시나리오.toml>"; exit 2)
+	PYTHONPATH=src $(PY) -m cpp_search.pipeline $(S) --validate-only
 
 ## ---------------------------------------------------------------- 연구 측정
 mappo1: ## 1단계 — 학습 정책을 인증된 최적해와 같은 자로 (results/studies/mappo1-*)

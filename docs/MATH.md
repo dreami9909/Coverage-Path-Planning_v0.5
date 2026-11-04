@@ -79,7 +79,7 @@
 | 이동 편향 v <- (1-b)v + b grad(mobility) | `src/cpp_search/models/terrain.py:366` |
 | 관측성 가중치 (셀 hazard 배율) | `src/cpp_search/models/terrain.py:386` |
 | 합성지형 생성 (회랑·장애물·은폐) | `src/cpp_search/models/terrain.py:696` |
-| 대조군 지형 (회랑 없음) | `src/cpp_search/models/terrain.py:751` |
+| 대조군 지형 (회랑 없음) | `src/cpp_search/models/terrain.py:805` |
 
 ## 경로 KPI
 
@@ -93,9 +93,9 @@
 
 | 수식 / 개념 | 구현 위치 |
 |---|---|
-| 상대운동 노출구간 (2차 방정식) | `src/cpp_search/models/simulation.py:984` |
-| 누적 위험률 역변환 표집 | `src/cpp_search/models/simulation.py:936` |
-| Lambda(t) = threshold 선형 보간 | `src/cpp_search/models/simulation.py:970` |
+| 상대운동 노출구간 (2차 방정식) | `src/cpp_search/models/simulation.py:993` |
+| 누적 위험률 역변환 표집 | `src/cpp_search/models/simulation.py:945` |
+| Lambda(t) = threshold 선형 보간 | `src/cpp_search/models/simulation.py:979` |
 
 ## Ch2 경로제약 기준식
 
@@ -125,14 +125,14 @@
 
 | 수식 / 개념 | 구현 위치 |
 |---|---|
-| Markov PND f(Y) 와 gradient | `src/cpp_search/theory/stone_path.py:1768` |
+| Markov PND f(Y) 와 gradient | `src/cpp_search/theory/stone_path.py:1778` |
 | SP1 동질·단일표적 (4.23)-(4.28) | `src/cpp_search/theory/stone_path.py:134` |
 | SPX 이질·다중표적 minimax (4.48)-(4.56) | `src/cpp_search/theory/stone_path.py:200` |
-| 접평면 f(Yi)+grad^T(Y-Yi) <= eta (4.3.1) | `src/cpp_search/theory/stone_path.py:469` |
-| 셀 점유한도 (4.53) | `src/cpp_search/theory/stone_path.py:418` |
-| 양립불가 이동 (4.54) | `src/cpp_search/theory/stone_path.py:443` |
-| 분리반경 clique 절단 | `src/cpp_search/theory/stone_path.py:1491` |
-| 정확 생존 MILP (곱항 선형화) | `src/cpp_search/theory/stone_path.py:1108` |
+| 접평면 f(Yi)+grad^T(Y-Yi) <= eta (4.3.1) | `src/cpp_search/theory/stone_path.py:470` |
+| 셀 점유한도 (4.53) | `src/cpp_search/theory/stone_path.py:419` |
+| 양립불가 이동 (4.54) | `src/cpp_search/theory/stone_path.py:444` |
+| 분리반경 clique 절단 | `src/cpp_search/theory/stone_path.py:1501` |
+| 정확 생존 MILP (곱항 선형화) | `src/cpp_search/theory/stone_path.py:1118` |
 
 ## Ch2 지형결합 belief
 
@@ -230,7 +230,7 @@ import하는 모듈이다. 패키지 `__init__.py`의 재수출은 제외하지 
 | `models.belief` | — | `experiments.ch1_evaluation` |
 | `models.evaluation` | `models.models` | `experiments.ch4_synthetic_terrain`, `models.simulation`, `pipeline.run`, `reporting.kpi` |
 | `models.geometry` | `models.models` | `models.probability` |
-| `models.models` | `models.search_envelope` | `cpp_search`, `common.config`, `experiments.ch1_evaluation`, `experiments.ch2_stone_spx`, `experiments.ch2_studies`, `experiments.ch3_mappo_stone`, `experiments.ch4_synthetic_terrain`, `models.aoi`, `models.evaluation`, `models.geometry`, `models.motion`, `models.particle_filter`, `models.probability`, `models.sensor_observation`, `models.simulation`, `models.terrain`, `models.truth`, `solvers.milp.routes`, `solvers.milp.stone_spx`, `solvers.milp.terrain_belief`, `theory.markov` |
+| `models.models` | `models.search_envelope` | `cpp_search`, `common.config`, `experiments.ch1_evaluation`, `experiments.ch2_stone_spx`, `experiments.ch2_studies`, `experiments.ch3_mappo_stone`, `experiments.ch4_synthetic_terrain`, `models.aoi`, `models.evaluation`, `models.geometry`, `models.motion`, `models.particle_filter`, `models.probability`, `models.sensor_observation`, `models.simulation`, `models.terrain`, `models.truth`, `pipeline.run`, `solvers.milp.routes`, `solvers.milp.stone_spx`, `solvers.milp.terrain_belief`, `theory.markov` |
 | `models.motion` | `models.models` | `common.config`, `experiments.ch2_stone_spx`, `models.particle_filter`, `models.profiles`, `models.simulation`, `models.truth` |
 | `models.particle_filter` | `models.models`, `models.motion`, `models.probability` | `solvers.milp.terrain_belief` |
 | `models.probability` | `models.geometry`, `models.models` | `models.particle_filter`, `models.simulation`, `models.truth`, `solvers.milp.stone_spx`, `solvers.milp.terrain_belief`, `theory.markov` |
@@ -244,7 +244,7 @@ import하는 모듈이다. 패키지 `__init__.py`의 재수출은 제외하지 
 | `pipeline` | `pipeline.scenario` | — |
 | `pipeline.__main__` | `pipeline.run`, `pipeline.scenario` | — |
 | `pipeline.figures` | `models.terrain`, `reporting.figures`, `solvers.milp.stone_spx` | `pipeline.run` |
-| `pipeline.run` | `experiments.ch2_stone_spx`, `models.evaluation`, `models.sensor_observation`, `models.simulation`, `models.terrain`, `models.truth`, `pipeline.figures`, `pipeline.scenario`, `reporting.kpi`, `solvers.milp.stone_spx` | `pipeline.__main__` |
+| `pipeline.run` | `experiments.ch2_stone_spx`, `models.evaluation`, `models.models`, `models.sensor_observation`, `models.simulation`, `models.terrain`, `models.truth`, `pipeline.figures`, `pipeline.scenario`, `reporting.kpi`, `solvers.milp.continuous_mc`, `solvers.milp.stone_spx`, `solvers.milp.terrain_belief` | `pipeline.__main__` |
 | `pipeline.scenario` | `common.config`, `common.options` | `pipeline`, `pipeline.__main__`, `pipeline.run` |
 | `reporting` | — | — |
 | `reporting.figures` | `reporting.kpi` | `experiments.runner`, `pipeline.figures` |
@@ -258,10 +258,10 @@ import하는 모듈이다. 패키지 `__init__.py`의 재수출은 제외하지 
 | `solvers.mappo.spx_env` | `solvers.milp.stone_spx`, `theory` | `experiments.ch3_mappo_stone`, `solvers.mappo`, `solvers.mappo.continuous_env`, `solvers.mappo.spx_policy` |
 | `solvers.mappo.spx_policy` | `solvers.mappo.mappo`, `solvers.mappo.spx_env`, `solvers.milp.stone_spx` | `experiments.ch3_mappo_stone`, `experiments.ch4_synthetic_terrain`, `solvers.mappo` |
 | `solvers.milp` | `solvers.milp.routes`, `solvers.milp.stone_spx`, `solvers.milp.terrain_belief` | — |
-| `solvers.milp.continuous_mc` | `models.searcher_track`, `solvers.milp.terrain_belief`, `theory.path_constrained` | `solvers.mappo.continuous_env` |
+| `solvers.milp.continuous_mc` | `models.searcher_track`, `solvers.milp.terrain_belief`, `theory.path_constrained` | `pipeline.run`, `solvers.mappo.continuous_env` |
 | `solvers.milp.routes` | `models.models` | `solvers.milp`, `solvers.milp.stone_spx` |
 | `solvers.milp.stone_spx` | `models.models`, `models.probability`, `models.profiles`, `solvers.milp.routes`, `solvers.milp.terrain_belief`, `theory`, `theory.markov`, `theory.path_constrained`, `theory.stone_path` | `experiments.ch2_stone_spx`, `experiments.ch2_studies`, `experiments.ch3_mappo_stone`, `experiments.ch4_synthetic_terrain`, `pipeline.figures`, `pipeline.run`, `solvers.mappo.spx_env`, `solvers.mappo.spx_policy`, `solvers.milp` |
-| `solvers.milp.terrain_belief` | `models.models`, `models.particle_filter`, `models.probability`, `models.profiles` | `solvers.milp`, `solvers.milp.continuous_mc`, `solvers.milp.stone_spx` |
+| `solvers.milp.terrain_belief` | `models.models`, `models.particle_filter`, `models.probability`, `models.profiles` | `pipeline.run`, `solvers.milp`, `solvers.milp.continuous_mc`, `solvers.milp.stone_spx` |
 | `theory` | `theory.markov`, `theory.path_constrained`, `theory.stone_path` | `solvers.mappo.spx_env`, `solvers.milp.stone_spx`, `theory.path_constrained`, `theory.stone_path` |
 | `theory.markov` | `models.models`, `models.probability` | `solvers.milp.stone_spx`, `theory` |
 | `theory.path_constrained` | `theory` | `solvers.milp.continuous_mc`, `solvers.milp.stone_spx`, `theory`, `theory.stone_path` |

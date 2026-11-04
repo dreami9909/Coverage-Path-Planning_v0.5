@@ -1,5 +1,5 @@
 # 기준 시나리오 — TEL 케이스, v0.4 인증 조건 그대로.
-# 파일 하나가 실험 하나다. 실행: python -m cpp_search.pipeline config/scenarios/baseline_tel.toml
+# 파일 하나가 실험 하나다. 실행: make scenario S=config/scenarios/baseline_tel.toml
 
 name = "baseline_tel"
 seed = 20260201   # v0.4 인증 seed (20260201~03 중 첫째) — 인증 실적과 비교 가능

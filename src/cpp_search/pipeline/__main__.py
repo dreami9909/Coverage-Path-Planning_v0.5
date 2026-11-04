@@ -1,4 +1,9 @@
-"""CLI — ``python -m cpp_search.pipeline <scenario.toml> [--out results/runs]``."""
+"""CLI — ``python -m cpp_search.pipeline <scenario.toml>``.
+
+플래그: ``--out`` 결과 루트(기본 results/runs), ``--validate-only`` 입력
+검증만(해소·좌표·거동 이름까지, 실행 없음), ``--resolve`` 저장된
+plan.json 을 무시하고 다시 solve.
+"""
 
 from __future__ import annotations
 
@@ -6,7 +11,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from cpp_search.pipeline.run import run_scenario
+from cpp_search.pipeline.run import run_scenario, validate_inputs
 from cpp_search.pipeline.scenario import ScenarioError, load_scenario
 
 
@@ -38,8 +43,17 @@ def main(argv: list[str] | None = None) -> int:
     for warning in scenario.warnings:
         print(f"경고: {warning}", file=sys.stderr)
     if args.validate_only:
+        # 로딩 한도 검사에 더해 config 해소·AOI 좌표·가설 거동 이름까지 —
+        # run_scenario 가 solver 전에 할 검사를 전부 미리 돈다.
+        try:
+            resolved = validate_inputs(scenario)
+        except ScenarioError as error:
+            print(f"시나리오 거부: {error}", file=sys.stderr)
+            return 2
         print(f"OK — {scenario.name} (케이스 {scenario.target.case}, "
-              f"{scenario.grid.kind} {scenario.grid.n}×{scenario.grid.n})")
+              f"{scenario.grid.kind} {scenario.grid.n}×{scenario.grid.n}, "
+              f"AOI {resolved['aoi_radius_m']:,.0f} m, "
+              f"표적 {len(resolved['targets'])}종)")
         return 0
 
     metrics = run_scenario(
