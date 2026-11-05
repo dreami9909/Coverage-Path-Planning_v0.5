@@ -901,7 +901,9 @@ def build_stone_grid_instance(
             particle_count=config.particle_count,
             seed=seed ^ (0x5350_5800 + index),
             radial_step_m=max(mission.search_radius_m, 1.0),
-            angular_bin_count=8,
+            # 보조 지도일 뿐이지만 bin 수가 기체 수(섹터)보다 적으면 거부된다
+            # — 8 이하 기체에서는 기존 8 그대로라 fingerprint 가 안 바뀐다.
+            angular_bin_count=max(8, mission.uav_count),
             terrain=terrain,
             terrain_coupling=(
                 BELIEF_TERRAIN_FULL

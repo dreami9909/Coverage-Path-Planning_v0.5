@@ -424,16 +424,30 @@ class Scenario:
                 },
             },
         )
+        stone_spx_overlay: dict[str, Any] = {
+            "initial_belief_delay_s": self.mission.ingress_s,
+            "certificate": {"required_relative_gap": self.solver.certificate_gap},
+        }
+        # 챕터 config 의 탐색자 등급 선언은 기체 수(count 합)를 품고 있어서,
+        # 시나리오가 vehicle.count 를 바꾸면 합이 어긋나 solve 직전에 죽는다.
+        # 동질 한 등급이면 count 를 기체 수에 맞추고, 이질 선언과 어긋나면
+        # 여기서(= validate 단계에서) 거부한다.
+        declared_classes = list(base.get("stone_spx.searcher_classes") or [])
+        if len(declared_classes) == 1:
+            stone_spx_overlay["searcher_classes"] = [
+                {**declared_classes[0], "count": self.vehicle.count}
+            ]
+        elif declared_classes and sum(
+            int(item.get("count", 0)) for item in declared_classes
+        ) != self.vehicle.count:
+            raise ScenarioError(
+                f"vehicle.count ({self.vehicle.count}) 가 config 의 이질 "
+                "searcher_classes 선언 합과 다르다 — 이질 등급 구성은 시나리오로 "
+                "바꿀 수 없으니 count 를 합에 맞추거나 config 를 조정하라"
+            )
         data = _deep_merge(
             base.data,
-            {
-                "stone_spx": {
-                    "initial_belief_delay_s": self.mission.ingress_s,
-                    "certificate": {
-                        "required_relative_gap": self.solver.certificate_gap
-                    },
-                }
-            },
+            {"stone_spx": stone_spx_overlay},
         )
         return ChapterConfig("pipeline", data, common, base.source_paths)
 

@@ -124,6 +124,15 @@ class ParseAndValidateTests(unittest.TestCase):
         resolved = validate_inputs(build_scenario(_full_raw()))
         self.assertGreater(resolved["aoi_radius_m"], 0.0)
 
+    def test_vehicle_count_override_resizes_searcher_classes(self) -> None:
+        """vehicle.count ≠ 6 이 챕터 config 의 동질 탐색자 등급 선언과
+        충돌해 solve 직전에 죽던 결함 (2026-11-05) — count 가 따라가야 한다."""
+        for count in (3, 12):
+            scenario = build_scenario({"name": "s", "vehicle": {"count": count}})
+            classes = scenario.chapter_config().get("stone_spx.searcher_classes")
+            self.assertEqual(len(classes), 1)
+            self.assertEqual(classes[0]["count"], count)
+
     def test_mode_probabilities_must_sum_to_one(self) -> None:
         raw = _full_raw()
         raw["target"]["behaviour"]["mode_probabilities"] = [0.4, 0.4, 0.4, 0.1, 0.1]
