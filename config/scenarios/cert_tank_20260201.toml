@@ -1,0 +1,14 @@
+# Tank 인증 seed 3종 중 ① — 20260201 세계 (baseline_tank 와 같은 실험, 결과 폴더만 다름).
+# 기록 실적: 이 인스턴스(fingerprint ec11f3d7c80daef0)는 master 60 초×60 회에서
+# gap 1.031% 미인증이었으나 300 초×20 회 예산으로 0.835% 인증
+# (config/chapter4_synthetic_terrain.json budget_note — "예산은 반복이 아니라
+# master 시간에"의 실측 근거가 된 바로 그 인스턴스).
+
+name = "cert_tank_20260201"
+seed = 20260201
+
+[target]
+case = "Tank"
+
+[grid]
+n = 8    # Tank 인증 격자 (생략 기본 10 은 TEL 기준 — baseline_tank 주의 참조)

@@ -1,0 +1,12 @@
+# Tank 인증 seed 3종 중 ② — 20260202 세계.
+# 기록 실적: 모형 PD(최악) 0.7734 · gap 0.493% 인증 O
+# (results/studies/anchor-Tank-8-20260202.json, 64셀·11슬라이스)
+
+name = "cert_tank_20260202"
+seed = 20260202
+
+[target]
+case = "Tank"
+
+[grid]
+n = 8    # Tank 인증 격자 (생략 기본 10 은 TEL 기준 — baseline_tank 주의 참조)
