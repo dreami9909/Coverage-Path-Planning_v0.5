@@ -1,5 +1,10 @@
 # 기준 시나리오 — TEL 케이스, v0.4 인증 조건 그대로.
 # 파일 하나가 실험 하나다. 실행: make scenario S=config/scenarios/baseline_tel.toml
+#
+# 재현 실적 (v0.5 코드, 2026-11-10): 계획 PD(최악) 0.7283 (RELOCATION_HEAVY) ·
+# gap 0.807% · 1회 solve 인증 (solve 3,939 s) — v0.4 기록 0.7328 / 0.903%,
+# 2026-10-28 재현 0.728 / 0.81% 과 모두 일치. MC(규약맞춤 연속) 최악 0.6364
+# (STOP_HEAVY), model−MC +0.0920.
 
 name = "baseline_tel"
 seed = 20260201   # v0.4 인증 seed (20260201~03 중 첫째) — 인증 실적과 비교 가능
