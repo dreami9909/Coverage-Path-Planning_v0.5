@@ -37,6 +37,18 @@ class ScenarioValidationTests(unittest.TestCase):
         self.assertEqual(scenario.grid.n, 10)
         self.assertEqual(scenario.target.tp_error_sigma_m, 500.0)
 
+    def test_grid_default_follows_case_certified_grid(self) -> None:
+        # grid.n 생략 기본값 = 케이스 인증 격자 (TEL 10 / Tank 8, 2026-11-10)
+        self.assertEqual(build_scenario(minimal()).grid.n, 10)
+        tank = build_scenario(minimal(target={"case": "Tank"}))
+        self.assertEqual(tank.grid.n, 8)
+        # 인증 격자를 명시로 적는 것은 같은 세계 — provenance 에 안 올라간다
+        explicit = build_scenario(minimal(target={"case": "Tank"}, grid={"n": 8}))
+        self.assertNotIn("grid.n", explicit.custom_inputs)
+        # 케이스 기본과 다른 격자는 여전히 이탈로 잡힌다
+        crossed = build_scenario(minimal(grid={"n": 8}))
+        self.assertIn("grid.n", crossed.custom_inputs)
+
     def test_scenario_keys_override_template(self) -> None:
         scenario = build_scenario(
             minimal(seeker={"altitude_m": 900.0, "eo": {"hfov_deg": 24.0}})

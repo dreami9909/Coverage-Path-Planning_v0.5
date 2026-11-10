@@ -37,6 +37,10 @@ SEEKER_TEMPLATES: dict[str, dict[str, Any]] = {
 }
 
 _CASES = ("Tank", "TEL")
+# grid.n 생략 기본값 = 케이스 인증 격자 (seed 3종 전부 gap 1% 이내가 열린 상한).
+# 2026-11-10 케이스별로 분리 — 이전에는 케이스 무관 10 이라 Tank 바이블의
+# n=8 명시가 provenance 에 grid.n 으로 올라가는 라벨 소음이 있었다.
+_CASE_CERTIFIED_GRID_N = {"TEL": 10, "Tank": 8}
 _SOLVERS = ("milp", "mappo")
 _GRID_KINDS = ("square", "operational-polar")
 _BELIEF_KINDS = {"tp-centered": "tp-centered", "ring": "moving-ring",
@@ -655,7 +659,7 @@ def build_scenario(raw: dict[str, Any], *, source_path: Path | None = None) -> S
         raise ScenarioError(f"grid.kind 는 {_GRID_KINDS} 중 하나 (지금 {kind!r})")
     grid = GridSpec(
         kind=kind,
-        n=int(grid_raw.get("n", 10)),
+        n=int(grid_raw.get("n", _CASE_CERTIFIED_GRID_N[case])),
         radial_step_m=_positive(
             grid_raw.get("radial_step_m", 600.0), "grid.radial_step_m"
         ),
